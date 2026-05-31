@@ -1,0 +1,73 @@
+---
+/** Footer editorial: contacto, redes, navegación y aviso legal. */
+const year = new Date().getFullYear();
+const links = [
+  { href: '/obras', label: 'Obras' },
+  { href: '/series', label: 'Series' },
+  { href: '/exposiciones', label: 'Exposiciones' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/estudio', label: 'Estudio' },
+  { href: '/diario', label: 'Diario' },
+  { href: '/contacto', label: 'Contacto' },
+];
+---
+
+<footer class="ft">
+  <div class="container ft__top">
+    <div class="ft__brandcol">
+      <p class="ft__brand">YOSO</p>
+      <p class="ft__tag">Arte digital · Escultura · Fotografía — Madrid</p>
+    </div>
+
+    <nav class="ft__nav" aria-label="Pie de página">
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="ft__contact">
+      <p class="eyebrow">Contacto</p>
+      <a class="ft__mail" href="mailto:yosolg@gmail.com">yosolg@gmail.com</a>
+      <ul class="ft__social">
+        <li><a href="https://www.instagram.com/yoso_arts/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://x.com/yoso_arts" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+        <li><a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer">WISe.ART</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container ft__bottom">
+    <p>© {year} YOSO · Ambrosio José López González</p>
+    <a href="#top" class="ft__top-link">Volver arriba ↑</a>
+  </div>
+</footer>
+
+<style>
+  .ft { border-top: 1px solid var(--c-line); padding-block: var(--sp-8) var(--sp-6); margin-top: var(--section-y); }
+  .ft__top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .ft__brand { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1; }
+  .ft__tag { color: var(--c-ink-mute); font-size: var(--fs-sm); margin-top: var(--sp-3); }
+
+  .ft__nav ul, .ft__social { display: grid; gap: var(--sp-2); }
+  .ft__nav a, .ft__social a { color: var(--c-ink-dim); font-size: var(--fs-sm); }
+  .ft__nav a:hover, .ft__social a:hover, .ft__mail:hover { color: var(--c-accent-2); }
+
+  .ft__mail { display: inline-block; font-family: var(--font-display); font-size: var(--fs-h3); margin: var(--sp-2) 0 var(--sp-5); color: var(--c-ink); }
+  .ft__social { margin-top: var(--sp-2); }
+
+  .ft__bottom {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-3);
+    margin-top: var(--sp-8); padding-top: var(--sp-5); border-top: 1px solid var(--c-line-soft);
+    color: var(--c-ink-mute); font-size: var(--fs-sm);
+  }
+  .ft__top-link:hover { color: var(--c-accent-2); }
+
+  @media (max-width: 760px) {
+    .ft__top { grid-template-columns: 1fr; gap: var(--sp-7); }
+  }
+</style>

@@ -1,0 +1,152 @@
+---
+/**
+ * Navegación principal. Transparente sobre el hero, se solidifica al hacer
+ * scroll. Menú móvil accesible (overlay con foco gestionado).
+ */
+const links = [
+  { href: '/obras', label: 'Obras' },
+  { href: '/series', label: 'Series' },
+  { href: '/exposiciones', label: 'Exposiciones' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/diario', label: 'Diario' },
+  { href: '/contacto', label: 'Contacto' },
+];
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+
+<header class="hd" data-header>
+  <div class="hd__inner">
+    <a href="/" class="hd__brand" aria-label="YOSO — inicio">YOSO</a>
+
+    <nav class="hd__nav" aria-label="Navegación principal">
+      <ul>
+        {links.map((l) => (
+          <li>
+            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <button class="hd__toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+      <span class="visually-hidden">Abrir menú</span>
+      <span class="hd__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+
+  <!-- Menú móvil (overlay) -->
+  <div class="hd__overlay" id="mobile-menu" data-menu hidden>
+    <nav aria-label="Navegación móvil">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hd {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: var(--z-nav);
+    transition: background var(--dur-1) var(--ease-art), border-color var(--dur-1) var(--ease-art);
+    border-bottom: 1px solid transparent;
+  }
+  .hd::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(12,12,13,0.55), transparent);
+    opacity: 1; transition: opacity var(--dur-1) var(--ease-art);
+    pointer-events: none;
+  }
+  .hd[data-scrolled] {
+    background: rgba(12, 12, 13, 0.78);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--c-line);
+  }
+  .hd[data-scrolled]::before { opacity: 0; }
+
+  .hd__inner {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(1rem, 2.2vw, 1.6rem) var(--gutter);
+  }
+  .hd__brand {
+    font-family: var(--font-display);
+    font-weight: var(--fw-semi);
+    font-size: 1.4rem;
+    letter-spacing: 0.18em;
+    color: var(--c-ink);
+  }
+
+  .hd__nav ul { display: flex; gap: clamp(1.25rem, 2.4vw, 2.5rem); }
+  .hd__nav a {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--c-ink-dim);
+    padding-block: 0.4rem;
+    position: relative;
+  }
+  .hd__nav a:hover, .hd__nav a[aria-current='page'] { color: var(--c-ink); }
+  .hd__nav a[aria-current='page']::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px; background: var(--c-accent);
+  }
+
+  /* Toggle móvil */
+  .hd__toggle { display: none; background: none; border: 0; cursor: pointer; padding: 0.5rem; }
+  .hd__bars { display: block; width: 26px; }
+  .hd__bars i { display: block; height: 1px; background: var(--c-ink); margin: 6px 0; transition: transform var(--dur-1) var(--ease-art), opacity var(--dur-1) var(--ease-art); }
+  .hd[data-open] .hd__bars i:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+  .hd[data-open] .hd__bars i:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+
+  .hd__overlay {
+    position: fixed; inset: 0; z-index: -1;
+    background: var(--c-bg);
+    display: grid; place-items: center;
+    opacity: 0; transition: opacity var(--dur-2) var(--ease-art);
+  }
+  .hd[data-open] .hd__overlay { opacity: 1; z-index: 1; }
+  .hd__overlay ul { display: grid; gap: var(--sp-5); text-align: center; }
+  .hd__overlay a {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    color: var(--c-ink);
+  }
+  .hd__overlay a[aria-current='page'] { color: var(--c-accent-2); }
+
+  @media (max-width: 860px) {
+    .hd__nav { display: none; }
+    .hd__toggle { display: block; }
+  }
+</style>
+
+<script>
+  // Estado de scroll (solidifica la nav)
+  const header = document.querySelector('[data-header]') as HTMLElement | null;
+  const onScroll = () => {
+    if (!header) return;
+    if (window.scrollY > 40) header.setAttribute('data-scrolled', '');
+    else header.removeAttribute('data-scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Menú móvil accesible
+  const toggle = document.querySelector('[data-menu-toggle]') as HTMLButtonElement | null;
+  const menu = document.querySelector('[data-menu]') as HTMLElement | null;
+  function setMenu(open: boolean) {
+    if (!header || !toggle || !menu) return;
+    header.toggleAttribute('data-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+</script>

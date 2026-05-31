@@ -16,6 +16,13 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   (Fontsource), escala tipográfica de saltos grandes, espaciado generoso, easings cinemáticos
   (`cubic-bezier(0.22,1,0.36,1)`, 0.6–1.2 s). Aplica coherencia de marca (Negocio) y base de
   rendimiento (fuentes self-hosted, sin render-blocking de Google Fonts — SEO §Técnico).
+- `feat(astro): layout base — navegación, footer, View Transitions y plantillas de ruta` —
+  `Header.astro` (nav transparente sobre hero que se solidifica al scroll, menú móvil
+  accesible con `aria-expanded`/foco/Esc, estado activo `aria-current`), `Footer.astro`
+  (contacto + redes con `rel=noopener` — SEO §Enlaces), `<ClientRouter />` (transiciones de
+  página), `skip-link` y `<main>` semántico (a11y). Plantillas de ruta: `/obras`, `/series`,
+  `/exposiciones`, `/sobre`, `/estudio`, `/diario`, `/contacto` (arquitectura multipágina, 8
+  páginas; navegación sin 404).
 
 ## [No publicado]
 
