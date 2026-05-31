@@ -82,6 +82,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
     Buenas prácticas 96→**100**, SEO 92→**100**; LCP 6,0→**2,8 s**, Speed Index 6,1→**1,8 s**,
     TBT 70→**0 ms** — Recomendación SEO §Técnico (CWV) y Negocio §10.
   - `scripts/serve.mjs` (server estático para auditar) y `docs/lighthouse/resumen.md`.
+- `feat(venta): fichas individuales de obra destacada con ficha técnica y CTA de precio` — Cambio 11.
+  - 6 fichas (`obra-<slug>.html`: Identity, Veritas, Dream of Red Wave II, Ecos, Soplo de
+    Vida, La Boda) con **Técnica · Dimensiones · Edición · Año · Precio** y CTA
+    **"Consultar precio"** (mailto prerrellenado) — Recomendación Negocio §5; campos
+    desconocidos como "Consultar" (sin inventar datos).
+  - Schema **VisualArtwork** por obra — Recomendación SEO §4 (Product/obra).
+  - Enlace **"Ver ficha"** desde la tarjeta de galería de cada obra destacada; `sitemap.xml`
+    actualizado con las 6 fichas. `scripts/gen-obras.mjs` reproducible.
 
 ---
 

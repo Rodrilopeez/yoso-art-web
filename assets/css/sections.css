@@ -256,10 +256,39 @@
   padding: 0.3rem 0.7rem;
 }
 
+/* ============ FICHA DE OBRA ============ */
+.obra__back { margin-bottom: var(--sp-5); }
+.obra__back a { font-size: var(--fs-sm); letter-spacing: 0.04em; color: var(--c-ink-soft); }
+.obra__back a:hover { color: var(--c-gold-text); }
+.obra__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+.obra__media { margin: 0; background: var(--c-bg-alt); }
+.obra__media img { width: 100%; height: auto; }
+.obra__info h1 { margin-bottom: 0; }
+.obra__desc { color: var(--c-ink-soft); margin: var(--sp-2) 0 var(--sp-6); }
+.obra__info .facts { margin-bottom: var(--sp-6); }
+.obra__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
+
+/* Enlace "Ver ficha" dentro de la tarjeta de galería */
+.work__ficha {
+  display: inline-block;
+  margin-top: var(--sp-1);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--c-gold-text);
+}
+.work__ficha::after { content: " →"; }
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 860px) {
   .about__grid { grid-template-columns: 1fr; }
   .about__facts { position: static; }
+  .obra__grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 900px) {
   .cards--ex, .cards--rep, .cards--press { grid-template-columns: repeat(2, 1fr); }
