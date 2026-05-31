@@ -29,6 +29,12 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   **fallback a imagen** si no hay WebGL. Canvas decorativo (`aria-hidden`); contenido textual
   real y H1 único (a11y/SEO §2). Sección intro al artista con transición narrativa.
   Verificado en navegador (sin errores, canvas pinta, SplitText OK).
+- `feat(astro): /obras — galería real con filtros + ruta dinámica /obras/[slug]` —
+  `src/lib/obras.ts` (catálogo desde `works-data.mjs` + imágenes locales), `obras/index.astro`
+  (55 obras con `astro:assets` → WebP/AVIF + `srcset`/`sizes`, **alt descriptivo** por obra —
+  SEO §Imágenes; filtros por disciplina accesibles `aria-pressed`; hover zoom; reveal on
+  scroll), `obras/[slug].astro` (`getStaticPaths` → **una página por obra**, SEO §2/§4 y
+  Negocio §5; ficha mínima a desarrollar). Build: 63 páginas. Verificado (filtro Escultura→3).
 
 ## [No publicado]
 

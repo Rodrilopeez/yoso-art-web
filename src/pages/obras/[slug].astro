@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { obras } from '../../lib/obras';
+
+export function getStaticPaths() {
+  return obras.map((o) => ({ params: { slug: o.slug }, props: { obra: o } }));
+}
+
+const { obra } = Astro.props;
+---
+
+<Base
+  title={`${obra.title} — ${obra.catLabel} de YOSO`}
+  description={`«${obra.title}»: ${obra.tecnica}. Obra original de YOSO. Consulta disponibilidad y precio.`}
+>
+  <article class="ficha section">
+    <div class="container">
+      <p class="ficha__back"><a href="/obras">← Volver a obras</a></p>
+      <div class="ficha__grid">
+        <figure class="ficha__media">
+          <Image src={obra.image} alt={`«${obra.title}» — ${obra.catLabel.toLowerCase()} de YOSO`} widths={[600, 1000, 1400]} sizes="(max-width: 900px) 100vw, 55vw" />
+        </figure>
+        <div class="ficha__info">
+          <p class="eyebrow">{obra.catLabel}</p>
+          <h1>{obra.title}</h1>
+          <hr class="accent-rule" style="margin:1.25rem 0 1.75rem;" />
+          <p class="lead">{obra.tecnica}</p>
+          <p style="margin-top:2rem; color:var(--c-ink-mute);">Ficha completa en construcción.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .ficha__back { margin-bottom: var(--sp-6); }
+  .ficha__back a { font-size: var(--fs-sm); color: var(--c-ink-dim); }
+  .ficha__back a:hover { color: var(--c-accent-2); }
+  .ficha__grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .ficha__media { margin: 0; background: var(--c-bg-2); }
+  @media (max-width: 900px) { .ficha__grid { grid-template-columns: 1fr; } }
+</style>

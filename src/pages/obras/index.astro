@@ -1,0 +1,117 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { obras, cats } from '../../lib/obras';
+---
+
+<Base
+  title="Obras — YOSO | Catálogo de arte digital, escultura y fotografía"
+  description="Catálogo completo de la obra de YOSO: arte digital, escultura y fotografía. Filtra por disciplina y descubre cada pieza."
+>
+  <section class="obras section">
+    <div class="container">
+      <header class="obras__head">
+        <p class="eyebrow">Catálogo · {obras.length} obras</p>
+        <h1>Obras</h1>
+        <hr class="accent-rule" style="margin-top:1.5rem;" />
+      </header>
+
+      <div class="obras__filters" role="group" aria-label="Filtrar por disciplina">
+        {cats.map((c) => (
+          <button
+            type="button"
+            class="filter"
+            data-filter={c.value}
+            aria-pressed={c.value === 'all' ? 'true' : 'false'}
+          >{c.label}</button>
+        ))}
+      </div>
+
+      <ul class="obras__grid" data-grid>
+        {obras.map((o, i) => (
+          <li class="obra-card" data-cat={o.cat} style={`--i:${i % 12}`}>
+            <a href={`/obras/${o.slug}`} class="obra-card__link">
+              <span class="obra-card__media">
+                <Image
+                  src={o.image}
+                  alt={`«${o.title}» — ${o.catLabel.toLowerCase()} de YOSO`}
+                  widths={[300, 600, 900]}
+                  sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 25vw"
+                  loading={i < 8 ? 'eager' : 'lazy'}
+                />
+              </span>
+              <span class="obra-card__info">
+                <span class="obra-card__title">{o.title}</span>
+                <span class="obra-card__tec">{o.catLabel}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .obras__head { margin-bottom: var(--sp-7); }
+
+  .obras__filters { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-bottom: var(--sp-7); }
+  .filter {
+    background: none; border: 1px solid var(--c-line); color: var(--c-ink-dim);
+    padding: 0.5rem 1.1rem; cursor: pointer; border-radius: 999px;
+    font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase;
+    transition: color var(--dur-1) var(--ease-art), border-color var(--dur-1) var(--ease-art), background var(--dur-1) var(--ease-art);
+  }
+  .filter:hover { color: var(--c-ink); border-color: var(--c-ink-dim); }
+  .filter[aria-pressed='true'] { color: var(--c-bg); background: var(--c-accent-2); border-color: var(--c-accent-2); }
+
+  .obras__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  }
+  .obra-card { opacity: 0; transform: translateY(24px); }
+  .obra-card.is-in { opacity: 1; transform: none; transition: opacity var(--dur-2) var(--ease-art), transform var(--dur-2) var(--ease-art); transition-delay: calc(var(--i) * 0.04s); }
+  .obra-card[hidden] { display: none; }
+
+  .obra-card__link { display: block; }
+  .obra-card__media { display: block; position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--c-bg-2); }
+  .obra-card__media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-art); }
+  .obra-card__link:hover .obra-card__media :global(img) { transform: scale(1.06); }
+
+  .obra-card__info { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: var(--sp-3); }
+  .obra-card__title { font-family: var(--font-display); font-size: var(--fs-body); color: var(--c-ink); }
+  .obra-card__tec { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); white-space: nowrap; }
+
+  @media (max-width: 1100px) { .obras__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 600px)  { .obras__grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+<script>
+  function initObras() {
+    const grid = document.querySelector('[data-grid]');
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.obra-card'));
+    const filters = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter'));
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    cards.forEach((c) => io.observe(c));
+
+    // Filtros por disciplina
+    filters.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const val = btn.dataset.filter;
+        filters.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        cards.forEach((c) => {
+          const show = val === 'all' || c.dataset.cat === val;
+          c.hidden = !show;
+          if (show && !c.classList.contains('is-in')) c.classList.add('is-in');
+        });
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initObras);
+</script>
