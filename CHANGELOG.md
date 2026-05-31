@@ -63,6 +63,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
     NFT/WISe.ART, encargos) — conversión (Negocio).
   - Acordeón accesible (`assets/js/faq.js`): `aria-expanded` + `aria-controls`.
   - JSON-LD `FAQPage` para resultados enriquecidos — Recomendación SEO §4.
+- `seo: robots.txt y sitemap.xml propios` — Cambio 8.
+  - `robots.txt` (permite rastreo, declara sitemap) y `sitemap.xml` (home + Sobre YOSO) —
+    Recomendación SEO §Técnico (infra de indexación). Cierra la Fase 1.
 
 ---
 
