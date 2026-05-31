@@ -69,10 +69,10 @@
   gap: var(--sp-4);
 }
 .brand--footer { color: var(--c-gold-light); font-size: 1.3rem; }
-.site-footer__copy { font-size: var(--fs-sm); color: rgba(246,244,240,.45); margin: 0; }
+.site-footer__copy { font-size: var(--fs-sm); color: rgba(246,244,240,.62); margin: 0; }
 .site-footer__links { display: flex; gap: var(--sp-5); }
 .site-footer__links a {
-  color: rgba(246,244,240,.45);
+  color: rgba(246,244,240,.62);
   font-size: var(--fs-sm);
 }
 .site-footer__links a:hover { color: var(--c-gold-light); }

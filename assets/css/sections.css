@@ -148,7 +148,7 @@
 .award__yr {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
-  color: var(--c-gold);
+  color: var(--c-gold-text);
 }
 .award__body { display: flex; flex-direction: column; gap: 2px; }
 .award__name { font-family: var(--font-display); font-size: var(--fs-md); color: var(--c-ink); }
@@ -162,8 +162,8 @@
   text-transform: uppercase;
   padding: 0.3rem 0.75rem;
 }
-.award__badge--win { background: var(--c-gold); color: #fff; }
-.award__badge--fin { border: 1px solid var(--c-gold); color: var(--c-gold-deep); }
+.award__badge--win { background: var(--c-gold-text); color: #fff; }
+.award__badge--fin { border: 1px solid var(--c-gold); color: var(--c-gold-text); }
 .award__badge--sel { background: var(--c-bg); border: 1px solid var(--c-line); color: var(--c-ink-soft); }
 .award__badge--men { border: 1px solid var(--c-line); color: var(--c-ink-mute); }
 
@@ -189,7 +189,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--c-gold);
+  color: var(--c-gold-text);
   margin-bottom: var(--sp-2);
 }
 .card-ex__name, .card-press__hl {
@@ -206,7 +206,7 @@
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.8rem;
-  color: var(--c-gold);
+  color: var(--c-gold-text);
   margin-bottom: var(--sp-3);
 }
 .card-rep__name { font-family: var(--font-display); font-size: var(--fs-md); margin-bottom: 2px; }

@@ -44,7 +44,7 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: rgba(246,244,240,.4);
+  color: rgba(246,244,240,.65);
   margin-bottom: var(--sp-1);
 }
 .contact__val { font-family: var(--font-display); font-size: var(--fs-md); }
@@ -55,14 +55,14 @@
   font-size: var(--fs-eyebrow);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(246,244,240,.55);
-  border: 1px solid rgba(246,244,240,.2);
+  color: rgba(246,244,240,.72);
+  border: 1px solid rgba(246,244,240,.28);
   padding: 0.5rem 1rem;
 }
 .contact__socials a:hover { border-color: var(--c-gold-light); color: var(--c-gold-light); }
 
 /* Form sobre fondo oscuro */
-.contact__form .field label { color: rgba(246,244,240,.45); }
+.contact__form .field label { color: rgba(246,244,240,.65); }
 .contact__form .field input,
 .contact__form .field select,
 .contact__form .field textarea {
@@ -108,7 +108,7 @@
   font-size: var(--fs-md);
   color: var(--c-ink);
 }
-.faq__icon { flex-shrink: 0; color: var(--c-gold); font-size: 1.3rem; transition: transform var(--t); }
+.faq__icon { flex-shrink: 0; color: var(--c-gold-text); font-size: 1.3rem; transition: transform var(--t); }
 .faq__q[aria-expanded="true"] .faq__icon { transform: rotate(45deg); }
 .faq__a {
   overflow: hidden;

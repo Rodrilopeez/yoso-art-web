@@ -99,8 +99,11 @@ strong, b { font-weight: var(--fw-med); color: var(--c-ink); }
   font-weight: var(--fw-med);
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: var(--c-gold);
+  color: var(--c-gold-text);
 }
+/* Sobre fondo oscuro el oro claro sí cumple contraste */
+.section--dark .eyebrow,
+.hero .eyebrow { color: var(--c-gold-light); }
 
 /* Filete decorativo bajo los títulos de sección */
 .rule { width: 48px; height: 1px; background: var(--c-gold); border: 0; margin: var(--sp-4) 0 var(--sp-6); }
@@ -135,8 +138,8 @@ strong, b { font-weight: var(--fw-med); color: var(--c-ink); }
 }
 .btn--solid { background: var(--c-bg-dark); color: var(--c-on-dark); }
 .btn--solid:hover { background: var(--c-gold-deep); color: #fff; }
-.btn--gold { background: var(--c-gold); color: #fff; }
-.btn--gold:hover { background: var(--c-gold-deep); color: #fff; }
+.btn--gold { background: var(--c-gold); color: var(--c-bg-dark); }
+.btn--gold:hover { background: var(--c-bg-dark); color: var(--c-on-dark); }
 .btn--ghost { background: transparent; color: var(--c-ink); border-color: var(--c-line); }
 .btn--ghost:hover { border-color: var(--c-gold); color: var(--c-gold-deep); }
 .btn--on-dark { background: #fff; color: var(--c-bg-dark); }

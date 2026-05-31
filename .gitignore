@@ -33,3 +33,6 @@ desktop.ini
 # Temporales
 *.tmp
 *.bak
+
+# Informes Lighthouse crudos (se versiona solo el resumen)
+docs/lighthouse/*.json

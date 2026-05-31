@@ -74,6 +74,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - `index.html` y `sobre-yoso.html` reescritos a rutas locales (0 hotlinks restantes).
   - Tooling de build: `package.json` + `scripts/works-data.mjs`, `scripts/fetch-images.mjs`
     (sharp). `node_modules/` ignorado.
+- `a11y(perf): contraste AA y medición Lighthouse antes/después` — Cambio 10.
+  - Corrige el contraste WCAG AA: nuevo `--c-gold-text` (#836234) para texto dorado pequeño,
+    `--c-ink-mute` oscurecido, badge/botón dorados con texto/fondo accesibles, textos tenues
+    sobre oscuro reforzados — Calidad innegociable (a11y); `color-contrast` sin incidencias.
+  - Lighthouse móvil **antes→después**: Rendimiento 68→**95**, Accesibilidad 100→**100**,
+    Buenas prácticas 96→**100**, SEO 92→**100**; LCP 6,0→**2,8 s**, Speed Index 6,1→**1,8 s**,
+    TBT 70→**0 ms** — Recomendación SEO §Técnico (CWV) y Negocio §10.
+  - `scripts/serve.mjs` (server estático para auditar) y `docs/lighthouse/resumen.md`.
 
 ---
 

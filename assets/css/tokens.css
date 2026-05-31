@@ -13,13 +13,14 @@
 
   --c-ink:         #1a1918;   /* texto principal */
   --c-ink-soft:    #5c5652;   /* texto secundario */
-  --c-ink-mute:    #9c9690;   /* texto terciario / metadatos */
+  --c-ink-mute:    #6f6a64;   /* texto terciario / metadatos (AA ≥4.5:1 sobre claro) */
   --c-on-dark:     #f6f4f0;   /* texto sobre fondo oscuro */
   --c-on-dark-soft:rgba(246,244,240,.55);
 
-  --c-gold:        #b8905a;   /* oro de marca */
+  --c-gold:        #b8905a;   /* oro de marca (decorativo: filetes, badges, bordes) */
   --c-gold-light:  #d4ac78;   /* oro claro (sobre oscuro) */
   --c-gold-deep:   #9a7440;   /* oro intenso (hover sobre claro) */
+  --c-gold-text:   #836234;   /* oro para TEXTO pequeño sobre claro (AA ≥4.5:1) */
 
   --c-line:        #e4e0d8;   /* bordes / separadores */
   --c-line-dark:   rgba(246,244,240,.12);
