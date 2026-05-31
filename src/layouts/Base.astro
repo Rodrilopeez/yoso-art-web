@@ -18,6 +18,12 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
+
+// Tipografías self-hosted (Fontsource) + sistema de diseño
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '../styles/tokens.css';
+import '../styles/global.css';
 ---
 
 <!doctype html>

@@ -5,6 +5,18 @@ recomendación de origen de las auditorías de negocio y SEO.
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## Rediseño Astro (rama `rediseno/astro`)
+
+Rebuild desde cero a nivel galería contemporánea. La web estática previa permanece en `main`.
+
+- `chore(astro): scaffold` — proyecto Astro 5 (estático) + stack (gsap, lenis, ogl),
+  `Base.astro` con SEO de origen (title/description/canonical/OG — SEO §1/§3/§5), build OK.
+- `design(astro): sistema de diseño en código` — `src/styles/tokens.css` + `global.css`:
+  base oscura + blanco hueso + acento oro `#b8905a`, tipografías self-hosted Fraunces + Inter
+  (Fontsource), escala tipográfica de saltos grandes, espaciado generoso, easings cinemáticos
+  (`cubic-bezier(0.22,1,0.36,1)`, 0.6–1.2 s). Aplica coherencia de marca (Negocio) y base de
+  rendimiento (fuentes self-hosted, sin render-blocking de Google Fonts — SEO §Técnico).
+
 ## [No publicado]
 
 ### Añadido

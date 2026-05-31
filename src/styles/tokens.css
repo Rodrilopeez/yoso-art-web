@@ -1,0 +1,89 @@
+/* ============================================================
+   YOSO — Tokens de diseño (rediseño Astro)
+   Dirección de arte: galería contemporánea, minimalismo editorial.
+   Base oscura + blanco hueso + acento oro extraído de la obra.
+   ============================================================ */
+
+:root {
+  /* ---- Color ---- */
+  --c-bg:        #0c0c0d;   /* negro casi puro */
+  --c-bg-2:      #141416;   /* superficie elevada */
+  --c-bg-3:      #1c1c1f;
+  --c-ink:       #f4f1ea;   /* blanco hueso */
+  --c-ink-dim:   rgba(244, 241, 234, 0.64);
+  --c-ink-mute:  rgba(244, 241, 234, 0.44);
+  --c-line:      rgba(244, 241, 234, 0.14);
+  --c-line-soft: rgba(244, 241, 234, 0.08);
+
+  --c-accent:    #b8905a;   /* oro cálido de marca */
+  --c-accent-2:  #d4ac78;   /* oro claro */
+
+  /* Para secciones claras puntuales (p. ej. fichas/sobre si procede) */
+  --c-bg-light:  #f4f1ea;
+  --c-ink-on-light: #0c0c0d;
+
+  /* ---- Tipografía ---- */
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Pesos */
+  --fw-light: 300;
+  --fw-reg:   400;
+  --fw-med:   500;
+  --fw-semi:  600;
+  --fw-bold:  700;
+
+  /* Escala tipográfica — pocos tamaños, saltos grandes (fluida) */
+  --fs-eyebrow: 0.72rem;
+  --fs-sm:      0.85rem;
+  --fs-body:    1.0625rem;            /* ~17px */
+  --fs-lead:    clamp(1.15rem, 1.6vw, 1.45rem);
+  --fs-h3:      clamp(1.5rem, 2.6vw, 2.1rem);
+  --fs-h2:      clamp(2.2rem, 5vw, 3.6rem);
+  --fs-h1:      clamp(3rem, 8vw, 6rem);
+  --fs-mega:    clamp(4.5rem, 17vw, 15rem);   /* nombre del artista en hero */
+
+  --lh-tight:  1.02;
+  --lh-snug:   1.18;
+  --lh-body:   1.7;
+
+  --ls-wide:   0.22em;     /* eyebrows en mayúsculas */
+  --ls-wider:  0.32em;
+  --ls-tight:  -0.02em;    /* titulares display */
+
+  /* ---- Espaciado (generoso) ---- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4.5rem;
+  --sp-9: 7rem;
+  --sp-10: 10rem;
+  --section-y: clamp(5rem, 12vw, 11rem);
+
+  /* ---- Layout ---- */
+  --container:      1320px;
+  --container-text: 680px;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+
+  /* ---- Bordes / radios ---- */
+  --radius: 2px;
+  --radius-lg: 6px;
+
+  /* ---- Movimiento (lento, cinemático) ---- */
+  --ease-art:    cubic-bezier(0.22, 1, 0.36, 1);   /* salida suave premium */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 0.6s;
+  --dur-2: 0.9s;
+  --dur-3: 1.2s;
+
+  /* ---- Capas ---- */
+  --z-nav: 100;
+  --z-overlay: 500;
+  --z-cursor: 900;
+  --z-modal: 1000;
+  --z-loader: 1100;
+}
