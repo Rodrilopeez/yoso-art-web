@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import { featured } from '../lib/obras';
+---
+
+<section class="feat" data-feat aria-labelledby="feat-h">
+  <div class="container feat__head">
+    <p class="eyebrow">Selección</p>
+    <h2 id="feat-h">Obra destacada</h2>
+  </div>
+
+  <div class="feat__viewport" data-feat-viewport>
+    <ul class="feat__track" data-feat-track>
+      {featured.map((o) => (
+        <li class="feat__card">
+          <a href={`/obras/${o.slug}`}>
+            <span class="feat__media">
+              <Image src={o.image} alt={`«${o.title}» — ${o.catLabel.toLowerCase()} de YOSO`} widths={[400, 700, 1000]} sizes="(max-width: 860px) 70vw, 32vw" loading="lazy" />
+            </span>
+            <span class="feat__meta">
+              <span class="feat__title">{o.title}</span>
+              <span class="feat__cat">{o.catLabel}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+      <li class="feat__card feat__card--all">
+        <a href="/obras"><span class="feat__alltext">Ver todas<br/>las obras →</span></a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .feat { padding-block: var(--section-y); overflow: hidden; }
+  .feat__head { margin-bottom: var(--sp-7); }
+
+  .feat__viewport { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+  .feat__viewport::-webkit-scrollbar { display: none; }
+
+  .feat__track {
+    display: flex; gap: clamp(1rem, 2vw, 2rem);
+    padding-inline: var(--gutter);
+    width: max-content;
+  }
+  .feat__card { flex: 0 0 clamp(260px, 32vw, 440px); }
+  .feat__card a { display: block; }
+  .feat__media { display: block; aspect-ratio: 3/4; overflow: hidden; background: var(--c-bg-2); }
+  .feat__media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-art); }
+  .feat__card a:hover .feat__media :global(img) { transform: scale(1.05); }
+  .feat__meta { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: var(--sp-3); }
+  .feat__title { font-family: var(--font-display); font-size: var(--fs-h3); }
+  .feat__cat { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); white-space: nowrap; }
+
+  .feat__card--all { display: flex; align-items: center; }
+  .feat__alltext { font-family: var(--font-display); font-size: var(--fs-h2); color: var(--c-accent-2); }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initFeatured() {
+    const section = document.querySelector<HTMLElement>('[data-feat]');
+    const viewport = document.querySelector<HTMLElement>('[data-feat-viewport]');
+    const track = document.querySelector<HTMLElement>('[data-feat-track]');
+    if (!section || !viewport || !track) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Solo pin en escritorio; en móvil/reduced-motion = scroll horizontal nativo
+    if (reduce || window.matchMedia('(max-width: 860px)').matches) return;
+
+    viewport.style.overflow = 'hidden';
+    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + parseFloat(getComputedStyle(track).paddingLeft));
+    gsap.to(track, {
+      x: () => -distance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + distance(),
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        anticipatePin: 1,
+      },
+    });
+  }
+  document.addEventListener('astro:page-load', initFeatured);
+</script>

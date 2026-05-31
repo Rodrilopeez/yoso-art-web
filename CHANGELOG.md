@@ -41,6 +41,12 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   statement narrativo, **schema VisualArtwork** + OG por obra (SEO §3/§4), navegación
   anterior/siguiente y obras relacionadas. Primitivas `.btn` en `global.css`. Verificado
   (schema en HTML, zoom OK, sin errores).
+- `feat(astro): home completa + smooth scroll (Lenis) global` — Lenis sincronizado con GSAP
+  ScrollTrigger en `Base.astro` (respeta reduced-motion, re-init en View Transitions).
+  Home: intro al artista con CTA a /sobre, **obra destacada con scroll horizontal pinned**
+  (GSAP ScrollTrigger; fallback a scroll nativo en móvil/reduced-motion — técnica visual del
+  brief), **marquee de exposiciones** (prueba social, Negocio §3; pausable, accesible con
+  texto alternativo), y **CTA principal** "¿Te interesa una obra?". Verificado sin errores.
 
 ## [No publicado]
 

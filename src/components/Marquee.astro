@@ -1,0 +1,44 @@
+---
+/** Ticker de exposiciones/reconocimientos (prueba social — Negocio §3). */
+const items = [
+  'ART MADRID ’25', 'Arte Laguna Prize · Venecia', 'Torre NASDAQ · Times Square',
+  'WISe.ART Excellence · Ginebra', 'CICA Museum · Corea del Sur', 'Sestante Art Prize · Lisboa',
+  'Hybrid Art Fair · Madrid', 'Premio Jaume Graells · Igualada',
+];
+---
+
+<section class="mq" aria-label="Exposiciones y reconocimientos">
+  <div class="mq__row" aria-hidden="true">
+    {[0, 1].map(() => (
+      <ul class="mq__track">
+        {items.map((it) => <li class="mq__item">{it}<span class="mq__dot">✦</span></li>)}
+      </ul>
+    ))}
+  </div>
+  <p class="visually-hidden">Exposiciones y reconocimientos: {items.join(', ')}.</p>
+</section>
+
+<style>
+  .mq { border-block: 1px solid var(--c-line); padding-block: clamp(1.5rem, 3vw, 2.5rem); overflow: hidden; }
+  .mq__row { display: flex; width: max-content; }
+  .mq__track {
+    display: flex; align-items: center; flex-shrink: 0;
+    animation: mq-scroll 38s linear infinite;
+  }
+  .mq:hover .mq__track { animation-play-state: paused; }
+  .mq__item {
+    display: inline-flex; align-items: center; gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+    font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+    color: var(--c-ink-dim); white-space: nowrap;
+  }
+  .mq__dot { color: var(--c-accent); font-size: 0.6em; }
+
+  @keyframes mq-scroll { to { transform: translateX(-100%); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mq__track { animation: none; }
+    .mq__row { width: 100%; overflow-x: auto; }
+    .mq__row > .mq__track:nth-child(2) { display: none; }
+  }
+</style>

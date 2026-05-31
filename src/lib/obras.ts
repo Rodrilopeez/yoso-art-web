@@ -108,6 +108,16 @@ export function getObra(slug: string): Obra | undefined {
   return obras.find((o) => o.slug === slug);
 }
 
+/** Selección destacada para la home (orden curado). */
+const FEATURED = [
+  'identity', 'cardinals-dance', 'veritas-and-the-wolf-pack',
+  'dream-of-red-wave-ii', 'ecos', 'michelagnolo',
+  'your-home-your-land', 'family-portrait-on-sofa',
+];
+export const featured: Obra[] = FEATURED
+  .map((s) => getObra(s))
+  .filter((o): o is Obra => Boolean(o));
+
 /** Obra anterior y siguiente (navegación circular dentro del catálogo). */
 export function adjacent(slug: string): { prev: Obra; next: Obra } | null {
   const i = obras.findIndex((o) => o.slug === slug);

@@ -64,5 +64,34 @@ import Footer from '../components/Footer.astro';
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Smooth scroll (Lenis) sincronizado con GSAP ScrollTrigger.
+      import Lenis from 'lenis';
+      import gsap from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      gsap.registerPlugin(ScrollTrigger);
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let lenis: any = null;
+      const tick = (t: number) => lenis?.raf(t * 1000);
+
+      function start() {
+        if (reduce || lenis) return;
+        lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(tick);
+        gsap.ticker.lagSmoothing(0);
+        (window as any).__lenis = lenis;
+      }
+      function stop() {
+        if (!lenis) return;
+        gsap.ticker.remove(tick);
+        lenis.destroy();
+        lenis = null;
+      }
+      document.addEventListener('astro:page-load', () => { start(); ScrollTrigger.refresh(); });
+      document.addEventListener('astro:before-swap', stop);
+    </script>
   </body>
 </html>
