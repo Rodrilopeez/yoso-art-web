@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO §5: title único, 50-60 caracteres, keyword al inicio -->
+  <title>YOSO — Arte digital, escultura y fotografía | Madrid</title>
+
+  <!-- SEO §1: meta description única, 150-160 caracteres -->
+  <meta name="description" content="YOSO, artista de Madrid: arte digital, escultura y fotografía de carácter onírico. Obra original premiada internacionalmente — Venecia, Nueva York y Ginebra.">
+
+  <!-- SEO §Meta: canonical, robots, autor -->
+  <link rel="canonical" href="https://yoso.art/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Ambrosio José López González (YOSO)">
+  <meta name="theme-color" content="#1a1918">
+
+  <!-- SEO §3: Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="YOSO">
+  <meta property="og:title" content="YOSO — Arte digital, escultura y fotografía">
+  <meta property="og:description" content="Obra original del artista YOSO (Ambrosio López González). Arte digital, escultura y fotografía de carácter onírico, premiada internacionalmente.">
+  <meta property="og:url" content="https://yoso.art/">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:image" content="https://yoso.art/assets/img/og-yoso.jpg">
+  <meta property="og:image:alt" content="Identity — obra de arte digital de YOSO">
+
+  <!-- SEO §3: Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@yoso_arts">
+  <meta name="twitter:title" content="YOSO — Arte digital, escultura y fotografía">
+  <meta name="twitter:description" content="Obra original del artista YOSO. Arte digital, escultura y fotografía de carácter onírico, premiada internacionalmente.">
+  <meta name="twitter:image" content="https://yoso.art/assets/img/og-yoso.jpg">
+
+  <!-- Favicon real (SEO §Técnico: /favicon.ico devolvía HTML) -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
+
+  <!-- Tipografías de marca -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/gallery.css">
+  <link rel="stylesheet" href="assets/css/forms.css">
+  <script src="assets/js/analytics.js" defer></script>
+  <script src="assets/js/gallery.js" defer></script>
+  <script src="assets/js/forms.js" defer></script>
+  <script src="assets/js/faq.js" defer></script>
+
+  <!-- SEO §4: datos estructurados — el artista como entidad -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "YOSO",
+    "alternateName": "Ambrosio José López González",
+    "url": "https://yoso.art/",
+    "image": "https://yoso.art/assets/img/og-yoso.jpg",
+    "jobTitle": "Artista",
+    "description": "Artista multidisciplinar afincado en Madrid. Arte digital, escultura y fotografía de carácter onírico centrada en la identidad humana.",
+    "nationality": "Española",
+    "birthPlace": { "@type": "Place", "name": "Vitoria, España" },
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Escuela Técnica Superior de Arquitectura, Universidad Politécnica de Madrid" },
+    "knowsAbout": ["Arte digital", "Escultura", "Fotografía", "Arte contemporáneo", "Arte surrealista", "NFT", "Web3"],
+    "address": { "@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES" },
+    "email": "yosolg@gmail.com",
+    "sameAs": [
+      "https://www.instagram.com/yoso_arts/",
+      "https://x.com/yoso_arts",
+      "https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98"
+    ]
+  }
+  </script>
+
+  <!-- SEO §4: datos estructurados — FAQ (resultados enriquecidos) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "¿Cómo puedo adquirir una obra?", "acceptedAnswer": { "@type": "Answer", "text": "Escribe desde el formulario de contacto indicando la obra que te interesa. Se confirma disponibilidad, precio, formato y condiciones de envío antes de la compra." } },
+      { "@type": "Question", "name": "¿Por qué no veo el precio en cada obra?", "acceptedAnswer": { "@type": "Answer", "text": "El precio depende del formato, el soporte y la edición elegidos. Por eso se trabaja con «consultar precio» y se ofrece un presupuesto claro y sin compromiso." } },
+      { "@type": "Question", "name": "¿Hacéis envíos internacionales?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. La obra viaja con embalaje profesional adecuado a cada técnica y formato, con envío y seguimiento coordinados según el destino, dentro y fuera de España." } },
+      { "@type": "Question", "name": "¿Las obras son ediciones limitadas? ¿Incluyen certificado?", "acceptedAnswer": { "@type": "Answer", "text": "Cada pieza tiene su ficha técnica (técnica, dimensiones, edición y año). Las ediciones limitadas se entregan con certificado de autenticidad firmado por el artista." } },
+      { "@type": "Question", "name": "¿Qué es el arte digital tokenizado (WISe.ART)?", "acceptedAnswer": { "@type": "Answer", "text": "Parte de la obra digital está disponible como pieza tokenizada en WISe.ART (Web3, Ethereum): coleccionismo de arte digital de alta resolución con autenticidad verificable en blockchain." } },
+      { "@type": "Question", "name": "¿Aceptas encargos personalizados?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, se estudian encargos para coleccionistas y espacios a partir de la idea, el espacio y el formato deseados." } }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="#main" class="brand">YOSO</a>
+      <nav class="site-nav" aria-label="Navegación principal">
+        <ul>
+          <li><a href="sobre-yoso.html">Artista</a></li>
+          <li><a href="#arte-digital">Arte Digital</a></li>
+          <li><a href="#escultura">Escultura</a></li>
+          <li><a href="#fotografia">Fotografía</a></li>
+          <li><a href="#trayectoria">Trayectoria</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero__media" aria-hidden="true">
+        <img src="assets/img/obra/identity.webp"
+             alt="" width="1024" height="1024" fetchpriority="high">
+        <div class="hero__overlay"></div>
+      </div>
+      <div class="container hero__content">
+        <p class="eyebrow hero__eyebrow">Arte digital · Escultura · Fotografía</p>
+        <h1 id="hero-title" class="hero__title">YOSO — Arte digital, escultura y fotografía</h1>
+        <p class="accent hero__tagline">Obra original que nace del sueño y explora la identidad humana.</p>
+        <div class="hero__ctas">
+          <a href="#arte-digital" class="btn btn--on-dark">Ver obra disponible</a>
+          <a href="#trayectoria" class="btn btn--ghost-light">Trayectoria</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BARRA DE RECONOCIMIENTOS (Negocio §3) ============ -->
+    <section class="recognition" aria-label="Reconocimientos internacionales">
+      <div class="container recognition__inner">
+        <p class="recognition__lead eyebrow">Reconocido en</p>
+        <ul class="recognition__list">
+          <li>Arte Laguna · <span>Venecia</span></li>
+          <li>Torre NASDAQ · <span>Times Square, NY</span></li>
+          <li>WISe.ART · <span>Ginebra</span></li>
+          <li>Jaume Graells · <span>Igualada</span></li>
+          <li>Art Madrid · <span>Madrid</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <section class="stats section--dark" aria-label="Trayectoria en cifras">
+      <div class="container stats__grid">
+        <div class="stat"><span class="stat__num">8+</span><span class="stat__label">Premios internacionales</span></div>
+        <div class="stat"><span class="stat__num">15+</span><span class="stat__label">Exposiciones</span></div>
+        <div class="stat"><span class="stat__num">10+</span><span class="stat__label">Países con presencia</span></div>
+        <div class="stat"><span class="stat__num">3</span><span class="stat__label">Galerías representantes</span></div>
+      </div>
+    </section>
+
+    <!-- ============ ARTE DIGITAL ============ -->
+    <section class="section" id="arte-digital" aria-labelledby="h-digital">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Portfolio</p>
+          <h2 id="h-digital">Arte Digital</h2>
+          <hr class="rule">
+          <p class="lead">Obra digital de alta resolución: imágenes oníricas y surrealistas que exploran la identidad humana.</p>
+        </div>
+        <div class="works-grid">
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Identity»">
+              <img src="assets/img/obra/identity.webp" alt="Arte digital: «Identity», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Identity</span><a class="work__ficha" href="obra-identity.html">Ver ficha</a></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Judas»">
+              <img src="assets/img/obra/judas.webp" alt="Arte digital: «Judas», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Judas</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Cardinals' Dance»">
+              <img src="assets/img/obra/cardinals-dance.webp" alt="Arte digital: «Cardinals' Dance», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Cardinals' Dance</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Your Home, Your Land»">
+              <img src="assets/img/obra/your-home-your-land.webp" alt="Arte digital: «Your Home, Your Land», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Your Home, Your Land</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Mr. and Mrs. Europe Go on Vacation»">
+              <img src="assets/img/obra/mr-and-mrs-europe-go-on-vacation.webp" alt="Arte digital: «Mr. and Mrs. Europe Go on Vacation», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Mr. and Mrs. Europe Go on Vacation</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Mr. and Mrs. Europe Come Back from Vacation»">
+              <img src="assets/img/obra/mr-and-mrs-europe-come-back-from-vacation.webp" alt="Arte digital: «Mr. and Mrs. Europe Come Back from Vacation», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Mr. and Mrs. Europe Come Back from Vacation</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Michelagnolo»">
+              <img src="assets/img/obra/michelagnolo.webp" alt="Arte digital: «Michelagnolo», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Michelagnolo</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Tattoo»">
+              <img src="assets/img/obra/tattoo.webp" alt="Arte digital: «Tattoo», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Tattoo</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Eve»">
+              <img src="assets/img/obra/eve.webp" alt="Arte digital: «Eve», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Eve</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Adam»">
+              <img src="assets/img/obra/adam.webp" alt="Arte digital: «Adam», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Adam</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Meat»">
+              <img src="assets/img/obra/meat.webp" alt="Arte digital: «Meat», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Meat</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Dream of Red Wave I»">
+              <img src="assets/img/obra/dream-of-red-wave-i.webp" alt="Arte digital: «Dream of Red Wave I», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Dream of Red Wave I</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Dream of Red Wave II»">
+              <img src="assets/img/obra/dream-of-red-wave-ii.webp" alt="Arte digital: «Dream of Red Wave II», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Dream of Red Wave II</span><a class="work__ficha" href="obra-dream-of-red-wave-ii.html">Ver ficha</a></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Veritas and the Wolf Pack»">
+              <img src="assets/img/obra/veritas-and-the-wolf-pack.webp" alt="Arte digital: «Veritas and the Wolf Pack», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Veritas and the Wolf Pack</span><a class="work__ficha" href="obra-veritas-and-the-wolf-pack.html">Ver ficha</a></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Newborn White on Blue»">
+              <img src="assets/img/obra/newborn-white-on-blue.webp" alt="Arte digital: «Newborn White on Blue», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Newborn White on Blue</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Newborn Red on Yellow»">
+              <img src="assets/img/obra/newborn-red-on-yellow.webp" alt="Arte digital: «Newborn Red on Yellow», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Newborn Red on Yellow</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Newborn Blue on Red»">
+              <img src="assets/img/obra/newborn-blue-on-red.webp" alt="Arte digital: «Newborn Blue on Red», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Newborn Blue on Red</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Cargo Ships in the Bay»">
+              <img src="assets/img/obra/cargo-ships-in-the-bay.webp" alt="Arte digital: «Cargo Ships in the Bay», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Cargo Ships in the Bay</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Starlings in Orange»">
+              <img src="assets/img/obra/starlings-in-orange.webp" alt="Arte digital: «Starlings in Orange», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Starlings in Orange</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «New Gods I»">
+              <img src="assets/img/obra/new-gods-i.webp" alt="Arte digital: «New Gods I», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">New Gods I</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «New Gods II»">
+              <img src="assets/img/obra/new-gods-ii.webp" alt="Arte digital: «New Gods II», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">New Gods II</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Family Portrait on Sofa»">
+              <img src="assets/img/obra/family-portrait-on-sofa.webp" alt="Arte digital: «Family Portrait on Sofa», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Family Portrait on Sofa</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Withered Flower»">
+              <img src="assets/img/obra/withered-flower.webp" alt="Arte digital: «Withered Flower», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Withered Flower</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Tank Young Man»">
+              <img src="assets/img/obra/tank-young-man.webp" alt="Arte digital: «Tank Young Man», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Tank Young Man</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «August Wind»">
+              <img src="assets/img/obra/august-wind.webp" alt="Arte digital: «August Wind», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">August Wind</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Alone»">
+              <img src="assets/img/obra/alone.webp" alt="Arte digital: «Alone», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Alone</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «99 Hearts»">
+              <img src="assets/img/obra/99-hearts.webp" alt="Arte digital: «99 Hearts», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">99 Hearts</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Bishop Bending Down»">
+              <img src="assets/img/obra/bishop-bending-down.webp" alt="Arte digital: «Bishop Bending Down», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Bishop Bending Down</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Expansion»">
+              <img src="assets/img/obra/expansion.webp" alt="Arte digital: «Expansion», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Expansion</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Miage Glacier»">
+              <img src="assets/img/obra/miage-glacier.webp" alt="Arte digital: «Miage Glacier», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Miage Glacier</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Floats»">
+              <img src="assets/img/obra/floats.webp" alt="Arte digital: «Floats», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Floats</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «WC»">
+              <img src="assets/img/obra/wc.webp" alt="Arte digital: «WC», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">WC</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ESCULTURA ============ -->
+    <section class="section section--alt" id="escultura" aria-labelledby="h-escultura">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Portfolio</p>
+          <h2 id="h-escultura">Escultura</h2>
+          <hr class="rule">
+          <p class="lead">Volumen, materia y figura: la exploración del ser humano llevada a las tres dimensiones.</p>
+        </div>
+        <div class="works-grid">
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Ecos»">
+              <img src="assets/img/obra/ecos.webp" alt="Escultura: «Ecos», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Ecos</span>
+            <span class="work__meta">Instalación · 108 zapatos rojos, 1 negro, audio · 2026</span><a class="work__ficha" href="obra-ecos.html">Ver ficha</a></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Soplo de Vida»">
+              <img src="assets/img/obra/soplo-de-vida.webp" alt="Escultura: «Soplo de Vida», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Soplo de Vida</span>
+            <span class="work__meta">Maniquí CACHAREL (c. 1950), maderas nobles y latón · 67 × 175 cm</span><a class="work__ficha" href="obra-soplo-de-vida.html">Ver ficha</a></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «La Boda»">
+              <img src="assets/img/obra/la-boda.webp" alt="Escultura: «La Boda», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">La Boda</span>
+            <span class="work__meta">Escultura</span><a class="work__ficha" href="obra-la-boda.html">Ver ficha</a></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOTOGRAFÍA ============ -->
+    <section class="section" id="fotografia" aria-labelledby="h-foto">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Portfolio</p>
+          <h2 id="h-foto">Fotografía</h2>
+          <hr class="rule">
+          <p class="lead">Una mirada precisa y poética al mundo visible. Paisaje, retrato, luz y sombra.</p>
+        </div>
+        <div class="works-grid">
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «January Landscape»">
+              <img src="assets/img/obra/january-landscape.webp" alt="Fotografía: «January Landscape», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">January Landscape</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Calm»">
+              <img src="assets/img/obra/calm.webp" alt="Fotografía: «Calm», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Calm</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Golden Cage»">
+              <img src="assets/img/obra/golden-cage.webp" alt="Fotografía: «Golden Cage», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Golden Cage</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «On the Beach»">
+              <img src="assets/img/obra/on-the-beach.webp" alt="Fotografía: «On the Beach», obra de YOSO" loading="eager" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">On the Beach</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Looking»">
+              <img src="assets/img/obra/looking.webp" alt="Fotografía: «Looking», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Looking</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Sunset Fishing»">
+              <img src="assets/img/obra/sunset-fishing.webp" alt="Fotografía: «Sunset Fishing», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Sunset Fishing</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Rough Water»">
+              <img src="assets/img/obra/rough-water.webp" alt="Fotografía: «Rough Water», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Rough Water</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Fire»">
+              <img src="assets/img/obra/fire.webp" alt="Fotografía: «Fire», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Fire</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Full Moon»">
+              <img src="assets/img/obra/full-moon.webp" alt="Fotografía: «Full Moon», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Full Moon</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Constellation»">
+              <img src="assets/img/obra/constellation.webp" alt="Fotografía: «Constellation», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Constellation</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Fair 1»">
+              <img src="assets/img/obra/fair-1.webp" alt="Fotografía: «Fair 1», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Fair 1</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Gold»">
+              <img src="assets/img/obra/gold.webp" alt="Fotografía: «Gold», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Gold</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «In the Fog»">
+              <img src="assets/img/obra/in-the-fog.webp" alt="Fotografía: «In the Fog», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">In the Fog</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Roman Sky»">
+              <img src="assets/img/obra/roman-sky.webp" alt="Fotografía: «Roman Sky», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Roman Sky</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Do Bigger Things»">
+              <img src="assets/img/obra/do-bigger-things.webp" alt="Fotografía: «Do Bigger Things», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Do Bigger Things</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Landscape with Sail»">
+              <img src="assets/img/obra/landscape-with-sail.webp" alt="Fotografía: «Landscape with Sail», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Landscape with Sail</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Fishing in Gray»">
+              <img src="assets/img/obra/fishing-in-gray.webp" alt="Fotografía: «Fishing in Gray», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Fishing in Gray</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «The End of Spider-Man»">
+              <img src="assets/img/obra/the-end-of-spider-man.webp" alt="Fotografía: «The End of Spider-Man», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">The End of Spider-Man</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Mimicry»">
+              <img src="assets/img/obra/mimicry.webp" alt="Fotografía: «Mimicry», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Mimicry</span></figcaption>
+          </figure>
+          <figure class="work">
+            <button type="button" class="work__btn" aria-label="Ampliar «Shangri-La»">
+              <img src="assets/img/obra/shangri-la.webp" alt="Fotografía: «Shangri-La», obra de YOSO" loading="lazy" decoding="async" width="600" height="600">
+            </button>
+            <figcaption class="work__cap"><span class="work__title">Shangri-La</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRAYECTORIA ============ -->
+    <section class="section section--alt" id="trayectoria" aria-labelledby="h-tray">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Reconocimientos</p>
+          <h2 id="h-tray">Trayectoria</h2>
+          <hr class="rule">
+          <p class="lead">Premios, exposiciones y representación internacional.</p>
+        </div>
+
+        <!-- Premios -->
+        <div class="trj-block" aria-labelledby="h-premios">
+          <h3 id="h-premios" class="trj-block__title">Premios &amp; distinciones</h3>
+          <ul class="awards">
+            <li class="award"><span class="award__yr">2026</span><span class="award__body"><span class="award__name">Sestante Art Prize</span><span class="award__loc">Cascais-Lisboa, Portugal</span></span><span class="award__badge award__badge--win">Ganador</span></li>
+            <li class="award"><span class="award__yr">2025</span><span class="award__body"><span class="award__name">WISe.ART Excellence Awards</span><span class="award__loc">Ginebra, Suiza</span></span><span class="award__badge award__badge--win">2.º Premio</span></li>
+            <li class="award"><span class="award__yr">2024</span><span class="award__body"><span class="award__name">No Name Collective Art Magazine Challenge</span><span class="award__loc">Londres, Reino Unido</span></span><span class="award__badge award__badge--win">Ganador</span></li>
+            <li class="award"><span class="award__yr">2024</span><span class="award__body"><span class="award__name">Amedeo Modigliani Foundation Prize</span><span class="award__loc">Roma, Italia</span></span><span class="award__badge award__badge--fin">Finalista</span></li>
+            <li class="award"><span class="award__yr">2023</span><span class="award__body"><span class="award__name">XXVII Premio Jaume Graells de Arte Digital</span><span class="award__loc">Igualada, España</span></span><span class="award__badge award__badge--win">Ganador</span></li>
+            <li class="award"><span class="award__yr">2023</span><span class="award__body"><span class="award__name">Artistas Españoles más Destacados — Torre NASDAQ, Times Square</span><span class="award__loc">Nueva York · Consulado de España en NY</span></span><span class="award__badge award__badge--sel">Seleccionado</span></li>
+            <li class="award"><span class="award__yr">2023</span><span class="award__body"><span class="award__name">Arte Laguna Prize 23.24 — International Curators' Selection</span><span class="award__loc">Venecia, Italia</span></span><span class="award__badge award__badge--fin">Finalista</span></li>
+            <li class="award"><span class="award__yr">2023</span><span class="award__body"><span class="award__name">VI Bienal de Valencia</span><span class="award__loc">Valencia, España</span></span><span class="award__badge award__badge--men">Mención Honorífica</span></li>
+          </ul>
+        </div>
+
+        <!-- Exposiciones -->
+        <div class="trj-block" aria-labelledby="h-expos">
+          <h3 id="h-expos" class="trj-block__title">Exposiciones</h3>
+          <ul class="cards cards--ex">
+            <li class="card-ex"><p class="card-ex__type">Internacional · 2025</p><p class="card-ex__name">Arte Laguna Prize — 20.º Aniversario</p><p class="card-ex__venue">Shanghái, China</p></li>
+            <li class="card-ex"><p class="card-ex__type">Feria internacional · 2025</p><p class="card-ex__name">ART MADRID '25</p><p class="card-ex__venue">Galería de Cristal · Palacio de Cibeles, Madrid</p></li>
+            <li class="card-ex"><p class="card-ex__type">Internacional · 2025</p><p class="card-ex__name">MACRO Art 2025</p><p class="card-ex__venue">Ciudad de Panamá, Panamá</p></li>
+            <li class="card-ex"><p class="card-ex__type">Internacional · 2025</p><p class="card-ex__name">PhygitArt 25</p><p class="card-ex__venue">San Giustino, Italia</p></li>
+            <li class="card-ex"><p class="card-ex__type">Internacional · 2025</p><p class="card-ex__name">Breath 25 — CICA Museum</p><p class="card-ex__venue">Gimpo, Corea del Sur</p></li>
+            <li class="card-ex"><p class="card-ex__type">Internacional · 2025</p><p class="card-ex__name">A mountain of…signs</p><p class="card-ex__venue">Aeropuerto Milán Malpensa, Italia</p></li>
+            <li class="card-ex"><p class="card-ex__type">Individual · 2024</p><p class="card-ex__name">Otra mirada a la realidad</p><p class="card-ex__venue">La Sala · Igualada (sept–oct 2024)</p></li>
+            <li class="card-ex"><p class="card-ex__type">Individual · 2024</p><p class="card-ex__name">Colección Abartium</p><p class="card-ex__venue">Abartium Gallery · Vic, Barcelona</p></li>
+            <li class="card-ex"><p class="card-ex__type">Individual · 2024</p><p class="card-ex__name">XAPO Bank Gallery</p><p class="card-ex__venue">Gibraltar</p></li>
+            <li class="card-ex"><p class="card-ex__type">Individual · 2024</p><p class="card-ex__name">SO Hotel Exhibition</p><p class="card-ex__venue">Sotogrande, Cádiz</p></li>
+            <li class="card-ex"><p class="card-ex__type">Feria internacional · 2024</p><p class="card-ex__name">ART MADRID 2024</p><p class="card-ex__venue">Galería de Cristal · Palacio de Cibeles, Madrid</p></li>
+            <li class="card-ex"><p class="card-ex__type">Internacional · 2024</p><p class="card-ex__name">45.ª Exposición Int. de Arte Contemporáneo</p><p class="card-ex__venue">Castillo de Montesquiu, Barcelona</p></li>
+          </ul>
+        </div>
+
+        <!-- Galerías -->
+        <div class="trj-block" aria-labelledby="h-galerias">
+          <h3 id="h-galerias" class="trj-block__title">Representación · Galerías</h3>
+          <ul class="cards cards--rep">
+            <li class="card-rep"><span class="card-rep__mark">G.</span><p class="card-rep__name">The Fusion Art Gallery</p><p class="card-rep__loc">Puerto Banús · Marbella, España</p><p class="card-rep__desc">Espacio de 2.500 m² de arte contemporáneo y club privado de referencia internacional.</p></li>
+            <li class="card-rep"><span class="card-rep__mark">A.</span><p class="card-rep__name">Abartium Collection</p><p class="card-rep__loc">Calldetenes · Vic, Barcelona</p><p class="card-rep__desc">Colección privada de arte digital de referencia en Cataluña, con curaduría especializada.</p></li>
+            <li class="card-rep"><span class="card-rep__mark">W.</span><p class="card-rep__name">WISe.ART</p><p class="card-rep__loc">Ginebra, Suiza · Blockchain / NFT</p><p class="card-rep__desc">Plataforma internacional de arte digital de alta gama en el ecosistema Web3 (Ethereum).</p></li>
+          </ul>
+        </div>
+
+        <!-- Prensa -->
+        <div class="trj-block" aria-labelledby="h-prensa">
+          <h3 id="h-prensa" class="trj-block__title">Prensa</h3>
+          <ul class="cards cards--press">
+            <li class="card-press"><p class="card-press__pub">Diari d'Andorra</p><p class="card-press__hl">«Entrevista con YOSO: arte que surge de los sueños»</p><p class="card-press__dt">Octubre 2025</p></li>
+            <li class="card-press"><p class="card-press__pub">Spain Culture · New York</p><p class="card-press__hl">Artistas Españoles Más Destacados — Torre NASDAQ, Times Square</p><p class="card-press__dt">2023</p></li>
+            <li class="card-press"><p class="card-press__pub">Arteinformado</p><p class="card-press__hl">YOSO — Arte Digital de la Colección Abartium</p><p class="card-press__dt">2024</p></li>
+            <li class="card-press"><p class="card-press__pub">masdearte.com</p><p class="card-press__hl">Cobertura de la exposición ART MADRID 2024</p><p class="card-press__dt">2024</p></li>
+            <li class="card-press"><p class="card-press__pub">Ceina</p><p class="card-press__hl">«Otra mirada a la realidad» — La Sala, Igualada</p><p class="card-press__dt">Septiembre 2024</p></li>
+            <li class="card-press"><p class="card-press__pub">The Fusion Art Gallery</p><p class="card-press__hl">YOSO — Perfil de artista y obra representada</p><p class="card-press__dt">2024</p></li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ WISe.ART / ARTE TOKENIZADO (Negocio §8, §12) ============ -->
+    <section class="section section--dark nft" id="tokenizado" aria-labelledby="h-nft">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Mercado digital</p>
+          <h2 id="h-nft">Arte digital tokenizado</h2>
+          <hr class="rule">
+          <p class="lead">Parte de la obra digital está disponible como pieza tokenizada en <strong>WISe.ART</strong> (blockchain Ethereum): alta resolución y autenticidad verificable para coleccionistas y museos digitales.</p>
+        </div>
+        <ul class="nft__grid">
+          <li class="nft-card"><p class="nft-card__title">Your Home, Your Land</p><p class="nft-card__price">8,43 ETH</p><p class="nft-card__plat">WISe.ART · Ethereum</p></li>
+          <li class="nft-card"><p class="nft-card__title">Newborn White on Blue</p><p class="nft-card__price">8,48 ETH</p><p class="nft-card__plat">WISe.ART · Ethereum</p></li>
+          <li class="nft-card"><p class="nft-card__title">Mr. and Mrs. Europe Go on Vacation</p><p class="nft-card__price">6,32 ETH</p><p class="nft-card__plat">WISe.ART · Ethereum</p></li>
+          <li class="nft-card"><p class="nft-card__title">Mr. and Mrs. Europe Come Back from Vacation</p><p class="nft-card__price">6,32 ETH</p><p class="nft-card__plat">WISe.ART · Ethereum</p></li>
+          <li class="nft-card"><p class="nft-card__title">Michelagnolo</p><p class="nft-card__price">5,00 ETH</p><p class="nft-card__plat">WISe.ART · Ethereum</p></li>
+          <li class="nft-card"><p class="nft-card__title">Cargo Ships in the Bay</p><p class="nft-card__price">5,00 ETH</p><p class="nft-card__plat">WISe.ART · Ethereum</p></li>
+        </ul>
+        <p class="nft__cta">
+          <a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer" class="btn btn--ghost-light">Ver colección completa en WISe.ART</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ (objeciones) ============ -->
+    <section class="section" id="faq" aria-labelledby="h-faq">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2 id="h-faq">Antes de adquirir</h2>
+          <hr class="rule">
+        </div>
+        <div class="faq__list">
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a1">
+                ¿Cómo puedo adquirir una obra? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a1" role="region">
+              <p>Escríbeme desde el formulario de <a href="#contacto">contacto</a> indicando la obra que te interesa. Te confirmo disponibilidad, precio, formato y condiciones de envío, y resolvemos cualquier duda antes de la compra.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a2">
+                ¿Por qué no veo el precio en cada obra? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a2" role="region">
+              <p>El precio depende del formato, el soporte y la edición elegidos (muchas piezas se producen en distintos tamaños y acabados). Por eso trabajo con «consultar precio»: me adapto a lo que buscas y te doy un presupuesto claro y sin compromiso.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a3">
+                ¿Hacéis envíos internacionales? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a3" role="region">
+              <p>Sí. La obra viaja con embalaje profesional adecuado a cada técnica y formato. Coordino el envío y el seguimiento contigo según el destino, dentro y fuera de España.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a4">
+                ¿Las obras son ediciones limitadas? ¿Incluyen certificado? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a4" role="region">
+              <p>Cada pieza tiene su propia ficha técnica (técnica, dimensiones, edición y año). Las ediciones limitadas se entregan con certificado de autenticidad firmado por el artista.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a5">
+                ¿Qué es el arte digital tokenizado (WISe.ART)? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a5" role="region">
+              <p>Parte de la obra digital está disponible como pieza tokenizada en la plataforma <a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer">WISe.ART</a> (ecosistema Web3, Ethereum). Es una forma de coleccionar arte digital de alta resolución con autenticidad verificable en blockchain.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a6">
+                ¿Aceptas encargos personalizados? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a6" role="region">
+              <p>Sí, estudio encargos para coleccionistas y espacios. Cuéntame tu idea, el espacio y el formato que imaginas y valoramos juntos cómo llevarlo a cabo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NEWSLETTER (Negocio §7) ============ -->
+    <section class="section newsletter" id="newsletter" aria-labelledby="h-news">
+      <div class="container newsletter__inner">
+        <div class="newsletter__copy">
+          <p class="eyebrow">Coleccionismo</p>
+          <h2 id="h-news">Recibe aviso de nueva obra disponible</h2>
+          <p class="lead">Sé el primero en conocer las nuevas piezas, ediciones y próximas exposiciones. Sin spam; solo cuando hay algo que merece la pena.</p>
+        </div>
+        <form class="newsletter__form" id="newsletterForm" novalidate>
+          <div class="field field--inline">
+            <label for="nl-email" class="visually-hidden">Tu email</label>
+            <input type="email" id="nl-email" name="email" placeholder="tu@email.com" autocomplete="email" required>
+            <button type="submit" class="btn btn--solid">Suscribirme</button>
+          </div>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section class="section section--dark" id="contacto" aria-labelledby="h-contacto">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Contacto</p>
+          <h2 id="h-contacto">Conectemos</h2>
+          <hr class="rule">
+          <p class="lead">Para consultas sobre adquisición de obra, encargos, exposiciones o colaboraciones. Respondo personalmente.</p>
+        </div>
+
+        <div class="contact__grid">
+          <div class="contact__info">
+            <div class="contact__item">
+              <p class="contact__key">Email</p>
+              <p class="contact__val"><a href="mailto:yosolg@gmail.com">yosolg@gmail.com</a></p>
+            </div>
+            <div class="contact__item">
+              <p class="contact__key">Teléfono</p>
+              <p class="contact__val"><a href="tel:+34627515759">+34 627 515 759</a></p>
+            </div>
+            <div class="contact__item">
+              <p class="contact__key">Ubicación</p>
+              <p class="contact__val">Madrid, España</p>
+            </div>
+            <ul class="contact__socials">
+              <li><a href="https://www.instagram.com/yoso_arts/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://x.com/yoso_arts" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+              <li><a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer">WISe.ART</a></li>
+            </ul>
+          </div>
+
+          <form class="contact__form" id="contactForm" novalidate>
+            <div class="field">
+              <label for="cf-name">Nombre</label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="cf-subject">Asunto</label>
+              <select id="cf-subject" name="subject">
+                <option>Adquisición de obra</option>
+                <option>Encargo personalizado</option>
+                <option>Exposición</option>
+                <option>Colaboración</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cf-message">Mensaje</label>
+              <textarea id="cf-message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--gold">Enviar mensaje</button>
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <span class="brand brand--footer">YOSO</span>
+      <p class="site-footer__copy">© 2026 YOSO · Ambrosio José López González · Madrid, España</p>
+      <ul class="site-footer__links">
+        <li><a href="https://www.instagram.com/yoso_arts/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://x.com/yoso_arts" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+        <li><a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer">WISe.ART</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>

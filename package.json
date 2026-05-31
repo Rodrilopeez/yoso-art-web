@@ -1,0 +1,14 @@
+{
+  "name": "yoso-art-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Web estática del artista YOSO — aplicación de auditoría de negocio + SEO.",
+  "type": "module",
+  "scripts": {
+    "images": "node scripts/fetch-images.mjs",
+    "galleries": "node scripts/gen-galleries.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

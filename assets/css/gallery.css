@@ -1,0 +1,139 @@
+/* ============================================================
+   YOSO — Galería de obra + lightbox
+   ============================================================ */
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.4rem, 1.2vw, 0.75rem);
+}
+
+.work { display: flex; flex-direction: column; }
+
+.work__btn {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 0;
+  background: var(--c-bg-alt);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+.work__btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-slow);
+}
+.work__btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(26,25,24,0);
+  transition: background var(--t);
+}
+.work__btn:hover img,
+.work__btn:focus-visible img { transform: scale(1.05); }
+.work__btn:hover::after { background: rgba(26,25,24,.08); }
+
+.work__cap { padding: var(--sp-3) 0 var(--sp-2); }
+.work__title {
+  display: block;
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: var(--fs-md);
+  color: var(--c-ink);
+  line-height: 1.2;
+}
+.work__meta {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-mute);
+  margin-top: 2px;
+}
+
+/* Galería sobre fondo crema (escultura) hereda el mismo estilo */
+.section--alt .work__btn { background: #ece8e0; }
+
+/* ============ LIGHTBOX ============ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgba(18,17,16,.97);
+  opacity: 0;
+  visibility: hidden;
+  /* visibility cambia al instante al abrir y se retrasa al cerrar
+     (mantiene el fundido sin bloquear el foco del diálogo). */
+  transition: opacity var(--t), visibility 0s linear 0.3s;
+}
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--t), visibility 0s;
+}
+
+.lightbox__figure {
+  margin: 0;
+  max-width: min(92vw, 1000px);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.lightbox__img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.lightbox__cap {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: var(--fs-md);
+  color: rgba(246,244,240,.85);
+  text-align: center;
+}
+.lightbox__cap small {
+  display: block;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--fs-sm);
+  color: rgba(246,244,240,.45);
+  margin-top: 4px;
+}
+
+.lightbox__btn {
+  position: absolute;
+  background: transparent;
+  border: 1px solid rgba(246,244,240,.25);
+  color: rgba(246,244,240,.7);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.lightbox__btn:hover { border-color: #fff; color: #fff; }
+.lightbox__close { top: clamp(1rem, 3vw, 1.75rem); right: clamp(1rem, 3vw, 1.75rem); border-color: transparent; font-size: 2rem; }
+.lightbox__prev { left: clamp(0.5rem, 2vw, 1.5rem); top: 50%; transform: translateY(-50%); }
+.lightbox__next { right: clamp(0.5rem, 2vw, 1.5rem); top: 50%; transform: translateY(-50%); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1024px) {
+  .works-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .works-grid { grid-template-columns: repeat(2, 1fr); }
+}

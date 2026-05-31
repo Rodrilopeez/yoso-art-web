@@ -15,22 +15,17 @@
 
 ---
 
-## Decisiones pendientes (necesito tu respuesta antes o durante la Fase 1)
+## Decisiones (registradas el 2026-05-31)
 
-1. **Idiomas.** La web actual es trilingüe (ES/EN/FR) con hreflang — un punto fuerte SEO.
-   Propuesta: construir primero **ES completo** y dejar EN/FR como **Fase 7** (replicar
-   estructura + hreflang). ¿Lo hacemos así o el inglés es imprescindible desde el día 1?
-2. **Precios reales.** La auditoría exige precios visibles (`Negocio §1, §3`). No los tengo.
-   Propuesta intermedia fiel a la auditoría: ficha técnica completa (técnica, dimensiones,
-   edición, año) + **"Consultar precio"** con formulario prerrellenado por obra, y dejar
-   los campos de precio listos para rellenar cuando me los pases. ¿Tienes precios,
-   dimensiones y ediciones de las obras destacadas?
-3. **Despliegue.** ¿Destino final? (GitHub Pages, Netlify, o subir el estático al hosting
-   actual de yoso.art). Afecta a rutas y a la config de analítica.
-4. **Formulario de contacto.** Sin backend en estático. Propuesta: Formspree/Web3Forms
-   (gratuito) o `mailto:` como fallback. ¿Preferencia?
-5. **Analítica.** ¿Google Analytics 4, Plausible u otra? Necesario para instrumentar eventos
-   (`Negocio` — analítica) antes de cerrar.
+1. **Idiomas.** ✅ **ES primero**; EN/FR en **Fase 7** (replicar estructura + hreflang).
+2. **Precios.** ✅ Ficha técnica completa (técnica, dimensiones, edición, año) +
+   **"Consultar precio"** con formulario prerrellenado por obra; campos de precio listos
+   para rellenar cuando el artista los facilite.
+3. **Despliegue.** ✅ **Rutas relativas** compatibles con cualquier hosting; destino final a
+   decidir al cierre.
+4. **Formulario de contacto.** ⏳ Pendiente (Fase 3). Default propuesto: Web3Forms/Formspree
+   gratuito con `mailto:` como fallback. A confirmar al llegar.
+5. **Analítica.** ⏳ Pendiente (Fase 6). Default propuesto: GA4 (o Plausible). A confirmar.
 
 ---
 

@@ -45,9 +45,12 @@ y surrealista centrada en la identidad humana. Trayectoria internacional: Arte L
 
 ## Estado actual
 
-🟡 **Fase 0 — Inicialización.** Repositorio creado, auditorías leídas, identidad de marca
-extraída, plan de trabajo redactado en [`docs/plan-de-trabajo.md`](docs/plan-de-trabajo.md).
-Pendiente de aprobación del plan antes de construir el sitio.
+🟢 **Build completo en `mejoras/auditoria`.** Home + "Sobre YOSO" + 6 fichas de obra, con SEO
+técnico, conversión, galerías accesibles, rendimiento (Lighthouse móvil 95/100/100/100) y
+analítica GA4 instrumentada. Detalle en [`docs/informe-final.md`](docs/informe-final.md),
+seguimiento en [`docs/plan-de-trabajo.md`](docs/plan-de-trabajo.md) y [`CHANGELOG.md`](CHANGELOG.md).
+
+Pendiente: backend de formularios, ID de GA4, precios reales, EN/FR y despliegue.
 
 ## Metodología
 
