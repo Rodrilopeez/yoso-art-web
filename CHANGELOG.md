@@ -58,6 +58,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - `assets/js/forms.js`: validación + envío `mailto` (sin backend), preparado para enchufar
     Formspree/Web3Forms/Brevo. `assets/css/forms.css` con estilos accesibles (foco visible).
   - Pendiente de decisión: endpoint de backend de formularios (default actual: `mailto`).
+- `feat(seo): sección FAQ con acordeón accesible y schema FAQPage` — Cambio 7.
+  - FAQ que resuelve objeciones de compra (adquisición, precios, envíos, ediciones/certificado,
+    NFT/WISe.ART, encargos) — conversión (Negocio).
+  - Acordeón accesible (`assets/js/faq.js`): `aria-expanded` + `aria-controls`.
+  - JSON-LD `FAQPage` para resultados enriquecidos — Recomendación SEO §4.
 
 ---
 

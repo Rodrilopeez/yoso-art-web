@@ -51,6 +51,7 @@
   <link rel="stylesheet" href="assets/css/forms.css">
   <script src="assets/js/gallery.js" defer></script>
   <script src="assets/js/forms.js" defer></script>
+  <script src="assets/js/faq.js" defer></script>
 
   <!-- SEO §4: datos estructurados — el artista como entidad -->
   <script type="application/ld+json">
@@ -73,6 +74,22 @@
       "https://www.instagram.com/yoso_arts/",
       "https://x.com/yoso_arts",
       "https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98"
+    ]
+  }
+  </script>
+
+  <!-- SEO §4: datos estructurados — FAQ (resultados enriquecidos) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "¿Cómo puedo adquirir una obra?", "acceptedAnswer": { "@type": "Answer", "text": "Escribe desde el formulario de contacto indicando la obra que te interesa. Se confirma disponibilidad, precio, formato y condiciones de envío antes de la compra." } },
+      { "@type": "Question", "name": "¿Por qué no veo el precio en cada obra?", "acceptedAnswer": { "@type": "Answer", "text": "El precio depende del formato, el soporte y la edición elegidos. Por eso se trabaja con «consultar precio» y se ofrece un presupuesto claro y sin compromiso." } },
+      { "@type": "Question", "name": "¿Hacéis envíos internacionales?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. La obra viaja con embalaje profesional adecuado a cada técnica y formato, con envío y seguimiento coordinados según el destino, dentro y fuera de España." } },
+      { "@type": "Question", "name": "¿Las obras son ediciones limitadas? ¿Incluyen certificado?", "acceptedAnswer": { "@type": "Answer", "text": "Cada pieza tiene su ficha técnica (técnica, dimensiones, edición y año). Las ediciones limitadas se entregan con certificado de autenticidad firmado por el artista." } },
+      { "@type": "Question", "name": "¿Qué es el arte digital tokenizado (WISe.ART)?", "acceptedAnswer": { "@type": "Answer", "text": "Parte de la obra digital está disponible como pieza tokenizada en WISe.ART (Web3, Ethereum): coleccionismo de arte digital de alta resolución con autenticidad verificable en blockchain." } },
+      { "@type": "Question", "name": "¿Aceptas encargos personalizados?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, se estudian encargos para coleccionistas y espacios a partir de la idea, el espacio y el formato deseados." } }
     ]
   }
   </script>
@@ -584,6 +601,79 @@
           </ul>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ============ FAQ (objeciones) ============ -->
+    <section class="section" id="faq" aria-labelledby="h-faq">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2 id="h-faq">Antes de adquirir</h2>
+          <hr class="rule">
+        </div>
+        <div class="faq__list">
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a1">
+                ¿Cómo puedo adquirir una obra? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a1" role="region">
+              <p>Escríbeme desde el formulario de <a href="#contacto">contacto</a> indicando la obra que te interesa. Te confirmo disponibilidad, precio, formato y condiciones de envío, y resolvemos cualquier duda antes de la compra.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a2">
+                ¿Por qué no veo el precio en cada obra? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a2" role="region">
+              <p>El precio depende del formato, el soporte y la edición elegidos (muchas piezas se producen en distintos tamaños y acabados). Por eso trabajo con «consultar precio»: me adapto a lo que buscas y te doy un presupuesto claro y sin compromiso.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a3">
+                ¿Hacéis envíos internacionales? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a3" role="region">
+              <p>Sí. La obra viaja con embalaje profesional adecuado a cada técnica y formato. Coordino el envío y el seguimiento contigo según el destino, dentro y fuera de España.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a4">
+                ¿Las obras son ediciones limitadas? ¿Incluyen certificado? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a4" role="region">
+              <p>Cada pieza tiene su propia ficha técnica (técnica, dimensiones, edición y año). Las ediciones limitadas se entregan con certificado de autenticidad firmado por el artista.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a5">
+                ¿Qué es el arte digital tokenizado (WISe.ART)? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a5" role="region">
+              <p>Parte de la obra digital está disponible como pieza tokenizada en la plataforma <a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer">WISe.ART</a> (ecosistema Web3, Ethereum). Es una forma de coleccionar arte digital de alta resolución con autenticidad verificable en blockchain.</p>
+            </div>
+          </div>
+          <div class="faq__item">
+            <h3>
+              <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a6">
+                ¿Aceptas encargos personalizados? <span class="faq__icon" aria-hidden="true">+</span>
+              </button>
+            </h3>
+            <div class="faq__a" id="faq-a6" role="region">
+              <p>Sí, estudio encargos para coleccionistas y espacios. Cuéntame tu idea, el espacio y el formato que imaginas y valoramos juntos cómo llevarlo a cabo.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
