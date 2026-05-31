@@ -99,6 +99,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
     `GA_ID`) y eventos: `cta_ver_obra`, `cta_consultar_precio`, `obra_abrir`, `obra_ver_ficha`,
     `form_contacto`, `form_newsletter`, `scroll_galeria` — Recomendación Negocio (analítica).
   - Incluido en home, "Sobre YOSO" y las 6 fichas. Verificado sin errores de consola.
+- `docs: informe final con antes/después, métricas Lighthouse y próximos pasos` — Cambio 14.
+  - `docs/informe-final.md` con capturas antes (yoso.art en vivo) / después, tabla Lighthouse,
+    mapa de recomendaciones aplicadas y próximos pasos — Entregable. Actualiza el README.
 
 ---
 
