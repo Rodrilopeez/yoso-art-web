@@ -35,6 +35,12 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   SEO §Imágenes; filtros por disciplina accesibles `aria-pressed`; hover zoom; reveal on
   scroll), `obras/[slug].astro` (`getStaticPaths` → **una página por obra**, SEO §2/§4 y
   Negocio §5; ficha mínima a desarrollar). Build: 63 páginas. Verificado (filtro Escultura→3).
+- `feat(astro): ficha de obra completa (/obras/[slug])` — zoom inmersivo accesible (Esc/foco),
+  **ficha técnica** (técnica · dimensiones · edición · año · disponibilidad — Negocio §5; datos
+  reales donde constan, "Consultar" si no), **CTA "Consultar disponibilidad"** prerrellenado,
+  statement narrativo, **schema VisualArtwork** + OG por obra (SEO §3/§4), navegación
+  anterior/siguiente y obras relacionadas. Primitivas `.btn` en `global.css`. Verificado
+  (schema en HTML, zoom OK, sin errores).
 
 ## [No publicado]
 

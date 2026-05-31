@@ -1,43 +1,191 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { obras } from '../../lib/obras';
+import { obras, adjacent, related } from '../../lib/obras';
 
 export function getStaticPaths() {
   return obras.map((o) => ({ params: { slug: o.slug }, props: { obra: o } }));
 }
 
 const { obra } = Astro.props;
+const nav = adjacent(obra.slug);
+const rel = related(obra.slug, 3);
+
+const mailto = `mailto:yosolg@gmail.com?subject=${encodeURIComponent(`[yoso.art] Consulta de obra: «${obra.title}»`)}&body=${encodeURIComponent(`Hola YOSO,\n\nMe interesa la obra «${obra.title}». ¿Podrías indicarme disponibilidad, precio, formatos y condiciones de envío?\n\nGracias.`)}`;
+
+const ficha = [
+  { k: 'Técnica', v: obra.tecnica },
+  { k: 'Dimensiones', v: obra.dims },
+  { k: 'Edición', v: obra.edition },
+  { k: 'Año', v: obra.year },
+  { k: 'Disponibilidad', v: obra.availability },
+];
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'VisualArtwork',
+  name: obra.title,
+  url: new URL(`/obras/${obra.slug}`, Astro.site).href,
+  image: new URL(obra.image.src, Astro.site).href,
+  artform: obra.catLabel,
+  artMedium: obra.tecnica,
+  creator: { '@type': 'Person', name: 'YOSO', url: 'https://yoso.art/' },
+  ...(obra.statement ? { description: obra.statement } : {}),
+};
 ---
 
 <Base
   title={`${obra.title} — ${obra.catLabel} de YOSO`}
-  description={`«${obra.title}»: ${obra.tecnica}. Obra original de YOSO. Consulta disponibilidad y precio.`}
+  description={obra.statement ?? `«${obra.title}»: ${obra.tecnica}. Obra original de YOSO. Consulta disponibilidad y precio.`}
+  image={obra.image.src}
 >
-  <article class="ficha section">
-    <div class="container">
+  <article class="ficha">
+    <div class="container ficha__wrap">
       <p class="ficha__back"><a href="/obras">← Volver a obras</a></p>
+
       <div class="ficha__grid">
         <figure class="ficha__media">
-          <Image src={obra.image} alt={`«${obra.title}» — ${obra.catLabel.toLowerCase()} de YOSO`} widths={[600, 1000, 1400]} sizes="(max-width: 900px) 100vw, 55vw" />
+          <button type="button" class="ficha__zoombtn" aria-label={`Ampliar «${obra.title}»`} data-zoom>
+            <Image src={obra.image} alt={`«${obra.title}» — ${obra.catLabel.toLowerCase()} de YOSO`} widths={[700, 1200, 1800]} sizes="(max-width: 900px) 100vw, 58vw" />
+            <span class="ficha__zoomhint" aria-hidden="true">Ampliar ⤢</span>
+          </button>
         </figure>
+
         <div class="ficha__info">
           <p class="eyebrow">{obra.catLabel}</p>
           <h1>{obra.title}</h1>
           <hr class="accent-rule" style="margin:1.25rem 0 1.75rem;" />
-          <p class="lead">{obra.tecnica}</p>
-          <p style="margin-top:2rem; color:var(--c-ink-mute);">Ficha completa en construcción.</p>
+          {obra.statement && <p class="lead ficha__statement">{obra.statement}</p>}
+
+          <dl class="ficha__dl">
+            {ficha.map((row) => (
+              <div class="ficha__row"><dt>{row.k}</dt><dd>{row.v}</dd></div>
+            ))}
+          </dl>
+
+          <div class="ficha__ctas">
+            <a href={mailto} class="btn btn--accent" data-evt="consultar">Consultar disponibilidad</a>
+            <a href="/contacto" class="btn btn--ghost">Encargo personalizado</a>
+          </div>
         </div>
       </div>
     </div>
+
+    {rel.length > 0 && (
+      <section class="ficha__related container">
+        <p class="eyebrow">También en {obra.catLabel.toLowerCase()}</p>
+        <ul class="ficha__rellist">
+          {rel.map((r) => (
+            <li>
+              <a href={`/obras/${r.slug}`}>
+                <span class="ficha__relmedia"><Image src={r.image} alt={`«${r.title}» — ${r.catLabel.toLowerCase()} de YOSO`} widths={[300, 600]} sizes="(max-width: 600px) 50vw, 25vw" loading="lazy" /></span>
+                <span class="ficha__reltitle">{r.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {nav && (
+      <nav class="ficha__pager container" aria-label="Navegación entre obras">
+        <a href={`/obras/${nav.prev.slug}`} class="ficha__pglink ficha__pglink--prev">
+          <span class="ficha__pglabel">← Anterior</span>
+          <span class="ficha__pgtitle">{nav.prev.title}</span>
+        </a>
+        <a href={`/obras/${nav.next.slug}`} class="ficha__pglink ficha__pglink--next">
+          <span class="ficha__pglabel">Siguiente →</span>
+          <span class="ficha__pgtitle">{nav.next.title}</span>
+        </a>
+      </nav>
+    )}
   </article>
+
+  <!-- Visor de zoom inmersivo -->
+  <div class="zoom" data-zoom-overlay hidden>
+    <button type="button" class="zoom__close" aria-label="Cerrar (Esc)" data-zoom-close>×</button>
+    <Image class="zoom__img" src={obra.image} alt={`«${obra.title}» ampliada`} widths={[1200, 2000]} sizes="100vw" />
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
 </Base>
 
 <style>
+  .ficha__wrap { padding-top: var(--sp-8); }
   .ficha__back { margin-bottom: var(--sp-6); }
   .ficha__back a { font-size: var(--fs-sm); color: var(--c-ink-dim); }
   .ficha__back a:hover { color: var(--c-accent-2); }
-  .ficha__grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
-  .ficha__media { margin: 0; background: var(--c-bg-2); }
-  @media (max-width: 900px) { .ficha__grid { grid-template-columns: 1fr; } }
+
+  .ficha__grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .ficha__media { margin: 0; }
+  .ficha__zoombtn { display: block; width: 100%; padding: 0; border: 0; background: var(--c-bg-2); cursor: zoom-in; position: relative; overflow: hidden; }
+  .ficha__zoombtn :global(img) { width: 100%; height: auto; display: block; }
+  .ficha__zoomhint { position: absolute; bottom: 1rem; right: 1rem; font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink); background: rgba(12,12,13,.55); padding: .4rem .8rem; backdrop-filter: blur(6px); opacity: 0; transition: opacity var(--dur-1) var(--ease-art); }
+  .ficha__zoombtn:hover .ficha__zoomhint, .ficha__zoombtn:focus-visible .ficha__zoomhint { opacity: 1; }
+
+  .ficha__info { position: sticky; top: 6rem; }
+  .ficha__statement { margin-bottom: var(--sp-6); }
+  .ficha__dl { border-top: 1px solid var(--c-line); margin-bottom: var(--sp-6); }
+  .ficha__row { display: grid; grid-template-columns: 9rem 1fr; gap: var(--sp-4); padding: var(--sp-3) 0; border-bottom: 1px solid var(--c-line); }
+  .ficha__row dt { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); }
+  .ficha__row dd { color: var(--c-ink); }
+  .ficha__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
+
+  .ficha__related { margin-top: var(--section-y); }
+  .ficha__rellist { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(.75rem, 1.5vw, 1.5rem); margin-top: var(--sp-5); }
+  .ficha__relmedia { display: block; aspect-ratio: 4/5; overflow: hidden; background: var(--c-bg-2); }
+  .ficha__relmedia :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-art); }
+  .ficha__rellist a:hover .ficha__relmedia :global(img) { transform: scale(1.06); }
+  .ficha__reltitle { display: block; font-family: var(--font-display); margin-top: var(--sp-3); }
+
+  .ficha__pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); margin-top: var(--section-y); border-top: 1px solid var(--c-line); padding-top: var(--sp-6); }
+  .ficha__pglink { display: grid; gap: .35rem; }
+  .ficha__pglink--next { text-align: right; }
+  .ficha__pglabel { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); }
+  .ficha__pgtitle { font-family: var(--font-display); font-size: var(--fs-h3); color: var(--c-ink); }
+  .ficha__pglink:hover .ficha__pgtitle { color: var(--c-accent-2); }
+
+  /* Zoom overlay */
+  .zoom { position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(9,9,10,.97); display: grid; place-items: center; padding: clamp(1rem,4vw,3rem); opacity: 0; visibility: hidden; transition: opacity var(--dur-1) var(--ease-art), visibility 0s linear .3s; cursor: zoom-out; }
+  .zoom.is-open { opacity: 1; visibility: visible; transition: opacity var(--dur-1) var(--ease-art), visibility 0s; }
+  .zoom__img { max-width: 100%; max-height: 90vh; width: auto; height: auto; object-fit: contain; }
+  .zoom__img :global(img), .zoom :global(img) { max-height: 90vh; width: auto; }
+  .zoom__close { position: fixed; top: 1.25rem; right: 1.5rem; background: none; border: 0; color: var(--c-ink); font-size: 2.4rem; line-height: 1; cursor: pointer; }
+
+  @media (max-width: 900px) {
+    .ficha__grid { grid-template-columns: 1fr; }
+    .ficha__info { position: static; }
+  }
+  @media (max-width: 560px) {
+    .ficha__rellist { grid-template-columns: 1fr 1fr; }
+    .ficha__pager { grid-template-columns: 1fr; }
+    .ficha__pglink--next { text-align: left; }
+  }
 </style>
+
+<script>
+  function initZoom() {
+    const btn = document.querySelector<HTMLButtonElement>('[data-zoom]');
+    const overlay = document.querySelector<HTMLElement>('[data-zoom-overlay]');
+    const close = document.querySelector<HTMLButtonElement>('[data-zoom-close]');
+    if (!btn || !overlay || !close) return;
+    let last: HTMLElement | null = null;
+    const open = () => {
+      last = document.activeElement as HTMLElement;
+      overlay.hidden = false;
+      requestAnimationFrame(() => { overlay.classList.add('is-open'); close.focus(); });
+      document.body.style.overflow = 'hidden';
+    };
+    const hide = () => {
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+      setTimeout(() => { overlay.hidden = true; }, 320);
+      last?.focus();
+    };
+    btn.addEventListener('click', open);
+    close.addEventListener('click', hide);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) hide(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('is-open')) hide(); });
+  }
+  document.addEventListener('astro:page-load', initZoom);
+</script>
