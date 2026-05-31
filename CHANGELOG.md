@@ -66,6 +66,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `seo: robots.txt y sitemap.xml propios` — Cambio 8.
   - `robots.txt` (permite rastreo, declara sitemap) y `sitemap.xml` (home + Sobre YOSO) —
     Recomendación SEO §Técnico (infra de indexación). Cierra la Fase 1.
+- `perf: localización y optimización de imágenes (55 obras a WebP) + OG propia` — Cambio 9.
+  - Las 55 obras descargadas de yoso.art y **optimizadas a WebP** (máx. 1200 px, q80) en
+    `assets/img/obra/` (~3,9 MB total) — Recomendación SEO §Imágenes/§Técnico (CWV) y
+    Negocio §10; elimina la dependencia de hotlink a yoso.art.
+  - Imagen **Open Graph 1200×630** propia (`assets/img/og-yoso.jpg`) — corrige la OG cuadrada.
+  - `index.html` y `sobre-yoso.html` reescritos a rutas locales (0 hotlinks restantes).
+  - Tooling de build: `package.json` + `scripts/works-data.mjs`, `scripts/fetch-images.mjs`
+    (sharp). `node_modules/` ignorado.
 
 ---
 
