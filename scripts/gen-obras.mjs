@@ -69,6 +69,7 @@ function page(o) {
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/sections.css">
+  <script src="assets/js/analytics.js" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

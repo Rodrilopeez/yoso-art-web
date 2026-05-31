@@ -94,6 +94,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - Sección "Arte digital tokenizado" en la home con 6 obras NFT (precio ETH) y CTA al perfil
     de artista en WISe.ART (Ethereum) — Recomendación Negocio §8 y §12 (presencia blockchain
     comunicada en la web).
+- `feat(analytics): GA4 e instrumentación de eventos clave` — Cambio 13.
+  - `assets/js/analytics.js`: GA4 (gtag/dataLayer) con ID placeholder (se activa al sustituir
+    `GA_ID`) y eventos: `cta_ver_obra`, `cta_consultar_precio`, `obra_abrir`, `obra_ver_ficha`,
+    `form_contacto`, `form_newsletter`, `scroll_galeria` — Recomendación Negocio (analítica).
+  - Incluido en home, "Sobre YOSO" y las 6 fichas. Verificado sin errores de consola.
 
 ---
 
