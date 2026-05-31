@@ -1,0 +1,43 @@
+---
+/** Loader curado de entrada (una vez por sesión). Oculto por defecto para no
+ *  parpadear en navegaciones con View Transitions; se activa solo en la 1.ª carga. */
+---
+<div class="loader" data-loader hidden aria-hidden="true">
+  <span class="loader__mark">YOSO</span>
+  <span class="loader__line" aria-hidden="true"></span>
+</div>
+
+<style>
+  .loader {
+    position: fixed; inset: 0; z-index: var(--z-loader);
+    background: var(--c-bg);
+    display: grid; place-items: center; gap: var(--sp-5);
+    grid-auto-flow: row;
+  }
+  .loader__mark { font-family: var(--font-display); font-weight: var(--fw-semi); font-size: clamp(2rem, 7vw, 4.5rem); letter-spacing: 0.22em; color: var(--c-ink); opacity: 0; }
+  .loader__line { width: 0; height: 1px; background: var(--c-accent); }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  function handleLoader() {
+    const loader = document.querySelector<HTMLElement>('[data-loader]');
+    if (!loader) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (sessionStorage.getItem('yoso_loaded') || reduce) { loader.remove(); return; }
+    sessionStorage.setItem('yoso_loaded', '1');
+
+    loader.hidden = false;
+    document.body.style.overflow = 'hidden';
+    const mark = loader.querySelector('.loader__mark');
+    const line = loader.querySelector('.loader__line');
+    const tl = gsap.timeline({
+      onComplete: () => { document.body.style.overflow = ''; loader.remove(); },
+    });
+    tl.to(mark, { opacity: 1, duration: 0.7, ease: 'power2.out' })
+      .to(line, { width: 120, duration: 0.7, ease: 'power2.inOut' }, '-=0.4')
+      .to(loader, { yPercent: -100, duration: 0.9, ease: 'power4.inOut' }, '+=0.25');
+  }
+  document.addEventListener('astro:page-load', handleLoader);
+</script>

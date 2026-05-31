@@ -1,0 +1,93 @@
+---
+/** Cursor personalizado: punto + anillo con lerp, crece sobre elementos
+ *  interactivos y aplica magnetismo a los .btn / [data-magnetic].
+ *  Solo en punteros finos y sin reduced-motion (táctil = cursor nativo). */
+---
+<div class="cursor" data-cursor aria-hidden="true">
+  <span class="cursor__dot"></span>
+  <span class="cursor__ring"></span>
+</div>
+
+<style>
+  .cursor { display: none; }
+  :global(html.has-cursor) .cursor { display: block; }
+  :global(html.has-cursor) { cursor: none; }
+  :global(html.has-cursor a),
+  :global(html.has-cursor button),
+  :global(html.has-cursor .btn),
+  :global(html.has-cursor [role='button']) { cursor: none; }
+  :global(html.has-cursor input),
+  :global(html.has-cursor textarea),
+  :global(html.has-cursor select) { cursor: auto; }
+
+  .cursor__dot, .cursor__ring {
+    position: fixed; top: 0; left: 0; z-index: var(--z-cursor);
+    border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
+  }
+  .cursor__dot { width: 6px; height: 6px; background: var(--c-accent-2); }
+  .cursor__ring {
+    width: 38px; height: 38px; border: 1px solid var(--c-ink-dim);
+    transition: width var(--dur-1) var(--ease-art), height var(--dur-1) var(--ease-art), border-color var(--dur-1) var(--ease-art), background var(--dur-1) var(--ease-art);
+  }
+  .cursor.is-hover .cursor__ring { width: 64px; height: 64px; border-color: var(--c-accent-2); background: rgba(212,172,120,0.08); }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  const fine = window.matchMedia('(pointer: fine)').matches
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let inited = false;
+  function initOnce() {
+    if (inited || !fine) return;
+    inited = true;
+    const cursor = document.querySelector<HTMLElement>('[data-cursor]');
+    const dot = cursor?.querySelector<HTMLElement>('.cursor__dot');
+    const ring = cursor?.querySelector<HTMLElement>('.cursor__ring');
+    if (!cursor || !dot || !ring) return;
+    document.documentElement.classList.add('has-cursor');
+
+    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const rpos = { ...mouse };
+    window.addEventListener('pointermove', (e) => {
+      mouse.x = e.clientX; mouse.y = e.clientY;
+      gsap.set(dot, { x: mouse.x, y: mouse.y });
+    });
+    gsap.ticker.add(() => {
+      rpos.x += (mouse.x - rpos.x) * 0.18;
+      rpos.y += (mouse.y - rpos.y) * 0.18;
+      gsap.set(ring, { x: rpos.x, y: rpos.y });
+    });
+
+    // Hover sobre interactivos → anillo crece
+    const hoverSel = 'a, button, .btn, [role="button"], [data-magnetic]';
+    document.addEventListener('pointerover', (e) => {
+      if ((e.target as Element).closest(hoverSel)) cursor.classList.add('is-hover');
+    });
+    document.addEventListener('pointerout', (e) => {
+      if ((e.target as Element).closest(hoverSel)) cursor.classList.remove('is-hover');
+    });
+  }
+
+  // Magnetismo: reatar en cada página (elementos nuevos tras View Transitions)
+  function bindMagnetics() {
+    if (!fine) return;
+    document.querySelectorAll<HTMLElement>('.btn, [data-magnetic]').forEach((el) => {
+      if ((el as any).__mag) return;
+      (el as any).__mag = true;
+      const strength = 0.4;
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const mx = e.clientX - (r.left + r.width / 2);
+        const my = e.clientY - (r.top + r.height / 2);
+        gsap.to(el, { x: mx * strength, y: my * strength, duration: 0.4, ease: 'power3.out' });
+      });
+      el.addEventListener('pointerleave', () => {
+        gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => { initOnce(); bindMagnetics(); });
+</script>

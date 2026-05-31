@@ -52,6 +52,14 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   SEO §Contenido/§4); **Exposiciones** (8 premios, 10 exposiciones, 3 galerías, 6 prensa —
   prueba social, Negocio §3); **Contacto** (formulario accesible con labels + envío `mailto`,
   datos y encargos personalizados — Negocio §copy). Estudio y Diario quedan como plantillas.
+- `feat(astro): pulido — loader curado, cursor personalizado y magnetismo` —
+  `Loader.astro` (entrada una vez por sesión, compatible con View Transitions; oculto por
+  defecto para no parpadear; reduced-motion lo omite). `Cursor.astro` (punto + anillo con
+  lerp, crece sobre interactivos, **magnetismo en `.btn`/`[data-magnetic]`**; solo en
+  punteros finos, cursor nativo en táctil/reduced-motion y en inputs — a11y). Verificado sin
+  errores (loader se retira, cursor se activa).
+- `chore(deploy): vercel.json + guía DEPLOY-VERCEL.md` — preview del rediseño a raíz en Vercel
+  manteniendo la web estática viva en Pages.
 
 ## [No publicado]
 

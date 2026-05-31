@@ -28,6 +28,8 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Loader from '../components/Loader.astro';
+import Cursor from '../components/Cursor.astro';
 ---
 
 <!doctype html>
@@ -59,6 +61,8 @@ import Footer from '../components/Footer.astro';
   <body>
     <span id="top" aria-hidden="true"></span>
     <a class="skip-link" href="#main">Saltar al contenido</a>
+    <Loader />
+    <Cursor />
     <Header />
     <main id="main">
       <slot />
