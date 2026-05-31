@@ -256,6 +256,22 @@
   padding: 0.3rem 0.7rem;
 }
 
+/* ============ WISe.ART / TOKENIZADO ============ */
+.nft__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--c-line-dark);
+  border: 1px solid var(--c-line-dark);
+  margin-top: var(--sp-2);
+}
+.nft-card { background: var(--c-bg-dark); padding: var(--sp-5); transition: background var(--t-fast); }
+.nft-card:hover { background: var(--c-bg-dark-2); }
+.nft-card__title { font-family: var(--font-display); font-size: var(--fs-md); color: var(--c-on-dark); line-height: var(--lh-snug); margin-bottom: var(--sp-3); }
+.nft-card__price { font-size: var(--fs-md); color: var(--c-gold-light); }
+.nft-card__plat { font-size: var(--fs-eyebrow); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(246,244,240,.6); margin-top: var(--sp-1); }
+.nft__cta { margin-top: var(--sp-6); }
+
 /* ============ FICHA DE OBRA ============ */
 .obra__back { margin-bottom: var(--sp-5); }
 .obra__back a { font-size: var(--fs-sm); letter-spacing: 0.04em; color: var(--c-ink-soft); }

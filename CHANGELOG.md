@@ -90,6 +90,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - Schema **VisualArtwork** por obra — Recomendación SEO §4 (Product/obra).
   - Enlace **"Ver ficha"** desde la tarjeta de galería de cada obra destacada; `sitemap.xml`
     actualizado con las 6 fichas. `scripts/gen-obras.mjs` reproducible.
+- `feat(content): sección WISe.ART / arte digital tokenizado` — Cambio 12.
+  - Sección "Arte digital tokenizado" en la home con 6 obras NFT (precio ETH) y CTA al perfil
+    de artista en WISe.ART (Ethereum) — Recomendación Negocio §8 y §12 (presencia blockchain
+    comunicada en la web).
 
 ---
 
