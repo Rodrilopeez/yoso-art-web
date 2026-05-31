@@ -213,7 +213,54 @@
 .card-rep__loc { font-size: var(--fs-sm); color: var(--c-ink-mute); }
 .card-rep__desc { font-size: var(--fs-sm); color: var(--c-ink-soft); margin-top: var(--sp-3); line-height: var(--lh-snug); }
 
+/* ============ SOBRE YOSO ============ */
+.about__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+.about__text h1 { margin-bottom: 0; }
+.about__text p { margin-bottom: var(--sp-4); color: var(--c-ink-soft); }
+.about__quote {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  color: var(--c-ink);
+  border-left: 2px solid var(--c-gold);
+  padding-left: var(--sp-5);
+  margin: var(--sp-6) 0;
+  line-height: 1.4;
+  max-width: none;
+}
+.about__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-top: var(--sp-6); }
+.about__facts { position: sticky; top: 6rem; }
+.facts__row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--c-line);
+  align-items: baseline;
+}
+.facts__row:first-child { border-top: 1px solid var(--c-line); }
+.facts dt { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); }
+.facts dd { font-size: var(--fs-sm); color: var(--c-ink); }
+.about__tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-6); }
+.about__tags li {
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-ink-soft);
+  border: 1px solid var(--c-line);
+  padding: 0.3rem 0.7rem;
+}
+
 /* ============ RESPONSIVE ============ */
+@media (max-width: 860px) {
+  .about__grid { grid-template-columns: 1fr; }
+  .about__facts { position: static; }
+}
 @media (max-width: 900px) {
   .cards--ex, .cards--rep, .cards--press { grid-template-columns: repeat(2, 1fr); }
 }
