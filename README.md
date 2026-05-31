@@ -45,12 +45,19 @@ y surrealista centrada en la identidad humana. Trayectoria internacional: Arte L
 
 ## Estado actual
 
-🟢 **Build completo en `mejoras/auditoria`.** Home + "Sobre YOSO" + 6 fichas de obra, con SEO
-técnico, conversión, galerías accesibles, rendimiento (Lighthouse móvil 95/100/100/100) y
-analítica GA4 instrumentada. Detalle en [`docs/informe-final.md`](docs/informe-final.md),
-seguimiento en [`docs/plan-de-trabajo.md`](docs/plan-de-trabajo.md) y [`CHANGELOG.md`](CHANGELOG.md).
+Dos líneas de trabajo:
 
-Pendiente: backend de formularios, ID de GA4, precios reales, EN/FR y despliegue.
+- **`main`** — 🟢 web **estática** (HTML/CSS/JS vanilla) completa y **desplegada** en GitHub
+  Pages (<https://rodrilopeez.github.io/yoso-art-web/>), Lighthouse móvil 95/100/100/100.
+  Detalle en [`docs/informe-final.md`](docs/informe-final.md).
+- **`rediseno/astro`** — 🟡 **rediseño desde cero** a nivel galería contemporánea con
+  **Astro + GSAP + Lenis + WebGL (OGL) + Sanity CMS**. Rama de trabajo activa de esta fase.
+
+### Stack del rediseño
+
+Astro 5 (estático) · GSAP/ScrollTrigger/SplitText/Flip · Lenis (smooth scroll) · OGL (WebGL
+puntual) · View Transitions · `astro:assets` (WebP/AVIF) · Fontsource (Fraunces + Inter) ·
+Sanity (CMS para que el artista suba obra sin tocar código).
 
 ## Metodología
 

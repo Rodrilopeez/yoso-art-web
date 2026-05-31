@@ -9,6 +9,9 @@ build/
 .cache/
 .parcel-cache/
 
+# Astro
+.astro/
+
 # Entorno / secretos
 .env
 .env.*
