@@ -33,6 +33,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
     de autoridad, Recomendación Negocio §3.
   - `assets/css/sections.css`: estilos de hero/reconocimientos/stats con animación de
     entrada respetando `prefers-reduced-motion`.
+- `feat(conversion): bloque de trayectoria — premios, exposiciones, galerías y prensa` — Cambio 3.
+  - Sección Trayectoria con subsecciones H3 (jerarquía Hx correcta: 1×H1, 5×H2, 4×H3) —
+    Recomendación SEO §2 (headings) + Negocio §3 / §prueba social.
+  - **Premios** (8) con año, institución, localización y badge de resultado.
+  - **Exposiciones** (12), **galerías de representación** (3) y **prensa** (6) con datos
+    reales — prueba social que transforma "me gusta" en "quiero comprar" (Negocio §3).
+  - Estilos añadidos a `assets/css/sections.css` (rejillas responsive con hairline).
 
 ---
 
