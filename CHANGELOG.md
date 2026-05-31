@@ -60,6 +60,10 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   errores (loader se retira, cursor se activa).
 - `chore(deploy): vercel.json + guía DEPLOY-VERCEL.md` — preview del rediseño a raíz en Vercel
   manteniendo la web estática viva en Pages.
+- `feat(astro): hero con carrusel de obras (cambio cada 3 s) + transición WebGL` — el hero
+  rota 6 obras signature con un crossfade de desplazamiento ondulado (shader OGL de doble
+  textura), etiqueta del título de obra actual, reactivo al cursor; precarga de texturas.
+  En `prefers-reduced-motion` queda imagen única sin auto-rotación (a11y). A petición del cliente.
 
 ## [No publicado]
 
