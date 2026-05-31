@@ -23,6 +23,12 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   página), `skip-link` y `<main>` semántico (a11y). Plantillas de ruta: `/obras`, `/series`,
   `/exposiciones`, `/sobre`, `/estudio`, `/diario`, `/contacto` (arquitectura multipágina, 8
   páginas; navegación sin 404).
+- `feat(astro): hero cinematográfico WebGL (displacement) + intro` — `Hero.astro`: obra
+  "Identity" a 100svh con shader OGL de displacement reactivo a cursor/scroll (cover-fit),
+  nombre con reveal mascarado GSAP SplitText, scrim para legibilidad, indicador de scroll y
+  **fallback a imagen** si no hay WebGL. Canvas decorativo (`aria-hidden`); contenido textual
+  real y H1 único (a11y/SEO §2). Sección intro al artista con transición narrativa.
+  Verificado en navegador (sin errores, canvas pinta, SplitText OK).
 
 ## [No publicado]
 

@@ -1,0 +1,238 @@
+---
+/**
+ * Hero cinematográfico (paso 6). Obra "Identity" a pantalla completa con
+ * shader de displacement (OGL) reactivo a cursor/scroll. Nombre del artista
+ * con reveal mascarado (GSAP SplitText). Fallback a imagen si no hay WebGL.
+ * Accesible: el canvas es decorativo (aria-hidden); el contenido es texto real.
+ */
+const heroImg = '/img/identity.webp';
+---
+
+<section class="hero" aria-label="YOSO — obra destacada">
+  <div class="hero__media" style={`background-image:url(${heroImg})`}>
+    <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"></canvas>
+    <div class="hero__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__content">
+    <p class="hero__eyebrow eyebrow">Arte digital · Escultura · Fotografía</p>
+    <h1 class="hero__name" data-hero-name>YOSO</h1>
+    <p class="hero__tag">Obra original que nace del sueño y explora la identidad humana.</p>
+  </div>
+
+  <a href="#intro" class="hero__scroll" aria-label="Desplázate para descubrir">
+    <span>Descubrir</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__media {
+    position: absolute; inset: 0; z-index: -2;
+    background-size: cover;
+    background-position: center;
+  }
+  .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity var(--dur-2) var(--ease-art); }
+  .hero__scrim {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to bottom, rgba(12,12,13,.25) 0%, rgba(12,12,13,.15) 45%, rgba(12,12,13,.85) 100%);
+    pointer-events: none;
+  }
+
+  .hero__content {
+    position: relative; z-index: 2;
+    padding: 0 var(--gutter) clamp(3.5rem, 9vh, 7rem);
+    width: 100%;
+  }
+  .hero__eyebrow { color: var(--c-accent-2); opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.1s forwards; }
+  .hero__name {
+    font-size: var(--fs-mega);
+    font-weight: var(--fw-semi);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    margin: clamp(0.5rem, 1.5vw, 1.25rem) 0 clamp(1rem, 2vw, 1.75rem);
+    overflow: hidden;            /* máscara del reveal por carácter */
+    visibility: hidden;          /* se muestra al inicializar SplitText */
+  }
+  .hero__name :global(.char) { display: inline-block; will-change: transform; }
+  .hero__tag {
+    font-size: var(--fs-lead);
+    color: rgba(244,241,234,.82);
+    max-width: 30ch;
+    opacity: 0; transform: translateY(12px);
+    animation: hero-fade var(--dur-2) var(--ease-art) 0.5s forwards;
+  }
+
+  .hero__scroll {
+    position: absolute; z-index: 2; right: var(--gutter); bottom: clamp(3.5rem, 9vh, 7rem);
+    display: inline-flex; flex-direction: column; align-items: center; gap: var(--sp-3);
+    font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase;
+    color: var(--c-ink-dim);
+  }
+  .hero__scroll-line { width: 1px; height: 56px; background: linear-gradient(var(--c-accent), transparent); transform-origin: top; animation: scroll-pulse 2.4s var(--ease-in-out) infinite; }
+  .hero__scroll:hover { color: var(--c-ink); }
+
+  @keyframes hero-fade { to { opacity: 1; transform: translateY(0); } }
+  @keyframes scroll-pulse { 0%,100% { transform: scaleY(0.4); opacity: .5; } 50% { transform: scaleY(1); opacity: 1; } }
+
+  @media (max-width: 600px) { .hero__scroll span:first-child { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__name { visibility: visible; }
+    .hero__scroll-line { animation: none; }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  gsap.registerPlugin(SplitText);
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initName() {
+    const name = document.querySelector<HTMLElement>('[data-hero-name]');
+    if (!name) return;
+    name.style.visibility = 'visible';
+    if (reduce) return;
+    const split = new SplitText(name, { type: 'chars' });
+    gsap.from(split.chars, {
+      yPercent: 120,
+      duration: 1.1,
+      ease: 'power4.out',
+      stagger: 0.07,
+      delay: 0.25,
+    });
+  }
+
+  async function initWebGL() {
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
+    if (!canvas) return;
+    let renderer: any, raf = 0;
+    try {
+      const { Renderer, Triangle, Program, Mesh, Texture } = await import('ogl');
+      renderer = new Renderer({ canvas, dpr: Math.min(window.devicePixelRatio, 2), alpha: false });
+      const gl = renderer.gl;
+
+      const texture = new Texture(gl, { generateMipmaps: false });
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = '/img/identity.webp';
+
+      const geometry = new Triangle(gl);
+      const program = new Program(gl, {
+        vertex: `
+          attribute vec2 uv;
+          attribute vec2 position;
+          varying vec2 vUv;
+          void main(){ vUv = uv; gl_Position = vec4(position, 0.0, 1.0); }
+        `,
+        fragment: `
+          precision highp float;
+          uniform sampler2D uTex;
+          uniform vec2 uRes;
+          uniform vec2 uImg;
+          uniform vec2 uMouse;
+          uniform float uStrength;
+          uniform float uTime;
+          uniform float uScroll;
+          varying vec2 vUv;
+          void main(){
+            vec2 ratio = vec2(
+              min((uRes.x / uRes.y) / (uImg.x / uImg.y), 1.0),
+              min((uRes.y / uRes.x) / (uImg.y / uImg.x), 1.0)
+            );
+            vec2 uv = vec2(
+              vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
+              vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+            );
+            float d = distance(vUv, uMouse);
+            float infl = smoothstep(0.35, 0.0, d) * uStrength;
+            float ripple = sin(d * 42.0 - uTime * 3.0) * 0.006 * infl;
+            uv += ripple;
+            uv.y += uScroll * 0.05;
+            float shift = 0.006 * infl;
+            vec3 col;
+            col.r = texture2D(uTex, uv + vec2(shift, 0.0)).r;
+            col.g = texture2D(uTex, uv).g;
+            col.b = texture2D(uTex, uv - vec2(shift, 0.0)).b;
+            col *= 0.93;
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+        uniforms: {
+          uTex: { value: texture },
+          uRes: { value: [1, 1] },
+          uImg: { value: [1024, 427] },
+          uMouse: { value: [0.5, 0.5] },
+          uStrength: { value: 0 },
+          uTime: { value: 0 },
+          uScroll: { value: 0 },
+        },
+      });
+      const mesh = new Mesh(gl, { geometry, program });
+
+      img.onload = () => {
+        texture.image = img;
+        program.uniforms.uImg.value = [img.naturalWidth, img.naturalHeight];
+        // ocultar el fallback CSS una vez el canvas pinta
+        canvas.style.opacity = '1';
+      };
+
+      const resize = () => {
+        renderer.setSize(window.innerWidth, canvas.clientHeight || window.innerHeight);
+        program.uniforms.uRes.value = [gl.canvas.width, gl.canvas.height];
+      };
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Mouse (con velocidad → strength)
+      const target = { x: 0.5, y: 0.5 };
+      const cur = { x: 0.5, y: 0.5 };
+      let strength = 0;
+      window.addEventListener('pointermove', (e) => {
+        const nx = e.clientX / window.innerWidth;
+        const ny = 1 - e.clientY / window.innerHeight;
+        strength = Math.min(1, strength + Math.hypot(nx - target.x, ny - target.y) * 6);
+        target.x = nx; target.y = ny;
+      }, { passive: true });
+
+      const onScroll = () => {
+        const p = Math.min(1, window.scrollY / window.innerHeight);
+        program.uniforms.uScroll.value = p;
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      let t0 = performance.now();
+      const loop = (t: number) => {
+        const dt = (t - t0) / 1000; t0 = t;
+        cur.x += (target.x - cur.x) * 0.08;
+        cur.y += (target.y - cur.y) * 0.08;
+        strength *= 0.94;
+        program.uniforms.uMouse.value = [cur.x, cur.y];
+        program.uniforms.uStrength.value = reduce ? 0 : strength;
+        program.uniforms.uTime.value += dt;
+        renderer.render({ scene: mesh });
+        raf = requestAnimationFrame(loop);
+      };
+      raf = requestAnimationFrame(loop);
+
+      // Limpieza en navegación con View Transitions
+      document.addEventListener('astro:before-swap', () => cancelAnimationFrame(raf), { once: true });
+    } catch (err) {
+      // Sin WebGL: el fallback CSS (background-image) ya muestra la obra.
+      console.warn('Hero WebGL no disponible, usando imagen estática.', err);
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => { initName(); initWebGL(); });
+</script>
