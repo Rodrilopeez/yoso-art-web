@@ -51,6 +51,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - Escultura con ficha técnica real (técnica, año, dimensiones).
   - `scripts/gen-galleries.mjs`: generador reproducible de las galerías estáticas.
   - `assets/css/gallery.css`: rejilla 4/3/2 columnas y estilos del lightbox.
+- `feat(conversion): formulario de contacto y newsletter de captación` — Cambio 6.
+  - Formulario de contacto en la home (#contacto) con labels reales asociados, `<select>` de
+    asunto y validación accesible — Recomendación Negocio §copy (CTA de contacto).
+  - **Newsletter** "Recibe aviso de nueva obra disponible" — Recomendación Negocio §7.
+  - `assets/js/forms.js`: validación + envío `mailto` (sin backend), preparado para enchufar
+    Formspree/Web3Forms/Brevo. `assets/css/forms.css` con estilos accesibles (foco visible).
+  - Pendiente de decisión: endpoint de backend de formularios (default actual: `mailto`).
 
 ---
 

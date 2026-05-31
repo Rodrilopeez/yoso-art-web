@@ -48,7 +48,9 @@
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/sections.css">
   <link rel="stylesheet" href="assets/css/gallery.css">
+  <link rel="stylesheet" href="assets/css/forms.css">
   <script src="assets/js/gallery.js" defer></script>
+  <script src="assets/js/forms.js" defer></script>
 
   <!-- SEO §4: datos estructurados — el artista como entidad -->
   <script type="application/ld+json">
@@ -585,6 +587,25 @@
       </div>
     </section>
 
+    <!-- ============ NEWSLETTER (Negocio §7) ============ -->
+    <section class="section newsletter" id="newsletter" aria-labelledby="h-news">
+      <div class="container newsletter__inner">
+        <div class="newsletter__copy">
+          <p class="eyebrow">Coleccionismo</p>
+          <h2 id="h-news">Recibe aviso de nueva obra disponible</h2>
+          <p class="lead">Sé el primero en conocer las nuevas piezas, ediciones y próximas exposiciones. Sin spam; solo cuando hay algo que merece la pena.</p>
+        </div>
+        <form class="newsletter__form" id="newsletterForm" novalidate>
+          <div class="field field--inline">
+            <label for="nl-email" class="visually-hidden">Tu email</label>
+            <input type="email" id="nl-email" name="email" placeholder="tu@email.com" autocomplete="email" required>
+            <button type="submit" class="btn btn--solid">Suscribirme</button>
+          </div>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
     <!-- ============ CONTACTO ============ -->
     <section class="section section--dark" id="contacto" aria-labelledby="h-contacto">
       <div class="container">
@@ -592,9 +613,57 @@
           <p class="eyebrow">Contacto</p>
           <h2 id="h-contacto">Conectemos</h2>
           <hr class="rule">
-          <p class="lead">Para consultas sobre adquisición de obra, encargos, exposiciones o colaboraciones.</p>
+          <p class="lead">Para consultas sobre adquisición de obra, encargos, exposiciones o colaboraciones. Respondo personalmente.</p>
         </div>
-        <!-- Formulario: Cambio en Fase 4 -->
+
+        <div class="contact__grid">
+          <div class="contact__info">
+            <div class="contact__item">
+              <p class="contact__key">Email</p>
+              <p class="contact__val"><a href="mailto:yosolg@gmail.com">yosolg@gmail.com</a></p>
+            </div>
+            <div class="contact__item">
+              <p class="contact__key">Teléfono</p>
+              <p class="contact__val"><a href="tel:+34627515759">+34 627 515 759</a></p>
+            </div>
+            <div class="contact__item">
+              <p class="contact__key">Ubicación</p>
+              <p class="contact__val">Madrid, España</p>
+            </div>
+            <ul class="contact__socials">
+              <li><a href="https://www.instagram.com/yoso_arts/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://x.com/yoso_arts" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+              <li><a href="https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98" target="_blank" rel="noopener noreferrer">WISe.ART</a></li>
+            </ul>
+          </div>
+
+          <form class="contact__form" id="contactForm" novalidate>
+            <div class="field">
+              <label for="cf-name">Nombre</label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="cf-subject">Asunto</label>
+              <select id="cf-subject" name="subject">
+                <option>Adquisición de obra</option>
+                <option>Encargo personalizado</option>
+                <option>Exposición</option>
+                <option>Colaboración</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cf-message">Mensaje</label>
+              <textarea id="cf-message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--gold">Enviar mensaje</button>
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </section>
 
