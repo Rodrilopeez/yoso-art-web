@@ -1,0 +1,172 @@
+/* ============================================================
+   YOSO — Base / reset / primitivas
+   Mobile-first. Accesible (WCAG AA): foco visible, skip-link,
+   respeto a prefers-reduced-motion.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5rem; /* compensa nav fija al saltar a anclas */
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* ---- Multimedia ---- */
+img, picture, svg, video { display: block; max-width: 100%; height: auto; }
+img { background: var(--c-bg-alt); }
+
+/* ---- Tipografía base ---- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-med);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-2xl); line-height: var(--lh-tight); }
+h2 { font-size: var(--fs-xl); }
+h3 { font-size: var(--fs-lg); }
+
+p { max-width: var(--container-text); }
+
+a { color: var(--c-gold-deep); text-decoration: none; transition: color var(--t-fast); }
+a:hover { color: var(--c-gold); }
+
+ul, ol { list-style: none; }
+
+strong, b { font-weight: var(--fw-med); color: var(--c-ink); }
+
+/* ---- Foco visible (accesibilidad) ---- */
+:focus-visible {
+  outline: 2px solid var(--c-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* ---- Skip link ---- */
+.skip-link {
+  position: absolute;
+  left: var(--sp-4);
+  top: -100%;
+  z-index: var(--z-modal);
+  background: var(--c-bg-dark);
+  color: var(--c-on-dark);
+  padding: var(--sp-3) var(--sp-5);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  transition: top var(--t-fast);
+}
+.skip-link:focus { top: var(--sp-4); color: var(--c-on-dark); }
+
+/* ============================================================
+   PRIMITIVAS DE LAYOUT
+   ============================================================ */
+
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+.container--wide { max-width: var(--container-wide); }
+.container--text { max-width: var(--container-text); }
+
+.section { padding-block: var(--section-y); }
+.section--alt { background: var(--c-bg-alt); }
+.section--dark { background: var(--c-bg-dark); color: var(--c-on-dark); }
+.section--dark h1, .section--dark h2, .section--dark h3 { color: var(--c-on-dark); }
+
+/* ============================================================
+   PRIMITIVAS TIPOGRÁFICAS DE MARCA
+   ============================================================ */
+
+/* Eyebrow / etiqueta superior en oro y mayúsculas espaciadas */
+.eyebrow {
+  display: inline-block;
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-med);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-gold);
+}
+
+/* Filete decorativo bajo los títulos de sección */
+.rule { width: 48px; height: 1px; background: var(--c-gold); border: 0; margin: var(--sp-4) 0 var(--sp-6); }
+.section--dark .rule { background: var(--c-gold-light); }
+
+/* Frase de acento en itálica (Cormorant) */
+.accent { font-family: var(--font-accent); font-style: italic; }
+
+.lead { font-size: var(--fs-md); color: var(--c-ink-soft); line-height: var(--lh-body); }
+.section--dark .lead { color: var(--c-on-dark-soft); }
+
+/* Encabezado de sección reutilizable */
+.section-head { margin-bottom: var(--sp-7); }
+.section-head h2 { margin-top: var(--sp-2); }
+
+/* ============================================================
+   BOTONES / CTA
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0.95rem 2rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-med);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--t), color var(--t), border-color var(--t);
+}
+.btn--solid { background: var(--c-bg-dark); color: var(--c-on-dark); }
+.btn--solid:hover { background: var(--c-gold-deep); color: #fff; }
+.btn--gold { background: var(--c-gold); color: #fff; }
+.btn--gold:hover { background: var(--c-gold-deep); color: #fff; }
+.btn--ghost { background: transparent; color: var(--c-ink); border-color: var(--c-line); }
+.btn--ghost:hover { border-color: var(--c-gold); color: var(--c-gold-deep); }
+.btn--on-dark { background: #fff; color: var(--c-bg-dark); }
+.btn--on-dark:hover { background: var(--c-gold-light); color: #fff; }
+.btn--ghost-light { background: transparent; color: var(--c-on-dark); border-color: rgba(246,244,240,.4); }
+.btn--ghost-light:hover { border-color: #fff; color: #fff; }
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+
+/* Oculto visualmente pero accesible a lectores de pantalla */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+
+[hidden] { display: none !important; }
+
+/* ============================================================
+   MOVIMIENTO REDUCIDO
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

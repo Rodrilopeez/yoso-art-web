@@ -1,0 +1,82 @@
+/* ============================================================
+   YOSO — Layout estructural (header, nav, hero shell, footer)
+   ============================================================ */
+
+/* ---- Marca / logotipo ---- */
+.brand {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: 1.5rem;
+  letter-spacing: 0.12em;
+  color: var(--c-ink);
+}
+.brand:hover { color: var(--c-ink); }
+
+/* ============ HEADER / NAV ============ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: var(--border);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4.5rem;
+}
+.site-nav ul {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.25rem);
+}
+.site-nav a {
+  color: var(--c-ink-soft);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  padding-block: 0.5rem;
+  border-bottom: 1px solid transparent;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.site-nav a:hover { color: var(--c-ink); border-bottom-color: var(--c-gold); }
+
+/* En móvil ocultamos la lista (menú accesible se añade en una fase posterior) */
+@media (max-width: 760px) {
+  .site-nav { display: none; }
+}
+
+/* ============ HERO (shell — se enriquece en Cambio 2) ============ */
+.hero {
+  padding-block: clamp(4rem, 14vh, 9rem);
+}
+.hero h1 { margin-block: var(--sp-3) var(--sp-4); max-width: 16ch; }
+.hero__tagline { font-size: var(--fs-lg); color: var(--c-ink-soft); }
+
+/* ============ FOOTER ============ */
+.site-footer {
+  background: #111010;
+  color: var(--c-on-dark-soft);
+  padding-block: var(--sp-7);
+}
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.brand--footer { color: var(--c-gold-light); font-size: 1.3rem; }
+.site-footer__copy { font-size: var(--fs-sm); color: rgba(246,244,240,.45); margin: 0; }
+.site-footer__links { display: flex; gap: var(--sp-5); }
+.site-footer__links a {
+  color: rgba(246,244,240,.45);
+  font-size: var(--fs-sm);
+}
+.site-footer__links a:hover { color: var(--c-gold-light); }
+
+@media (max-width: 600px) {
+  .site-footer__inner { flex-direction: column; text-align: center; }
+}
