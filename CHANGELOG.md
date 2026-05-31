@@ -24,6 +24,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - Enlaces sociales con `rel="noopener noreferrer"` — Recomendación SEO §Enlaces.
   - `assets/css/tokens.css`, `base.css`, `layout.css`: sistema de diseño fiel a la marca
     (paleta + Playfair/Cormorant/DM Sans) — Recomendación Negocio §coherencia de marca.
+- `feat(conversion): hero con propuesta de valor, CTA principal, barra de reconocimientos y stats` — Cambio 2.
+  - Hero reescrito con propuesta de valor + **CTA principal "Ver obra disponible" sobre el
+    pliegue** — Recomendación Negocio §6 (hero sin propuesta) y §copy (CTA claro).
+  - **Barra de reconocimientos** (Arte Laguna · NASDAQ Times Square · WISe.ART · Jaume
+    Graells · Art Madrid) bajo el hero — Recomendación Negocio §3 (premios invisibles).
+  - Barra de **stats** (8+ premios · 15+ exposiciones · 10+ países · 3 galerías) — refuerzo
+    de autoridad, Recomendación Negocio §3.
+  - `assets/css/sections.css`: estilos de hero/reconocimientos/stats con animación de
+    entrada respetando `prefers-reduced-motion`.
 
 ---
 

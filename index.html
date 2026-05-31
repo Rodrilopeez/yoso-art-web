@@ -46,6 +46,7 @@
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
 
   <!-- SEO §4: datos estructurados — el artista como entidad -->
   <script type="application/ld+json">
@@ -94,12 +95,45 @@
 
   <main id="main">
 
-    <!-- ============ HERO (placeholder — se desarrolla en Cambio 2) ============ -->
+    <!-- ============ HERO ============ -->
     <section class="hero" id="inicio" aria-labelledby="hero-title">
-      <div class="container">
-        <p class="eyebrow">Arte digital · Escultura · Fotografía</p>
-        <h1 id="hero-title">YOSO — Arte digital, escultura y fotografía</h1>
-        <p class="accent hero__tagline">El arte no se explica, se siente.</p>
+      <div class="hero__media" aria-hidden="true">
+        <img src="https://yoso.art/wp-content/uploads/2022/10/IdentiL1024srgb72ppp.webp"
+             alt="" width="1024" height="1024" fetchpriority="high">
+        <div class="hero__overlay"></div>
+      </div>
+      <div class="container hero__content">
+        <p class="eyebrow hero__eyebrow">Arte digital · Escultura · Fotografía</p>
+        <h1 id="hero-title" class="hero__title">YOSO — Arte digital, escultura y fotografía</h1>
+        <p class="accent hero__tagline">Obra original que nace del sueño y explora la identidad humana.</p>
+        <div class="hero__ctas">
+          <a href="#arte-digital" class="btn btn--on-dark">Ver obra disponible</a>
+          <a href="#trayectoria" class="btn btn--ghost-light">Trayectoria</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BARRA DE RECONOCIMIENTOS (Negocio §3) ============ -->
+    <section class="recognition" aria-label="Reconocimientos internacionales">
+      <div class="container recognition__inner">
+        <p class="recognition__lead eyebrow">Reconocido en</p>
+        <ul class="recognition__list">
+          <li>Arte Laguna · <span>Venecia</span></li>
+          <li>Torre NASDAQ · <span>Times Square, NY</span></li>
+          <li>WISe.ART · <span>Ginebra</span></li>
+          <li>Jaume Graells · <span>Igualada</span></li>
+          <li>Art Madrid · <span>Madrid</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <section class="stats section--dark" aria-label="Trayectoria en cifras">
+      <div class="container stats__grid">
+        <div class="stat"><span class="stat__num">8+</span><span class="stat__label">Premios internacionales</span></div>
+        <div class="stat"><span class="stat__num">15+</span><span class="stat__label">Exposiciones</span></div>
+        <div class="stat"><span class="stat__num">10+</span><span class="stat__label">Países con presencia</span></div>
+        <div class="stat"><span class="stat__num">3</span><span class="stat__label">Galerías representantes</span></div>
       </div>
     </section>
 
