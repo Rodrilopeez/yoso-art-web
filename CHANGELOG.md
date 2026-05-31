@@ -40,6 +40,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   - **Exposiciones** (12), **galerías de representación** (3) y **prensa** (6) con datos
     reales — prueba social que transforma "me gusta" en "quiero comprar" (Negocio §3).
   - Estilos añadidos a `assets/css/sections.css` (rejillas responsive con hairline).
+- `feat(a11y): galerías de obra en HTML estático + lightbox accesible` — Cambio 4.
+  - 55 obras (32 arte digital · 3 escultura · 20 fotografía) como `<figure><img>` **estáticos**
+    con **alt descriptivo**, `loading="lazy"`, `decoding="async"` y dimensiones — Recomendación
+    SEO §Imágenes (19/26 con alt vacío; clave para Google Imágenes) + item 13 del plan.
+  - Lightbox accesible (`assets/js/gallery.js`): `role=dialog` + `aria-modal`, teclado
+    (Esc/flechas), **trampa de foco** y restauración de foco al cerrar.
+  - Fix a11y: `visibility` cambia al instante al abrir (se retrasa al cerrar) para que el
+    diálogo sea enfocable de inmediato; verificado con prueba funcional Playwright.
+  - Escultura con ficha técnica real (técnica, año, dimensiones).
+  - `scripts/gen-galleries.mjs`: generador reproducible de las galerías estáticas.
+  - `assets/css/gallery.css`: rejilla 4/3/2 columnas y estilos del lightbox.
 
 ---
 
