@@ -1,12 +1,127 @@
 ---
-import Base from "../layouts/Base.astro";
+import Base from '../layouts/Base.astro';
+
+const premios = [
+  ['2026', 'Sestante Art Prize', 'Cascais-Lisboa, Portugal', 'Ganador'],
+  ['2025', 'WISe.ART Excellence Awards', 'Ginebra, Suiza', '2.º Premio'],
+  ['2024', 'No Name Collective Art Magazine Challenge', 'Londres, Reino Unido', 'Ganador'],
+  ['2024', 'Amedeo Modigliani Foundation Prize', 'Roma, Italia', 'Finalista'],
+  ['2023', 'XXVII Premio Jaume Graells de Arte Digital', 'Igualada, España', 'Ganador'],
+  ['2023', 'Artistas Españoles más Destacados — Torre NASDAQ, Times Square', 'Nueva York', 'Seleccionado'],
+  ['2023', 'Arte Laguna Prize 23.24 — International Curators’ Selection', 'Venecia, Italia', 'Finalista'],
+  ['2023', 'VI Bienal de Valencia', 'Valencia, España', 'Mención'],
+];
+const expos = [
+  ['2025', 'Arte Laguna Prize — 20.º Aniversario', 'Shanghái, China'],
+  ['2025', 'ART MADRID ’25', 'Galería de Cristal · Palacio de Cibeles, Madrid'],
+  ['2025', 'MACRO Art 2025', 'Ciudad de Panamá, Panamá'],
+  ['2025', 'Breath 25 — CICA Museum', 'Gimpo, Corea del Sur'],
+  ['2025', 'A mountain of…signs', 'Aeropuerto Milán Malpensa, Italia'],
+  ['2024', 'Otra mirada a la realidad', 'La Sala · Igualada'],
+  ['2024', 'Colección Abartium', 'Abartium Gallery · Vic, Barcelona'],
+  ['2024', 'XAPO Bank Gallery', 'Gibraltar'],
+  ['2024', 'SO Hotel Exhibition', 'Sotogrande, Cádiz'],
+  ['2024', 'ART MADRID 2024', 'Galería de Cristal · Palacio de Cibeles, Madrid'],
+];
+const galerias = [
+  ['The Fusion Art Gallery', 'Puerto Banús · Marbella, España', 'Espacio de 2.500 m² de arte contemporáneo y club privado de referencia internacional.'],
+  ['Abartium Collection', 'Calldetenes · Vic, Barcelona', 'Colección privada de arte digital de referencia en Cataluña, con curaduría especializada.'],
+  ['WISe.ART', 'Ginebra, Suiza · Blockchain / NFT', 'Plataforma internacional de arte digital de alta gama en el ecosistema Web3 (Ethereum).'],
+];
+const prensa = [
+  ['Diari d’Andorra', '«Entrevista con YOSO: arte que surge de los sueños»', 'Octubre 2025'],
+  ['Spain Culture · New York', 'Artistas Españoles Más Destacados — Torre NASDAQ', '2023'],
+  ['Arteinformado', 'YOSO — Arte Digital de la Colección Abartium', '2024'],
+  ['masdearte.com', 'Cobertura de la exposición ART MADRID 2024', '2024'],
+  ['Ceina', '«Otra mirada a la realidad» — La Sala, Igualada', 'Septiembre 2024'],
+  ['The Fusion Art Gallery', 'YOSO — Perfil de artista y obra representada', '2024'],
+];
 ---
 
-<Base title="Exposiciones — YOSO | Arte digital, escultura y fotografía" description="Exposiciones, ferias y prensa del artista YOSO (Ambrosio López González), Madrid.">
-  <section class="section container">
-    <p class="eyebrow">Trayectoria</p>
-    <h1 style="margin-top:1rem">Exposiciones, ferias y prensa</h1>
-    <hr class="accent-rule" style="margin-top:1.5rem" />
-    <p class="lead" style="margin-top:2rem; max-width:48ch">Sección en construcción dentro del rediseño.</p>
+<Base
+  title="Exposiciones y trayectoria — YOSO | Venecia, Times Square, Ginebra"
+  description="Trayectoria internacional de YOSO: premios (Arte Laguna, WISe.ART, Jaume Graells), exposiciones (Art Madrid, CICA Museum Corea, NASDAQ Times Square), galerías y prensa."
+>
+  <section class="section container exp">
+    <header class="exp__head">
+      <p class="eyebrow">Trayectoria</p>
+      <h1>Exposiciones &amp; reconocimientos</h1>
+      <hr class="accent-rule" style="margin-top:1.5rem;" />
+      <p class="lead" style="margin-top:2rem;">Reconocido en cuatro continentes: de Venecia a Times Square, de Ginebra a Corea del Sur.</p>
+    </header>
+
+    <div class="exp__block">
+      <h2>Premios &amp; distinciones</h2>
+      <ul class="exp__awards">
+        {premios.map(([y, name, loc, badge]) => (
+          <li class="award">
+            <span class="award__yr">{y}</span>
+            <span class="award__body"><span class="award__name">{name}</span><span class="award__loc">{loc}</span></span>
+            <span class="award__badge">{badge}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="exp__block">
+      <h2>Exposiciones &amp; ferias</h2>
+      <ul class="exp__list">
+        {expos.map(([y, name, venue]) => (
+          <li class="exp__row"><span class="exp__yr">{y}</span><span class="exp__name">{name}</span><span class="exp__venue">{venue}</span></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="exp__block">
+      <h2>Representación · Galerías</h2>
+      <ul class="exp__cards">
+        {galerias.map(([name, loc, desc]) => (
+          <li class="rep"><p class="rep__name">{name}</p><p class="rep__loc">{loc}</p><p class="rep__desc">{desc}</p></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="exp__block">
+      <h2>Prensa</h2>
+      <ul class="exp__cards">
+        {prensa.map(([pub, hl, dt]) => (
+          <li class="press"><p class="press__pub">{pub}</p><p class="press__hl">{hl}</p><p class="press__dt">{dt}</p></li>
+        ))}
+      </ul>
+    </div>
   </section>
 </Base>
+
+<style>
+  .exp__head { margin-bottom: var(--sp-8); }
+  .exp__block { margin-top: var(--sp-8); }
+  .exp__block > h2 { font-size: var(--fs-h3); margin-bottom: var(--sp-5); padding-bottom: var(--sp-3); border-bottom: 1px solid var(--c-line); }
+
+  .award { display: grid; grid-template-columns: 4.5rem 1fr auto; gap: var(--sp-5); align-items: center; padding: var(--sp-4) 0; border-bottom: 1px solid var(--c-line); }
+  .award__yr { font-family: var(--font-display); font-size: var(--fs-h3); color: var(--c-accent-2); }
+  .award__body { display: grid; gap: 2px; }
+  .award__name { font-family: var(--font-display); font-size: var(--fs-lead); }
+  .award__loc { font-size: var(--fs-sm); color: var(--c-ink-mute); }
+  .award__badge { justify-self: end; white-space: nowrap; font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-accent-2); border: 1px solid var(--c-line); padding: .3rem .75rem; }
+
+  .exp__row { display: grid; grid-template-columns: 4rem 1fr auto; gap: var(--sp-5); padding: var(--sp-3) 0; border-bottom: 1px solid var(--c-line); align-items: baseline; }
+  .exp__yr { font-family: var(--font-display); color: var(--c-accent-2); }
+  .exp__name { font-family: var(--font-display); font-size: var(--fs-lead); }
+  .exp__venue { font-size: var(--fs-sm); color: var(--c-ink-mute); text-align: right; }
+
+  .exp__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--c-line); border: 1px solid var(--c-line); }
+  .rep, .press { background: var(--c-bg); padding: var(--sp-5); }
+  .rep__name, .press__hl { font-family: var(--font-display); font-size: var(--fs-lead); }
+  .rep__loc { font-size: var(--fs-sm); color: var(--c-ink-mute); margin-top: 2px; }
+  .rep__desc { font-size: var(--fs-sm); color: var(--c-ink-dim); margin-top: var(--sp-3); }
+  .press__pub { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-accent-2); margin-bottom: var(--sp-2); }
+  .press__dt { font-size: var(--fs-sm); color: var(--c-ink-mute); margin-top: 4px; }
+
+  @media (max-width: 760px) {
+    .exp__cards { grid-template-columns: 1fr; }
+    .award { grid-template-columns: 3.5rem 1fr; }
+    .award__badge { grid-column: 2; justify-self: start; }
+    .exp__row { grid-template-columns: 3rem 1fr; }
+    .exp__venue { grid-column: 2; text-align: left; }
+  }
+</style>

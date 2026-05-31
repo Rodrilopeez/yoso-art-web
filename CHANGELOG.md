@@ -47,6 +47,11 @@ Rebuild desde cero a nivel galería contemporánea. La web estática previa perm
   (GSAP ScrollTrigger; fallback a scroll nativo en móvil/reduced-motion — técnica visual del
   brief), **marquee de exposiciones** (prueba social, Negocio §3; pausable, accesible con
   texto alternativo), y **CTA principal** "¿Te interesa una obra?". Verificado sin errores.
+- `content(astro): páginas Sobre, Exposiciones y Contacto con contenido real` —
+  **Sobre** (bio narrativa, declaración, ficha del artista + JSON-LD ProfilePage/Person —
+  SEO §Contenido/§4); **Exposiciones** (8 premios, 10 exposiciones, 3 galerías, 6 prensa —
+  prueba social, Negocio §3); **Contacto** (formulario accesible con labels + envío `mailto`,
+  datos y encargos personalizados — Negocio §copy). Estudio y Diario quedan como plantillas.
 
 ## [No publicado]
 

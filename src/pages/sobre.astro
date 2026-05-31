@@ -1,12 +1,82 @@
 ---
-import Base from "../layouts/Base.astro";
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { getObra } from '../lib/obras';
+
+const retrato = getObra('veritas-and-the-wolf-pack');
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Person',
+    name: 'YOSO',
+    alternateName: 'Ambrosio José López González',
+    url: 'https://yoso.art/',
+    jobTitle: 'Artista',
+    nationality: 'Española',
+    birthPlace: { '@type': 'Place', name: 'Vitoria, España' },
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela Técnica Superior de Arquitectura, Universidad Politécnica de Madrid' },
+    knowsAbout: ['Arte digital', 'Escultura', 'Fotografía', 'Arte contemporáneo', 'NFT', 'Web3'],
+    address: { '@type': 'PostalAddress', addressLocality: 'Madrid', addressCountry: 'ES' },
+    email: 'yosolg@gmail.com',
+    sameAs: ['https://www.instagram.com/yoso_arts/', 'https://x.com/yoso_arts', 'https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98'],
+  },
+};
 ---
 
-<Base title="Sobre YOSO — YOSO | Arte digital, escultura y fotografía" description="Biografía y declaración del artista YOSO (Ambrosio López González), Madrid.">
-  <section class="section container">
-    <p class="eyebrow">El artista</p>
-    <h1 style="margin-top:1rem">Biografía y declaración</h1>
-    <hr class="accent-rule" style="margin-top:1.5rem" />
-    <p class="lead" style="margin-top:2rem; max-width:48ch">Sección en construcción dentro del rediseño.</p>
+<Base
+  title="Sobre YOSO — el artista | Arquitecto, arte digital y escultura"
+  description="Quién es YOSO (Ambrosio José López González): arquitecto por la UPM convertido en artista multidisciplinar en Madrid. Obra onírica sobre la identidad humana."
+>
+  <section class="sobre section">
+    <div class="container sobre__grid">
+      <div class="sobre__text">
+        <p class="eyebrow">Sobre el artista</p>
+        <h1>Una arquitectura <em>del ser</em></h1>
+        <hr class="accent-rule" style="margin:1.5rem 0 2rem;" />
+        <p><strong>YOSO</strong> es el nombre artístico de <strong>Ambrosio José López González</strong>, nacido en Vitoria (País Vasco) en 1959. Arquitecto titulado por la Escuela Técnica Superior de Arquitectura de la Universidad Politécnica de Madrid, su trayectoria en la arquitectura y el diseño desembocó, con los años, en una dedicación plena al arte multidisciplinar.</p>
+        <p>Su obra es un <strong>instrumento de análisis del ser humano</strong>: un intento de aproximarse desde nuevas perspectivas al concepto de identidad, a la singularidad del individuo y a su relación con los demás y con el entorno. Esa mirada de arquitecto —atenta a la estructura, la proporción y el espacio— sigue presente en cada pieza, ahora al servicio de la emoción.</p>
+        <blockquote class="sobre__quote">El arte no se explica, se siente.</blockquote>
+        <p>Muchos de sus trabajos parten de <strong>sueños o visiones fugaces</strong>, lo que les confiere un carácter enigmático y surrealista. El artista privilegia la <strong>alta resolución</strong> y el gran formato, pensando sus imágenes para instalaciones a gran escala. Su práctica abarca el arte digital, la escultura y la fotografía, y se extiende al arte tokenizado en el ecosistema Web3 a través de WISe.ART.</p>
+        <div class="sobre__ctas">
+          <a href="/obras" class="btn btn--accent">Ver la obra</a>
+          <a href="/exposiciones" class="btn btn--ghost">Trayectoria</a>
+        </div>
+      </div>
+
+      <aside class="sobre__aside">
+        {retrato && (
+          <figure class="sobre__img">
+            <Image src={retrato.image} alt="Obra de YOSO" widths={[400, 700]} sizes="(max-width: 900px) 100vw, 34vw" />
+          </figure>
+        )}
+        <dl class="sobre__facts">
+          <div><dt>Nombre</dt><dd>Ambrosio José López González</dd></div>
+          <div><dt>Origen</dt><dd>Vitoria, País Vasco · 1959</dd></div>
+          <div><dt>Base</dt><dd>Madrid, España</dd></div>
+          <div><dt>Formación</dt><dd>Arquitecto — UPM, Madrid</dd></div>
+          <div><dt>Medios</dt><dd>Arte digital · Escultura · Fotografía</dd></div>
+        </dl>
+      </aside>
+    </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
 </Base>
+
+<style>
+  .sobre__grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+  .sobre__text h1 em { font-style: italic; color: var(--c-ink-dim); }
+  .sobre__text p { color: var(--c-ink-dim); margin-bottom: var(--sp-4); }
+  .sobre__quote { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h3); color: var(--c-ink); border-left: 2px solid var(--c-accent); padding-left: var(--sp-5); margin: var(--sp-6) 0; max-width: none; }
+  .sobre__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-top: var(--sp-6); }
+  .sobre__aside { position: sticky; top: 6rem; display: grid; gap: var(--sp-6); }
+  .sobre__img { margin: 0; aspect-ratio: 3/4; overflow: hidden; background: var(--c-bg-2); }
+  .sobre__img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .sobre__facts { border-top: 1px solid var(--c-line); }
+  .sobre__facts > div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--sp-4); padding: var(--sp-3) 0; border-bottom: 1px solid var(--c-line); }
+  .sobre__facts dt { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); }
+  .sobre__facts dd { font-size: var(--fs-sm); }
+  @media (max-width: 900px) { .sobre__grid { grid-template-columns: 1fr; } .sobre__aside { position: static; } }
+</style>
