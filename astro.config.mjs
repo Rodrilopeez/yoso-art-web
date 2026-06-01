@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,4 +15,12 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'auto',
   },
+  // Sitemap dinámico de todas las rutas estáticas (incluye obras/[slug]).
+  // Sale en /sitemap-index.xml; se referencia desde public/robots.txt.
+  integrations: [
+    sitemap({
+      // Excluimos endpoints/recursos sin valor de indexación si los hubiera.
+      filter: (page) => !page.includes('/og/'),
+    }),
+  ],
 });

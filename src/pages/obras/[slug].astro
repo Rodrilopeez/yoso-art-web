@@ -29,8 +29,12 @@ const jsonld = {
   image: new URL(obra.image.src, Astro.site).href,
   artform: obra.catLabel,
   artMedium: obra.tecnica,
-  creator: { '@type': 'Person', name: 'YOSO', url: 'https://yoso.art/' },
+  // Referencia a la entidad canónica del artista definida en Base (no se duplica).
+  creator: { '@id': 'https://yoso.art/#artist' },
   ...(obra.statement ? { description: obra.statement } : {}),
+  // Solo se declara lo que CONSTA (honestidad de datos): nada inventado.
+  ...(obra.dims !== 'Consultar' ? { width: obra.dims } : {}),
+  ...(obra.year !== 'Consultar' ? { dateCreated: obra.year } : {}),
 };
 ---
 
@@ -38,6 +42,9 @@ const jsonld = {
   title={`${obra.title} — ${obra.catLabel} de YOSO`}
   description={obra.statement ?? `«${obra.title}»: ${obra.tecnica}. Obra original de YOSO. Consulta disponibilidad y precio.`}
   image={obra.image.src}
+  imageAlt={`«${obra.title}» — ${obra.catLabel.toLowerCase()} de YOSO`}
+  imageWidth={obra.image.width}
+  imageHeight={obra.image.height}
 >
   <article class="ficha">
     <div class="container ficha__wrap">
