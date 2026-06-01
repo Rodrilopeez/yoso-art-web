@@ -15,7 +15,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => path === href || path.startsWith(href + '/');
 ---
 
-<header class="hd" data-header>
+<header class="hd" data-header transition:persist="site-header">
   <div class="hd__inner">
     <a href="/" class="hd__brand" aria-label="YOSO — inicio">YOSO</a>
 
@@ -149,4 +149,19 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+  // El header se persiste entre páginas (transition:persist), así que su DOM no se
+  // re-renderiza en servidor: resincronizamos el enlace activo y cerramos el menú
+  // en cada navegación. También re-evaluamos el estado de scroll en la página nueva.
+  function syncActive() {
+    const p = location.pathname.replace(/\/$/, '') || '/';
+    document.querySelectorAll<HTMLAnchorElement>('[data-header] a[href]').forEach((a) => {
+      const href = a.getAttribute('href') || '';
+      if (href === '/' || !href.startsWith('/')) return; // marca y externos: sin estado activo
+      const active = p === href || p.startsWith(href + '/');
+      if (active) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  document.addEventListener('astro:page-load', () => { syncActive(); setMenu(false); onScroll(); });
 </script>

@@ -38,6 +38,7 @@ import { obras, cats } from '../../lib/obras';
                   widths={[300, 600, 900]}
                   sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 25vw"
                   loading={i < 8 ? 'eager' : 'lazy'}
+                  style={`view-transition-name: obra-${o.slug}`}
                 />
               </span>
               <span class="obra-card__info">

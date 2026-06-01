@@ -46,7 +46,7 @@ const jsonld = {
       <div class="ficha__grid">
         <figure class="ficha__media">
           <button type="button" class="ficha__zoombtn" aria-label={`Ampliar «${obra.title}»`} data-zoom>
-            <Image src={obra.image} alt={`«${obra.title}» — ${obra.catLabel.toLowerCase()} de YOSO`} widths={[700, 1200, 1800]} sizes="(max-width: 900px) 100vw, 58vw" />
+            <Image src={obra.image} alt={`«${obra.title}» — ${obra.catLabel.toLowerCase()} de YOSO`} widths={[700, 1200, 1800]} sizes="(max-width: 900px) 100vw, 58vw" style={`view-transition-name: obra-${obra.slug}`} />
             <span class="ficha__zoomhint" aria-hidden="true">Ampliar ⤢</span>
           </button>
         </figure>
@@ -78,7 +78,7 @@ const jsonld = {
           {rel.map((r) => (
             <li>
               <a href={`/obras/${r.slug}`}>
-                <span class="ficha__relmedia"><Image src={r.image} alt={`«${r.title}» — ${r.catLabel.toLowerCase()} de YOSO`} widths={[300, 600]} sizes="(max-width: 600px) 50vw, 25vw" loading="lazy" /></span>
+                <span class="ficha__relmedia"><Image src={r.image} alt={`«${r.title}» — ${r.catLabel.toLowerCase()} de YOSO`} widths={[300, 600]} sizes="(max-width: 600px) 50vw, 25vw" loading="lazy" style={`view-transition-name: obra-${r.slug}`} /></span>
                 <span class="ficha__reltitle">{r.title}</span>
               </a>
             </li>

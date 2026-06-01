@@ -128,3 +128,28 @@ strong, b { font-weight: var(--fw-med); }
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ============================================================
+   VIEW TRANSITIONS (Astro ClientRouter)
+   Morph miniatura→hero (view-transition-name: obra-<slug>) y fundido
+   entre páginas. Curva y duración coherentes con --ease-art.
+   ============================================================ */
+::view-transition-group(*) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Las imágenes de obra conservan su proporción durante el morph (sin aplastado). */
+::view-transition-old(*),
+::view-transition-new(*) {
+  /* el contenido replaced (img) se interpola por tamaño sin distorsión */
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* El * universal no alcanza el pseudo-árbol de view-transitions: anúlalo aquí. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

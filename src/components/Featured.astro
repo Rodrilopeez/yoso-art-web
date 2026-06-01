@@ -15,7 +15,7 @@ import { featured } from '../lib/obras';
         <li class="feat__card">
           <a href={`/obras/${o.slug}`}>
             <span class="feat__media">
-              <Image src={o.image} alt={`«${o.title}» — ${o.catLabel.toLowerCase()} de YOSO`} widths={[400, 700, 1000]} sizes="(max-width: 860px) 70vw, 32vw" loading="lazy" />
+              <Image src={o.image} alt={`«${o.title}» — ${o.catLabel.toLowerCase()} de YOSO`} widths={[400, 700, 1000]} sizes="(max-width: 860px) 70vw, 32vw" loading="lazy" style={`view-transition-name: obra-${o.slug}`} />
             </span>
             <span class="feat__meta">
               <span class="feat__title">{o.title}</span>
