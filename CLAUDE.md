@@ -11,8 +11,48 @@ cursor custom y CMS para que el artista suba obra solo.
 - **Astro 5.6** · output `static` · `site: https://yoso.art` (deploy en Vercel).
 - **GSAP 3.13** (SplitText, ScrollTrigger, Flip — todos gratis en 3.13).
 - **Lenis 1.1** (scroll suave) · **OGL 1.0** (WebGL) · **Fontsource** (Fraunces + Inter).
+- **Sharp** (optimización de imágenes en build, `astro:assets`).
 - Imágenes: `astro:assets` (locales) → migración prevista a **Sanity** (CMS).
-- Rama de trabajo: `rediseno/astro`.
+- Node `>=20.3.0`.
+
+## Comandos
+
+```bash
+npm install        # instalar dependencias
+npm run dev        # servidor local (astro dev) → http://localhost:4321
+npm run build      # build de producción a dist/ (astro build)
+npm run preview    # previsualizar el build (astro preview)
+```
+
+## Estructura del proyecto
+
+```
+src/
+  components/   Hero, Featured, Marquee, Loader, Cursor, Header, Footer (.astro)
+  layouts/      Base.astro  (head/SEO, ClientRouter, Lenis+ScrollTrigger, Loader/Cursor/Header/Footer)
+  lib/          obras.ts    (modelo Obra + catálogo; fuente de datos hoy)
+  pages/        index, obras/index, obras/[slug], series, exposiciones, sobre, estudio, diario, contacto
+  styles/       tokens.css (sistema de diseño) · global.css (reset + primitivas)
+assets/img/obra/*.webp   imágenes de obra (optimizadas, servidas con astro:assets)
+public/                  estáticos servidos tal cual (img/hero, og, favicon, robots.txt)
+scripts/                 works-data.mjs (datos crudos de obra) y utilidades
+docs/                    notas y lighthouse/ (resúmenes)
+.claude/skills/          las nueve skills del rediseño
+```
+
+## Ramas
+
+- `main` — base estable (default en origin).
+- `mejoras/auditoria` — mejoras sobre la auditoría previa.
+- **`rediseno/astro`** — rama de trabajo del rediseño Astro (**activa**).
+- Remote: `origin` → https://github.com/Rodrilopeez/yoso-art-web
+
+## Deploy (Vercel)
+
+- `vercel.json`: `framework: astro`, `buildCommand: astro build`, `outputDirectory: dist`.
+- Cache-Control inmutable (1 año) para `/_astro/*` y `/img/*`.
+- Sitio estático → cada push a la rama conectada dispara un build/deploy en Vercel.
+- Cuando se adopte Sanity: webhook de publicación → rebuild en Vercel.
 
 ## Convenciones clave
 
