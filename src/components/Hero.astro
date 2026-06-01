@@ -91,6 +91,11 @@ const slides = [
     if (!slides.length) return;
     const label = document.querySelector<HTMLElement>('[data-hero-work]');
 
+    // Degradación elegante: en modo ahorro de datos no montamos WebGL; queda la
+    // imagen estática de fondo (.hero__media background-image). Mismo resultado
+    // visual de partida, sin descargar OGL ni texturas extra.
+    if ((navigator as any).connection?.saveData) return;
+
     try {
       const { Renderer, Triangle, Program, Mesh, Texture } = await import('ogl');
       const renderer = new Renderer({ canvas, dpr: Math.min(window.devicePixelRatio, 2), alpha: false });
@@ -200,5 +205,13 @@ const slides = [
     }
   }
 
-  document.addEventListener('astro:page-load', () => { initName(); initWebGL(); });
+  document.addEventListener('astro:page-load', () => {
+    // El nombre se revela cuando el loader/intro termina (evita animar bajo el loader).
+    // En navegaciones internas y reduced-motion, __yosoIntroDone ya está marcado por
+    // el loader (su script corre antes) → revela de inmediato.
+    if ((window as any).__yosoIntroDone) initName();
+    else document.addEventListener('yoso:loaded', initName, { once: true });
+    // El WebGL puede montarse ya (vive detrás del loader); estará listo al revelarse.
+    initWebGL();
+  });
 </script>

@@ -21,23 +21,60 @@
 <script>
   import gsap from 'gsap';
 
+  // Señaliza que la intro terminó: el hero revela el nombre AHORA (no bajo el loader).
+  function signalReady() {
+    (window as any).__yosoIntroDone = true;
+    document.dispatchEvent(new CustomEvent('yoso:loaded'));
+  }
+
   function handleLoader() {
     const loader = document.querySelector<HTMLElement>('[data-loader]');
     if (!loader) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (sessionStorage.getItem('yoso_loaded') || reduce) { loader.remove(); return; }
+
+    // Solo en la primera visita de la sesión; en navegaciones internas, fuera sin parpadeo.
+    if (sessionStorage.getItem('yoso_loaded') || reduce) { loader.remove(); signalReady(); return; }
     sessionStorage.setItem('yoso_loaded', '1');
 
     loader.hidden = false;
     document.body.style.overflow = 'hidden';
+    // Congela el scroll virtual de Lenis bajo el loader. Lenis puede crearse en el
+    // mismo ciclo page-load (su script va después), por eso re-paramos en el frame siguiente.
+    (window as any).__lenis?.stop();
+    requestAnimationFrame(() => (window as any).__lenis?.stop());
+
     const mark = loader.querySelector('.loader__mark');
     const line = loader.querySelector('.loader__line');
-    const tl = gsap.timeline({
-      onComplete: () => { document.body.style.overflow = ''; loader.remove(); },
-    });
-    tl.to(mark, { opacity: 1, duration: 0.7, ease: 'power2.out' })
-      .to(line, { width: 120, duration: 0.7, ease: 'power2.inOut' }, '-=0.4')
-      .to(loader, { yPercent: -100, duration: 0.9, ease: 'power4.inOut' }, '+=0.25');
+
+    // Entrada: la marca aparece y la línea crece mientras la página carga.
+    gsap.timeline()
+      .to(mark, { opacity: 1, duration: 0.7, ease: 'power2.out' })
+      .to(line, { width: 120, duration: 0.7, ease: 'power2.inOut' }, '-=0.4');
+
+    // Salida sincronizada con la carga REAL: cierra en cuanto la página está lista,
+    // con un mínimo de cortesía (no parpadea) y un timeout de seguridad (nunca atascado).
+    const MIN = 1100;
+    const start = performance.now();
+    let done = false;
+    const exit = () => {
+      if (done) return;
+      done = true;
+      const delay = Math.max(0, MIN - (performance.now() - start)) / 1000;
+      gsap.to(loader, {
+        yPercent: -100, duration: 0.9, ease: 'power4.inOut', delay,
+        onComplete: () => {
+          document.body.style.overflow = '';
+          (window as any).__lenis?.start();
+          loader.remove();
+          signalReady();
+        },
+      });
+    };
+
+    if (document.readyState === 'complete') exit();
+    else window.addEventListener('load', exit, { once: true });
+    setTimeout(exit, 4000); // seguridad: el loader nunca bloquea al usuario
   }
+
   document.addEventListener('astro:page-load', handleLoader);
 </script>
