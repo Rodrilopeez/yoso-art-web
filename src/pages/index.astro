@@ -1,52 +1,31 @@
 ---
-import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import Featured from '../components/Featured.astro';
-import Marquee from '../components/Marquee.astro';
+/**
+ * Redirector de entrada (sitio estático): decide en cliente según sessionStorage.
+ * - Primera visita de la sesión  → /entrada (splash gate cinematográfico).
+ * - Ya entró antes               → /inicio (home principal), sin volver a ver el gate.
+ * No lleva contenido propio: noindex + canónica a /inicio (la home indexable).
+ * Ver splash-gate-skill.
+ */
 ---
-
-<Base title="YOSO — Arte digital, escultura y fotografía | Madrid">
-  <Hero />
-
-  <!-- Intro al artista -->
-  <section id="intro" class="section container intro">
-    <p class="eyebrow">El artista</p>
-    <h2 class="intro__h">Una arquitectura del&nbsp;ser</h2>
-    <hr class="accent-rule" style="margin-top:1.5rem;" />
-    <p class="lead intro__lead">
-      YOSO —&nbsp;Ambrosio José López González&nbsp;— traslada su mirada de arquitecto al arte
-      digital, la escultura y la fotografía. Obra de carácter onírico que indaga en la
-      identidad, la singularidad del individuo y su relación con el entorno.
-    </p>
-    <p class="intro__link"><a href="/sobre">Conocer al artista →</a></p>
-  </section>
-
-  <!-- Obra destacada (scroll horizontal pinned) -->
-  <Featured />
-
-  <!-- Ticker de exposiciones -->
-  <Marquee />
-
-  <!-- CTA principal -->
-  <section class="cta section">
-    <div class="container cta__inner">
-      <h2 class="cta__h">¿Te interesa una&nbsp;obra?</h2>
-      <p class="lead">Consulta disponibilidad, precios y encargos. Respondo personalmente.</p>
-      <div class="cta__btns">
-        <a href="/obras" class="btn btn--accent">Ver todas las obras</a>
-        <a href="/contacto" class="btn btn--ghost">Contacto</a>
-      </div>
-    </div>
-  </section>
-</Base>
-
-<style>
-  .intro__lead { margin-top: 2rem; max-width: 52ch; }
-  .intro__link { margin-top: var(--sp-5); }
-  .intro__link a { color: var(--c-accent-2); font-size: var(--fs-sm); letter-spacing: 0.04em; }
-  .intro__link a:hover { color: var(--c-ink); }
-
-  .cta__inner { text-align: center; display: grid; justify-items: center; gap: var(--sp-4); }
-  .cta__h { font-size: var(--fs-h1); max-width: 14ch; }
-  .cta__btns { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: center; margin-top: var(--sp-4); }
-</style>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YOSO</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://yoso.art/inicio" />
+    <meta name="theme-color" content="#0c0c0d" />
+    <script is:inline>
+      // Decide antes de pintar para evitar parpadeo. replace() no ensucia el historial.
+      try {
+        var entered = sessionStorage.getItem('yoso_entered');
+        location.replace(entered ? '/inicio' : '/entrada');
+      } catch (e) {
+        location.replace('/inicio');
+      }
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; url=/inicio" /></noscript>
+  </head>
+  <body style="margin:0;background:#0c0c0d"></body>
+</html>

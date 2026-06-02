@@ -19,8 +19,12 @@ export default defineConfig({
   // Sale en /sitemap-index.xml; se referencia desde public/robots.txt.
   integrations: [
     sitemap({
-      // Excluimos endpoints/recursos sin valor de indexación si los hubiera.
-      filter: (page) => !page.includes('/og/'),
+      // Fuera del índice: recursos OG, el redirector raíz y el gate (ambos noindex).
+      // La home indexable es /inicio.
+      filter: (page) =>
+        !page.includes('/og/') &&
+        page !== 'https://yoso.art/' &&
+        !page.includes('/entrada'),
     }),
   ],
 });
