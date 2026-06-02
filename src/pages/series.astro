@@ -1,12 +1,77 @@
 ---
-import Base from "../layouts/Base.astro";
+import Base from '../layouts/Base.astro';
+import RefikGrid from '../components/RefikGrid.astro';
+import { obras } from '../lib/obras';
+import type { Cat } from '../lib/obras';
+
+/**
+ * TODO(Sanity): página PROVISIONAL. Agrupa el catálogo por DISCIPLINA (no son
+ * series curadas reales). Cuando Sanity esté integrado y YOSO defina sus series
+ * propias, reemplazar por /series + /series/[slug] con la taxonomía real de
+ * series (ver sanity-art-cms-skill / art-portfolio-architecture-skill).
+ */
+
+const toItems = (cat: Cat) =>
+  obras
+    .filter((o) => o.cat === cat)
+    .map((o) => ({
+      slug: o.slug,
+      title: o.title,
+      catLabel: o.catLabel,
+      cat: o.cat,
+      image: o.image,
+      accentColor: o.accentColor,
+      accentGlow: o.accentGlow,
+      href: `/obras/${o.slug}`,
+    }));
+
+// TODO(cliente): textos definitivos de intro por disciplina.
+const groups = (
+  [
+    { cat: 'digital', label: 'Arte digital', intro: 'TODO(cliente): párrafo breve sobre la obra digital de YOSO.' },
+    { cat: 'escultura', label: 'Escultura', intro: 'TODO(cliente): párrafo breve sobre la obra escultórica de YOSO.' },
+    { cat: 'foto', label: 'Fotografía', intro: 'TODO(cliente): párrafo breve sobre la obra fotográfica de YOSO.' },
+  ] as { cat: Cat; label: string; intro: string }[]
+)
+  .map((g) => ({ ...g, items: toItems(g.cat) }))
+  .filter((g) => g.items.length > 0);
 ---
 
-<Base title="Series — YOSO | Arte digital, escultura y fotografía" description="Series y colecciones del artista YOSO (Ambrosio López González), Madrid.">
-  <section class="section container">
+<Base
+  title="Series — YOSO | Arte digital, escultura y fotografía"
+  description="Series y colecciones del artista YOSO (Ambrosio José López González): arte digital, escultura y fotografía. Galería contemporánea en Madrid."
+>
+  <section class="section container series__head">
     <p class="eyebrow">Colecciones</p>
-    <h1 style="margin-top:1rem">Series y colecciones</h1>
-    <hr class="accent-rule" style="margin-top:1.5rem" />
-    <p class="lead" style="margin-top:2rem; max-width:48ch">Sección en construcción dentro del rediseño.</p>
+    <h1>Series</h1>
+    <hr class="accent-rule" style="margin-top:1.5rem;" />
+    <p class="lead series__intro">
+      {/* TODO(cliente): intro editorial definitiva de la página de series. */}
+      La obra de YOSO recorrida por disciplinas. Cada colección reúne las piezas
+      según su lenguaje: lo digital, lo escultórico y lo fotográfico.
+    </p>
   </section>
+
+  {groups.map((g) => (
+    <section class="series__group">
+      <div class="container series__grouphead">
+        <h2>{g.label}</h2>
+        <p class="lead series__groupintro">{g.intro}</p>
+      </div>
+      <div class="container">
+        <RefikGrid items={g.items} />
+      </div>
+    </section>
+  ))}
 </Base>
+
+<style>
+  .series__head { padding-bottom: 0; }
+  .series__intro { margin-top: 2rem; max-width: 52ch; }
+
+  .series__group { padding-block: var(--section-y); }
+  .series__group:first-of-type { padding-top: var(--sp-9); }
+  .series__grouphead { margin-bottom: var(--sp-7); }
+  .series__grouphead h2 { font-size: var(--fs-h2); }
+  .series__groupintro { margin-top: var(--sp-4); max-width: 50ch; }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import RefikGrid from '../../components/RefikGrid.astro';
 import { obras, adjacent, related } from '../../lib/obras';
 
 export function getStaticPaths() {
@@ -81,16 +82,20 @@ const jsonld = {
     {rel.length > 0 && (
       <section class="ficha__related container">
         <p class="eyebrow">También en {obra.catLabel.toLowerCase()}</p>
-        <ul class="ficha__rellist">
-          {rel.map((r) => (
-            <li>
-              <a href={`/obras/${r.slug}`}>
-                <span class="ficha__relmedia"><Image src={r.image} alt={`«${r.title}» — ${r.catLabel.toLowerCase()} de YOSO`} widths={[300, 600]} sizes="(max-width: 600px) 50vw, 25vw" loading="lazy" style={`view-transition-name: obra-${r.slug}`} /></span>
-                <span class="ficha__reltitle">{r.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Relacionadas con el mismo patrón Refik (glow + morph a la ficha). 3 obras. */}
+        <RefikGrid
+          cols={3}
+          items={rel.map((r) => ({
+            slug: r.slug,
+            title: r.title,
+            catLabel: r.catLabel,
+            cat: r.cat,
+            image: r.image,
+            accentColor: r.accentColor,
+            accentGlow: r.accentGlow,
+            href: `/obras/${r.slug}`,
+          }))}
+        />
       </section>
     )}
 
@@ -139,11 +144,7 @@ const jsonld = {
   .ficha__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
 
   .ficha__related { margin-top: var(--section-y); }
-  .ficha__rellist { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(.75rem, 1.5vw, 1.5rem); margin-top: var(--sp-5); }
-  .ficha__relmedia { display: block; aspect-ratio: 4/5; overflow: hidden; background: var(--c-bg-2); }
-  .ficha__relmedia :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-art); }
-  .ficha__rellist a:hover .ficha__relmedia :global(img) { transform: scale(1.06); }
-  .ficha__reltitle { display: block; font-family: var(--font-display); margin-top: var(--sp-3); }
+  .ficha__related > .eyebrow { margin-bottom: var(--sp-5); display: block; }
 
   .ficha__pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); margin-top: var(--section-y); border-top: 1px solid var(--c-line); padding-top: var(--sp-6); }
   .ficha__pglink { display: grid; gap: .35rem; }

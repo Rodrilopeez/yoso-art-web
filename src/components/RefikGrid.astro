@@ -21,11 +21,11 @@ export interface RefikItem {
   accentGlow?: string;
   href: string;
 }
-interface Props { items: RefikItem[] }
-const { items } = Astro.props;
+interface Props { items: RefikItem[]; cols?: number }
+const { items, cols = 4 } = Astro.props;
 ---
 
-<ul class="rgrid" data-rgrid>
+<ul class="rgrid" data-rgrid style={`--cols:${cols}`}>
   {items.map((o, i) => (
     <li class="rgrid__cell" data-cat={o.cat} style={`--accent:${o.accentColor};--glow:${o.accentGlow ?? o.accentColor}`}>
       <a class="rgrid__link" href={o.href} aria-label={`${o.title} — ${o.catLabel}`}>
@@ -50,7 +50,7 @@ const { items } = Astro.props;
 
 <style>
   .rgrid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
+    display: grid; grid-template-columns: repeat(var(--cols, 4), 1fr);
     gap: clamp(.5rem, 1.4vw, 1.25rem);
     background: var(--c-bg); /* negro absoluto */
   }
@@ -133,43 +133,46 @@ const { items } = Astro.props;
   gsap.registerPlugin(SplitText);
 
   function initRefikGrid() {
-    const grid = document.querySelector<HTMLElement>('[data-rgrid]');
-    if (!grid) return;
+    const grids = document.querySelectorAll<HTMLElement>('[data-rgrid]');
+    if (!grids.length) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse = window.matchMedia('(pointer: coarse)').matches;
 
-    // Reveal de entrada al hacer scroll (lazy/IntersectionObserver).
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
-    grid.querySelectorAll<HTMLElement>('.rgrid__cell').forEach((c) => io.observe(c));
+    // Soporta varias galerías en la misma página (p. ej. /series: 3 grids).
+    grids.forEach((grid) => {
+      // Reveal de entrada al hacer scroll (lazy/IntersectionObserver).
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+      grid.querySelectorAll<HTMLElement>('.rgrid__cell').forEach((c) => io.observe(c));
 
-    // Revelado del título letra a letra al entrar en hover (solo desktop).
-    if (!reduce && !coarse) {
-      grid.querySelectorAll<HTMLElement>('[data-rtitle]').forEach((el) => {
-        // words,chars: cada palabra es un contenedor inline-block (no se parte a
-        // mitad); animamos los chars dentro. Evita el corte por carácter.
-        const split = new SplitText(el, { type: 'words,chars' });
-        const link = el.closest('.rgrid__link');
-        link?.addEventListener('pointerenter', () => {
-          gsap.fromTo(split.chars, { yPercent: 110 }, { yPercent: 0, stagger: 0.012, duration: 0.5, ease: 'power4.out', overwrite: true });
+      // Revelado del título letra a letra al entrar en hover (solo desktop).
+      if (!reduce && !coarse) {
+        grid.querySelectorAll<HTMLElement>('[data-rtitle]').forEach((el) => {
+          // words,chars: cada palabra es un contenedor inline-block (no se parte a
+          // mitad); animamos los chars dentro. Evita el corte por carácter.
+          const split = new SplitText(el, { type: 'words,chars' });
+          const link = el.closest('.rgrid__link');
+          link?.addEventListener('pointerenter', () => {
+            gsap.fromTo(split.chars, { yPercent: 110 }, { yPercent: 0, stagger: 0.012, duration: 0.5, ease: 'power4.out', overwrite: true });
+          });
         });
-      });
-    }
+      }
 
-    // Táctil: tap-to-reveal. 1er tap revela la info; 2º tap (ya revelada) navega.
-    if (coarse) {
-      grid.querySelectorAll<HTMLElement>('.rgrid__cell').forEach((cell) => {
-        const link = cell.querySelector<HTMLAnchorElement>('.rgrid__link');
-        link?.addEventListener('click', (e) => {
-          if (!cell.classList.contains('is-revealed')) {
-            e.preventDefault();
-            grid.querySelectorAll('.is-revealed').forEach((c) => c !== cell && c.classList.remove('is-revealed'));
-            cell.classList.add('is-revealed');
-          }
+      // Táctil: tap-to-reveal. 1er tap revela la info; 2º tap (ya revelada) navega.
+      if (coarse) {
+        grid.querySelectorAll<HTMLElement>('.rgrid__cell').forEach((cell) => {
+          const link = cell.querySelector<HTMLAnchorElement>('.rgrid__link');
+          link?.addEventListener('click', (e) => {
+            if (!cell.classList.contains('is-revealed')) {
+              e.preventDefault();
+              grid.querySelectorAll('.is-revealed').forEach((c) => c !== cell && c.classList.remove('is-revealed'));
+              cell.classList.add('is-revealed');
+            }
+          });
         });
-      });
-    }
+      }
+    });
   }
 
   document.addEventListener('astro:page-load', initRefikGrid);
