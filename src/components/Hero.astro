@@ -1,18 +1,22 @@
 ---
 /**
- * Hero de /inicio: UNA sola obra a pantalla completa (object-fit: cover), sin
- * carrusel ni transiciones internas (eso causaba el «hero partido en franjas»:
- * el canvas WebGL se dimensionaba a ~150px y se superponía como banda al fondo).
- * Composición editorial centrada (YOSO) con scrim continuo POR ENCIMA de la obra
- * para legibilidad, y slider editorial de reconocimientos.
+ * Hero de /inicio: carrusel de 3 obras a pantalla completa (object-fit: cover)
+ * con crossfade suave. El scrim y el texto (eyebrow + YOSO + tagline + slider
+ * TRAYECTORIA) permanecen ESTÁTICOS por encima; solo cambian las obras debajo.
  *
- * TODO(cliente): la obra de fondo se puede cambiar por la que prefieras o por un
- * máster de mayor resolución (las de assets rondan ~1200px → blandas en 4K).
+ * Carrusel: crossfade 1.2 s (cubic-bezier .4,0,.2,1), 5 s por obra, loop infinito,
+ * todas las obras precargadas en el DOM (sin flash), pausa cuando la pestaña no es
+ * visible, y en prefers-reduced-motion se muestra solo la 1ª (Constellation).
+ *
+ * TODO(cliente): las obras rondan ~1200px de lado mayor → algo blandas en 4K.
+ * Sustituir por másters de mayor resolución cuando estén disponibles.
  */
 import { Image } from 'astro:assets';
 import { getObra } from '../lib/obras';
 
-const heroObra = getObra('identity'); // obra signature de portada (editable)
+const heroSlides = ['constellation', 'sunset-fishing', 'fishing-in-gray']
+  .map((s) => getObra(s))
+  .filter((o): o is NonNullable<typeof o> => Boolean(o));
 
 // Reconocimientos para el slider editorial del hero (fade entre items, ~3.5 s).
 // TODO(cliente): confirmar y/o ampliar. Origen: datos ya presentes en Marquee.astro.
@@ -30,24 +34,26 @@ const accolades = [
 
 <section class="hero" aria-label="YOSO — obra original">
   <div class="hero__media">
-    {heroObra && (
-      <Image
-        class="hero__img"
-        src={heroObra.image}
-        alt=""
-        widths={[768, 1280, 1920, 2560]}
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-      />
-    )}
+    <div class="hero__slides" data-hero-slides>
+      {heroSlides.map((o, i) => (
+        <Image
+          class={i === 0 ? 'is-active' : ''}
+          src={o.image}
+          alt=""
+          widths={[768, 1280, 1920, 2560]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority={i === 0 ? 'high' : 'auto'}
+        />
+      ))}
+    </div>
     <div class="hero__scrim" aria-hidden="true"></div>
   </div>
 
   <div class="hero__content">
     <p class="hero__eyebrow eyebrow">Arte digital · Escultura · Fotografía</p>
     <h1 class="hero__name" data-hero-name>YOSO</h1>
-    <p class="hero__tag">Obra original que nace del sueño y explora la identidad humana.</p>
+    <p class="hero__tag">Obra original que nace del <em>sueño</em> y explora la <em>identidad humana</em>.</p>
   </div>
 
   <!-- Slider editorial de reconocimientos (fade entre items ~3.5 s) -->
@@ -64,14 +70,21 @@ const accolades = [
 </section>
 
 <style>
-  /* Una sola obra a pantalla completa, composición editorial centrada */
+  /* Carrusel de obras a pantalla completa, composición editorial centrada */
   .hero { position: relative; height: 100svh; min-height: 600px; display: grid; place-items: center; text-align: center; overflow: hidden; isolation: isolate; }
 
   .hero__media { position: absolute; inset: 0; z-index: -2; background: var(--c-bg); }
-  .hero__media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .hero__slides { position: absolute; inset: 0; }
+  /* Cada obra ocupa toda la pantalla; crossfade por opacidad (todas apiladas) */
+  .hero__slides :global(img) {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .hero__slides :global(img.is-active) { opacity: 1; }
 
-  /* Scrim CONTINUO por encima de la obra entera (no parte la composición).
-     Velo vertical suave: más oscuro arriba (nav) y abajo (slider), legible en el centro. */
+  /* Scrim CONTINUO y CONSTANTE por encima de las obras (no parte la composición
+     ni cambia al rotar): velo vertical suave, legible en el centro. */
   .hero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(to bottom,
       rgba(12,12,13,.62) 0%,
@@ -84,7 +97,15 @@ const accolades = [
   .hero__eyebrow { color: var(--c-accent-2); opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.1s forwards; }
   .hero__name { font-size: var(--fs-mega); font-weight: var(--fw-semi); line-height: 0.9; letter-spacing: 0.04em; margin: clamp(0.25rem,1vw,.75rem) 0; overflow: hidden; visibility: hidden; text-shadow: 0 10px 70px rgba(0,0,0,.55); }
   .hero__name :global(.char) { display: inline-block; will-change: transform; }
-  .hero__tag { font-size: var(--fs-lead); color: rgba(244,241,234,.88); max-width: 34ch; margin-inline: auto; opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.5s forwards; text-shadow: 0 2px 24px rgba(0,0,0,.5); }
+
+  /* Tagline editorial: Fraunces (serif con carácter), peso 300, itálica selectiva */
+  .hero__tag {
+    font-family: var(--font-display); font-weight: 300; font-size: var(--fs-lead);
+    letter-spacing: 0.015em; line-height: 1.45; color: rgba(244,241,234,.9);
+    max-width: 36ch; margin-inline: auto; text-shadow: 0 2px 24px rgba(0,0,0,.5);
+    opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.5s forwards;
+  }
+  .hero__tag em { font-style: italic; }
 
   /* Slider editorial de reconocimientos (fade entre items) */
   .hero__accolades { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(3.2rem, 8vh, 6rem); display: grid; justify-items: center; gap: var(--sp-2); padding-inline: var(--gutter); opacity: 0; animation: hero-fade var(--dur-2) var(--ease-art) 0.9s forwards; }
@@ -102,6 +123,7 @@ const accolades = [
   @media (prefers-reduced-motion: reduce) {
     .hero__name { visibility: visible; }
     .hero__scroll-line { animation: none; }
+    .hero__slides :global(img) { transition: none; } /* sin crossfade */
   }
 </style>
 
@@ -121,6 +143,30 @@ const accolades = [
     gsap.from(split.chars, { yPercent: 120, duration: 1.1, ease: 'power4.out', stagger: 0.07, delay: 0.25 });
   }
 
+  // Carrusel de obras: crossfade cada 5 s, loop, pausa en pestaña oculta.
+  // En reduced-motion no rota (queda fija la 1ª, Constellation). Las imágenes
+  // ya están en el DOM (loading=eager) → la siguiente está precargada (sin flash).
+  function initHeroCarousel() {
+    const wrap = document.querySelector<HTMLElement>('[data-hero-slides]');
+    if (!wrap) return;
+    const slides = Array.from(wrap.querySelectorAll<HTMLImageElement>('img'));
+    if (reduce || slides.length < 2) return;
+    let i = 0;
+    let timer = 0;
+    const advance = () => {
+      const next = (i + 1) % slides.length;
+      slides[i].classList.remove('is-active');
+      slides[next].classList.add('is-active');
+      i = next;
+    };
+    const start = () => { if (!timer) timer = window.setInterval(advance, 5000); };
+    const stop = () => { if (timer) { clearInterval(timer); timer = 0; } };
+    start();
+    const onVis = () => (document.hidden ? stop() : start()); // pausa si la pestaña no es visible
+    document.addEventListener('visibilitychange', onVis);
+    document.addEventListener('astro:before-swap', () => { stop(); document.removeEventListener('visibilitychange', onVis); }, { once: true });
+  }
+
   // Slider editorial de reconocimientos: fade entre items cada ~3.5 s.
   function initAccolades() {
     const wrap = document.querySelector<HTMLElement>('[data-accolades]');
@@ -128,7 +174,7 @@ const accolades = [
     if (!wrap || !el) return;
     let items: string[] = [];
     try { items = JSON.parse(wrap.dataset.items || '[]'); } catch {}
-    if (reduce || items.length < 2) return; // reduced-motion: queda el primero fijo
+    if (reduce || items.length < 2) return;
     let i = 0;
     const id = window.setInterval(() => {
       const next = (i + 1) % items.length;
@@ -137,15 +183,15 @@ const accolades = [
         el.textContent = items[next];
         el.style.opacity = ''; el.style.transform = '';
         i = next;
-      }, 500); // coincide con la transición CSS del .hero__accolade
+      }, 500);
     }, 3500);
     document.addEventListener('astro:before-swap', () => clearInterval(id), { once: true });
   }
 
   document.addEventListener('astro:page-load', () => {
-    // El nombre se revela cuando el loader/intro termina (evita animar bajo el loader).
     if ((window as any).__yosoIntroDone) initName();
     else document.addEventListener('yoso:loaded', initName, { once: true });
+    initHeroCarousel();
     initAccolades();
   });
 </script>
