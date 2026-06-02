@@ -1,0 +1,145 @@
+---
+/**
+ * Galería estilo Refik Anadol (ver refik-gallery-grid-skill). Reutilizable para
+ * /obras, /series y cualquier otra galería. Fondo negro, miniatura limpia; en
+ * hover (desktop) la obra se ilumina con su color de acento (--accent), escala
+ * suave y revela título + disciplina con SplitText; en táctil, tap-to-reveal
+ * (1er tap revela, 2º navega). Reveal de entrada con IntersectionObserver.
+ * Conserva el view-transition-name: obra-<slug> (morph miniatura→ficha, Fase B).
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface RefikItem {
+  slug: string;
+  title: string;
+  catLabel: string;
+  cat?: string;
+  image: ImageMetadata;
+  accentColor: string;
+  href: string;
+}
+interface Props { items: RefikItem[] }
+const { items } = Astro.props;
+---
+
+<ul class="rgrid" data-rgrid>
+  {items.map((o, i) => (
+    <li class="rgrid__cell" data-cat={o.cat} style={`--accent:${o.accentColor}`}>
+      <a class="rgrid__link" href={o.href} aria-label={`${o.title} — ${o.catLabel}`}>
+        <span class="rgrid__media">
+          <Image
+            src={o.image}
+            alt={`«${o.title}» — ${o.catLabel.toLowerCase()} de YOSO`}
+            widths={[300, 600, 900]}
+            sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 25vw"
+            loading={i < 8 ? 'eager' : 'lazy'}
+            style={`view-transition-name: obra-${o.slug}`}
+          />
+        </span>
+        <span class="rgrid__info" aria-hidden="true">
+          <span class="rgrid__title" data-rtitle>{o.title}</span>
+          <span class="rgrid__cat">{o.catLabel}</span>
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .rgrid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: clamp(.5rem, 1.4vw, 1.25rem);
+    background: var(--c-bg); /* negro absoluto */
+  }
+  .rgrid__cell { opacity: 0; transform: translateY(24px); }
+  .rgrid__cell.is-in { opacity: 1; transform: none; transition: opacity var(--dur-2) var(--ease-art), transform var(--dur-2) var(--ease-art); }
+  .rgrid__cell[hidden] { display: none; }
+
+  .rgrid__link { position: relative; display: block; isolation: isolate;
+    transition: box-shadow var(--dur-2) var(--ease-art), transform var(--dur-2) var(--ease-art); }
+  .rgrid__media { display: block; aspect-ratio: 4/5; overflow: hidden; background: #000; }
+  .rgrid__media :global(img) {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: saturate(.92) brightness(.84); /* apagada en reposo, revive en hover */
+    transition: transform var(--dur-3) var(--ease-art), filter var(--dur-2) var(--ease-art);
+  }
+
+  /* Estado activo (hover / focus / tap revelado): glow del color propio + escala */
+  .rgrid__link:hover, .rgrid__link:focus-visible, .rgrid__cell.is-revealed .rgrid__link {
+    transform: scale(1.03); z-index: 2;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent),
+                0 18px 60px -12px color-mix(in srgb, var(--accent) 65%, transparent);
+  }
+  .rgrid__link:hover .rgrid__media :global(img),
+  .rgrid__link:focus-visible .rgrid__media :global(img),
+  .rgrid__cell.is-revealed .rgrid__media :global(img) { filter: saturate(1.05) brightness(1); transform: scale(1.04); }
+
+  /* Info: oculta por defecto, se revela en el estado activo */
+  .rgrid__info {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    padding: clamp(.7rem, 1.5vw, 1.1rem);
+    background: linear-gradient(to top, rgba(12,12,13,.9), rgba(12,12,13,.4) 60%, transparent);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity var(--dur-1) var(--ease-art), transform var(--dur-1) var(--ease-art);
+  }
+  .rgrid__link:hover .rgrid__info,
+  .rgrid__link:focus-visible .rgrid__info,
+  .rgrid__cell.is-revealed .rgrid__info { opacity: 1; transform: none; }
+  .rgrid__title { font-family: var(--font-display); font-size: var(--fs-h3); color: var(--c-ink); line-height: 1.05; }
+  .rgrid__cat { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+
+  @media (max-width: 1100px) { .rgrid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 600px)  { .rgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (prefers-reduced-motion: reduce) {
+    .rgrid__cell { opacity: 1; transform: none; }
+    .rgrid__link, .rgrid__media :global(img) { transition: none; }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  gsap.registerPlugin(SplitText);
+
+  function initRefikGrid() {
+    const grid = document.querySelector<HTMLElement>('[data-rgrid]');
+    if (!grid) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
+
+    // Reveal de entrada al hacer scroll (lazy/IntersectionObserver).
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    grid.querySelectorAll<HTMLElement>('.rgrid__cell').forEach((c) => io.observe(c));
+
+    // Revelado del título letra a letra al entrar en hover (solo desktop).
+    if (!reduce && !coarse) {
+      grid.querySelectorAll<HTMLElement>('[data-rtitle]').forEach((el) => {
+        const split = new SplitText(el, { type: 'chars' });
+        const link = el.closest('.rgrid__link');
+        link?.addEventListener('pointerenter', () => {
+          gsap.fromTo(split.chars, { yPercent: 110 }, { yPercent: 0, stagger: 0.012, duration: 0.5, ease: 'power4.out', overwrite: true });
+        });
+      });
+    }
+
+    // Táctil: tap-to-reveal. 1er tap revela la info; 2º tap (ya revelada) navega.
+    if (coarse) {
+      grid.querySelectorAll<HTMLElement>('.rgrid__cell').forEach((cell) => {
+        const link = cell.querySelector<HTMLAnchorElement>('.rgrid__link');
+        link?.addEventListener('click', (e) => {
+          if (!cell.classList.contains('is-revealed')) {
+            e.preventDefault();
+            grid.querySelectorAll('.is-revealed').forEach((c) => c !== cell && c.classList.remove('is-revealed'));
+            cell.classList.add('is-revealed');
+          }
+        });
+      });
+    }
+  }
+
+  document.addEventListener('astro:page-load', initRefikGrid);
+</script>

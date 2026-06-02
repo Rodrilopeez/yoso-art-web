@@ -1,7 +1,18 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import RefikGrid from '../../components/RefikGrid.astro';
 import { obras, cats } from '../../lib/obras';
+
+// Items para la galería Refik (color de acento por obra + ruta a la ficha).
+const items = obras.map((o) => ({
+  slug: o.slug,
+  title: o.title,
+  catLabel: o.catLabel,
+  cat: o.cat,
+  image: o.image,
+  accentColor: o.accentColor,
+  href: `/obras/${o.slug}`,
+}));
 ---
 
 <Base
@@ -27,28 +38,7 @@ import { obras, cats } from '../../lib/obras';
         ))}
       </div>
 
-      <ul class="obras__grid" data-grid>
-        {obras.map((o, i) => (
-          <li class="obra-card" data-cat={o.cat} style={`--i:${i % 12}`}>
-            <a href={`/obras/${o.slug}`} class="obra-card__link">
-              <span class="obra-card__media">
-                <Image
-                  src={o.image}
-                  alt={`«${o.title}» — ${o.catLabel.toLowerCase()} de YOSO`}
-                  widths={[300, 600, 900]}
-                  sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 25vw"
-                  loading={i < 8 ? 'eager' : 'lazy'}
-                  style={`view-transition-name: obra-${o.slug}`}
-                />
-              </span>
-              <span class="obra-card__info">
-                <span class="obra-card__title">{o.title}</span>
-                <span class="obra-card__tec">{o.catLabel}</span>
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <RefikGrid items={items} />
     </div>
   </section>
 </Base>
@@ -65,48 +55,20 @@ import { obras, cats } from '../../lib/obras';
   }
   .filter:hover { color: var(--c-ink); border-color: var(--c-ink-dim); }
   .filter[aria-pressed='true'] { color: var(--c-bg); background: var(--c-accent-2); border-color: var(--c-accent-2); }
-
-  .obras__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(0.75rem, 1.5vw, 1.5rem);
-  }
-  .obra-card { opacity: 0; transform: translateY(24px); }
-  .obra-card.is-in { opacity: 1; transform: none; transition: opacity var(--dur-2) var(--ease-art), transform var(--dur-2) var(--ease-art); transition-delay: calc(var(--i) * 0.04s); }
-  .obra-card[hidden] { display: none; }
-
-  .obra-card__link { display: block; }
-  .obra-card__media { display: block; position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--c-bg-2); }
-  .obra-card__media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-art); }
-  .obra-card__link:hover .obra-card__media :global(img) { transform: scale(1.06); }
-
-  .obra-card__info { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: var(--sp-3); }
-  .obra-card__title { font-family: var(--font-display); font-size: var(--fs-body); color: var(--c-ink); }
-  .obra-card__tec { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); white-space: nowrap; }
-
-  @media (max-width: 1100px) { .obras__grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 600px)  { .obras__grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 
 <script>
-  function initObras() {
-    const grid = document.querySelector('[data-grid]');
+  // Filtros por disciplina: operan sobre las celdas de RefikGrid (.rgrid__cell[data-cat]).
+  function initObrasFilters() {
+    const grid = document.querySelector('[data-rgrid]');
     if (!grid) return;
-    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.obra-card'));
+    const cells = Array.from(grid.querySelectorAll<HTMLElement>('.rgrid__cell'));
     const filters = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter'));
-
-    // Reveal on scroll
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
-    cards.forEach((c) => io.observe(c));
-
-    // Filtros por disciplina
     filters.forEach((btn) => {
       btn.addEventListener('click', () => {
         const val = btn.dataset.filter;
         filters.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-        cards.forEach((c) => {
+        cells.forEach((c) => {
           const show = val === 'all' || c.dataset.cat === val;
           c.hidden = !show;
           if (show && !c.classList.contains('is-in')) c.classList.add('is-in');
@@ -114,5 +76,5 @@ import { obras, cats } from '../../lib/obras';
       });
     });
   }
-  document.addEventListener('astro:page-load', initObras);
+  document.addEventListener('astro:page-load', initObrasFilters);
 </script>

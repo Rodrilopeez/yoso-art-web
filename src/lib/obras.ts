@@ -10,6 +10,8 @@
 import type { ImageMetadata } from 'astro';
 // @ts-ignore — módulo JS de datos sin tipos
 import { allWorks } from '../../scripts/works-data.mjs';
+// Colores de acento extraídos automáticamente (scripts/extract-accents.mjs).
+import generatedAccents from './accent-colors.generated.json';
 
 export type Cat = 'digital' | 'escultura' | 'foto';
 
@@ -25,6 +27,26 @@ export interface Obra {
   availability: string;
   statement: string | null;
   image: ImageMetadata;
+  /** Color de acento para el «glow» de la galería (Refik). */
+  accentColor: string;
+  /** Origen del color: "manual" (asignado a mano) | "auto" (extraído). */
+  accentColorSource: 'manual' | 'auto';
+}
+
+const AUTO_ACCENTS = generatedAccents as Record<string, string>;
+const ACCENT_FALLBACK = '#b8905a'; // oro de marca si faltara color
+
+/**
+ * Overrides manuales de color de acento. Tienen prioridad sobre la extracción
+ * automática y se marcan como accentColorSource:"manual". Añade aquí las obras
+ * cuyo glow quieras afinar a mano (p. ej. 'identity': '#c79a52').
+ * (Validados con el cliente: de momento se usan los automáticos tal cual.)
+ */
+const MANUAL_ACCENTS: Record<string, string> = {};
+
+function accentFor(slug: string): { accentColor: string; accentColorSource: 'manual' | 'auto' } {
+  if (MANUAL_ACCENTS[slug]) return { accentColor: MANUAL_ACCENTS[slug], accentColorSource: 'manual' };
+  return { accentColor: AUTO_ACCENTS[slug] ?? ACCENT_FALLBACK, accentColorSource: 'auto' };
 }
 
 const CAT_LABEL: Record<Cat, string> = {
@@ -94,6 +116,7 @@ export const obras: Obra[] = (allWorks() as Array<{
       availability: d.availability ?? 'Bajo solicitud',
       statement: d.statement ?? null,
       image: bySlug.get(w.slug)!,
+      ...accentFor(w.slug),
     };
   });
 
