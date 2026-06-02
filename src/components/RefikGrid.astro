@@ -17,6 +17,8 @@ export interface RefikItem {
   cat?: string;
   image: ImageMetadata;
   accentColor: string;
+  /** Variante saturada para el glow (cae al accentColor si no se pasa). */
+  accentGlow?: string;
   href: string;
 }
 interface Props { items: RefikItem[] }
@@ -25,7 +27,7 @@ const { items } = Astro.props;
 
 <ul class="rgrid" data-rgrid>
   {items.map((o, i) => (
-    <li class="rgrid__cell" data-cat={o.cat} style={`--accent:${o.accentColor}`}>
+    <li class="rgrid__cell" data-cat={o.cat} style={`--accent:${o.accentColor};--glow:${o.accentGlow ?? o.accentColor}`}>
       <a class="rgrid__link" href={o.href} aria-label={`${o.title} — ${o.catLabel}`}>
         <span class="rgrid__media">
           <Image
@@ -58,37 +60,64 @@ const { items } = Astro.props;
 
   .rgrid__link { position: relative; display: block; isolation: isolate;
     transition: box-shadow var(--dur-2) var(--ease-art), transform var(--dur-2) var(--ease-art); }
-  .rgrid__media { display: block; aspect-ratio: 4/5; overflow: hidden; background: #000; }
+  .rgrid__media { position: relative; display: block; aspect-ratio: 4/5; overflow: hidden; background: #000; }
   .rgrid__media :global(img) {
     width: 100%; height: 100%; object-fit: cover;
     filter: saturate(.92) brightness(.84); /* apagada en reposo, revive en hover */
     transition: transform var(--dur-3) var(--ease-art), filter var(--dur-2) var(--ease-art);
   }
+  /* (1c) Tinte interno: la obra «absorbe» su color de acento al activarse */
+  .rgrid__media::after {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: var(--accent); mix-blend-mode: screen; opacity: 0;
+    transition: opacity var(--dur-2) var(--ease-art);
+  }
 
-  /* Estado activo (hover / focus / tap revelado): glow del color propio + escala */
+  /* Estado activo (hover / focus / tap revelado): glow de doble capa + escala */
   .rgrid__link:hover, .rgrid__link:focus-visible, .rgrid__cell.is-revealed .rgrid__link {
     transform: scale(1.03); z-index: 2;
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent),
-                0 18px 60px -12px color-mix(in srgb, var(--accent) 65%, transparent);
+    /* (1a+1b) doble halo con el acento saturado (--glow) para profundidad cinematográfica */
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--glow) 55%, transparent),
+      0 0 30px color-mix(in srgb, var(--glow) 60%, transparent),
+      0 0 80px color-mix(in srgb, var(--glow) 40%, transparent);
   }
   .rgrid__link:hover .rgrid__media :global(img),
   .rgrid__link:focus-visible .rgrid__media :global(img),
-  .rgrid__cell.is-revealed .rgrid__media :global(img) { filter: saturate(1.05) brightness(1); transform: scale(1.04); }
+  .rgrid__cell.is-revealed .rgrid__media :global(img) { filter: saturate(1.08) brightness(1.02); transform: scale(1.04); }
+  .rgrid__link:hover .rgrid__media::after,
+  .rgrid__link:focus-visible .rgrid__media::after,
+  .rgrid__cell.is-revealed .rgrid__media::after { opacity: .14; }
 
-  /* Info: oculta por defecto, se revela en el estado activo */
+  /* Info: oculta por defecto, se revela en el estado activo.
+     Apilada (título arriba a ancho completo, disciplina debajo) para que los
+     títulos largos quepan en 2-3 líneas sin cortarse. */
   .rgrid__info {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
-    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    display: flex; flex-direction: column; align-items: flex-start; gap: .35rem;
     padding: clamp(.7rem, 1.5vw, 1.1rem);
-    background: linear-gradient(to top, rgba(12,12,13,.9), rgba(12,12,13,.4) 60%, transparent);
+    background: linear-gradient(to top, rgba(12,12,13,.92), rgba(12,12,13,.45) 62%, transparent);
     opacity: 0; transform: translateY(8px);
     transition: opacity var(--dur-1) var(--ease-art), transform var(--dur-1) var(--ease-art);
   }
   .rgrid__link:hover .rgrid__info,
   .rgrid__link:focus-visible .rgrid__info,
   .rgrid__cell.is-revealed .rgrid__info { opacity: 1; transform: none; }
-  .rgrid__title { font-family: var(--font-display); font-size: var(--fs-h3); color: var(--c-ink); line-height: 1.05; }
-  .rgrid__cat { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+
+  /* (2) Título completo: hasta 2-3 líneas, palabras enteras, sin truncado.
+     clamp() reduce el tamaño en pantallas pequeñas para que no rompa el layout. */
+  .rgrid__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 0.85rem + 1vw, 1.6rem);
+    line-height: 1.25; color: var(--c-ink);
+    max-width: 100%; overflow-wrap: normal; word-break: keep-all; hyphens: none;
+    /* sin truncado: el título se lee completo, hasta 2-3 líneas si hace falta */
+  }
+  /* (3) Disciplina/secundario: gris-hueso legible (AA ≥4.5:1 sobre negro), no el acento apagado */
+  .rgrid__cat {
+    font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase;
+    color: #c3bdb0;
+  }
 
   @media (max-width: 1100px) { .rgrid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 600px)  { .rgrid { grid-template-columns: repeat(2, 1fr); } }
@@ -118,7 +147,9 @@ const { items } = Astro.props;
     // Revelado del título letra a letra al entrar en hover (solo desktop).
     if (!reduce && !coarse) {
       grid.querySelectorAll<HTMLElement>('[data-rtitle]').forEach((el) => {
-        const split = new SplitText(el, { type: 'chars' });
+        // words,chars: cada palabra es un contenedor inline-block (no se parte a
+        // mitad); animamos los chars dentro. Evita el corte por carácter.
+        const split = new SplitText(el, { type: 'words,chars' });
         const link = el.closest('.rgrid__link');
         link?.addEventListener('pointerenter', () => {
           gsap.fromTo(split.chars, { yPercent: 110 }, { yPercent: 0, stagger: 0.012, duration: 0.5, ease: 'power4.out', overwrite: true });

@@ -27,14 +27,54 @@ export interface Obra {
   availability: string;
   statement: string | null;
   image: ImageMetadata;
-  /** Color de acento para el «glow» de la galería (Refik). */
+  /** Color de acento (validado) para etiqueta y tinte interno de la obra. */
   accentColor: string;
+  /** Variante del acento con saturación reforzada (≥78%) para el glow del hover. */
+  accentGlow: string;
   /** Origen del color: "manual" (asignado a mano) | "auto" (extraído). */
   accentColorSource: 'manual' | 'auto';
 }
 
 const AUTO_ACCENTS = generatedAccents as Record<string, string>;
 const ACCENT_FALLBACK = '#b8905a'; // oro de marca si faltara color
+
+// --- Utilidades de color: derivar un glow más saturado del acento aprobado ---
+function hexToRgb(hex: string): [number, number, number] {
+  const n = hex.replace('#', '');
+  return [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16)) as [number, number, number];
+}
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0; const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h /= 6;
+  }
+  return [h, s, l];
+}
+function hslToHex(h: number, s: number, l: number): string {
+  const hue = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const r = s === 0 ? l : hue(p, q, h + 1 / 3);
+  const g = s === 0 ? l : hue(p, q, h);
+  const b = s === 0 ? l : hue(p, q, h - 1 / 3);
+  return '#' + [r, g, b].map((c) => Math.round(c * 255).toString(16).padStart(2, '0')).join('');
+}
+/** Acento con saturación reforzada y luminosidad media para que el glow «cante» sobre negro. */
+function glowFrom(hex: string): string {
+  const [h, s, l] = rgbToHsl(...hexToRgb(hex));
+  return hslToHex(h, Math.max(s, 0.78), Math.min(Math.max(l, 0.5), 0.64));
+}
 
 /**
  * Overrides manuales de color de acento. Tienen prioridad sobre la extracción
@@ -44,9 +84,10 @@ const ACCENT_FALLBACK = '#b8905a'; // oro de marca si faltara color
  */
 const MANUAL_ACCENTS: Record<string, string> = {};
 
-function accentFor(slug: string): { accentColor: string; accentColorSource: 'manual' | 'auto' } {
-  if (MANUAL_ACCENTS[slug]) return { accentColor: MANUAL_ACCENTS[slug], accentColorSource: 'manual' };
-  return { accentColor: AUTO_ACCENTS[slug] ?? ACCENT_FALLBACK, accentColorSource: 'auto' };
+function accentFor(slug: string): { accentColor: string; accentGlow: string; accentColorSource: 'manual' | 'auto' } {
+  const manual = MANUAL_ACCENTS[slug];
+  const accentColor = manual ?? AUTO_ACCENTS[slug] ?? ACCENT_FALLBACK;
+  return { accentColor, accentGlow: glowFrom(accentColor), accentColorSource: manual ? 'manual' : 'auto' };
 }
 
 const CAT_LABEL: Record<Cat, string> = {
