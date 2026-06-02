@@ -1,18 +1,18 @@
 ---
 /**
- * Hero cinematográfico con carrusel de obras (cambio cada 3 s) y transición
- * WebGL de crossfade con desplazamiento (OGL), reactivo a cursor/scroll.
- * Nombre con reveal GSAP SplitText. Fallback a imagen si no hay WebGL.
- * En prefers-reduced-motion: imagen única, sin auto-rotación (a11y).
+ * Hero de /inicio: UNA sola obra a pantalla completa (object-fit: cover), sin
+ * carrusel ni transiciones internas (eso causaba el «hero partido en franjas»:
+ * el canvas WebGL se dimensionaba a ~150px y se superponía como banda al fondo).
+ * Composición editorial centrada (YOSO) con scrim continuo POR ENCIMA de la obra
+ * para legibilidad, y slider editorial de reconocimientos.
+ *
+ * TODO(cliente): la obra de fondo se puede cambiar por la que prefieras o por un
+ * máster de mayor resolución (las de assets rondan ~1200px → blandas en 4K).
  */
-const slides = [
-  { src: '/img/hero/identity.webp', title: 'Identity' },
-  { src: '/img/hero/cardinals-dance.webp', title: 'Cardinals’ Dance' },
-  { src: '/img/hero/veritas-and-the-wolf-pack.webp', title: 'Veritas and the Wolf Pack' },
-  { src: '/img/hero/dream-of-red-wave-i.webp', title: 'Dream of Red Wave I' },
-  { src: '/img/hero/michelagnolo.webp', title: 'Michelagnolo' },
-  { src: '/img/hero/your-home-your-land.webp', title: 'Your Home, Your Land' },
-];
+import { Image } from 'astro:assets';
+import { getObra } from '../lib/obras';
+
+const heroObra = getObra('identity'); // obra signature de portada (editable)
 
 // Reconocimientos para el slider editorial del hero (fade entre items, ~3.5 s).
 // TODO(cliente): confirmar y/o ampliar. Origen: datos ya presentes en Marquee.astro.
@@ -28,9 +28,19 @@ const accolades = [
 ];
 ---
 
-<section class="hero" aria-label="YOSO — obra destacada">
-  <div class="hero__media" style={`background-image:url(${slides[0].src})`}>
-    <canvas class="hero__canvas" data-hero-canvas data-slides={JSON.stringify(slides)} aria-hidden="true"></canvas>
+<section class="hero" aria-label="YOSO — obra original">
+  <div class="hero__media">
+    {heroObra && (
+      <Image
+        class="hero__img"
+        src={heroObra.image}
+        alt=""
+        widths={[768, 1280, 1920, 2560]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
     <div class="hero__scrim" aria-hidden="true"></div>
   </div>
 
@@ -47,8 +57,6 @@ const accolades = [
     <span class="visually-hidden">Reconocimientos: {accolades.join(', ')}.</span>
   </div>
 
-  <p class="hero__work" data-hero-work aria-hidden="true">{slides[0].title}</p>
-
   <a href="#intro" class="hero__scroll" aria-label="Desplázate para descubrir">
     <span>Descubrir</span>
     <span class="hero__scroll-line" aria-hidden="true"></span>
@@ -56,36 +64,32 @@ const accolades = [
 </section>
 
 <style>
-  /* Composición editorial centrada (no «caída a la izquierda») */
+  /* Una sola obra a pantalla completa, composición editorial centrada */
   .hero { position: relative; height: 100svh; min-height: 600px; display: grid; place-items: center; text-align: center; overflow: hidden; isolation: isolate; }
-  .hero__media { position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: center; }
-  .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity var(--dur-2) var(--ease-art); }
-  /* Scrim para legibilidad sobre obras de brillo variable (el hero rota 6 piezas):
-     vela el centro de forma consistente para que el texto blanco lea SIEMPRE,
-     reforzando arriba (nav) y abajo (slider). La obra sigue visible como fondo. */
+
+  .hero__media { position: absolute; inset: 0; z-index: -2; background: var(--c-bg); }
+  .hero__media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+  /* Scrim CONTINUO por encima de la obra entera (no parte la composición).
+     Velo vertical suave: más oscuro arriba (nav) y abajo (slider), legible en el centro. */
   .hero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background:
-      radial-gradient(120% 88% at 50% 50%, rgba(12,12,13,.52) 0%, rgba(12,12,13,.34) 52%, rgba(12,12,13,.58) 100%),
-      linear-gradient(to bottom, rgba(12,12,13,.5) 0%, transparent 24%, transparent 70%, rgba(12,12,13,.92) 100%);
+    background: linear-gradient(to bottom,
+      rgba(12,12,13,.62) 0%,
+      rgba(12,12,13,.42) 30%,
+      rgba(12,12,13,.46) 62%,
+      rgba(12,12,13,.92) 100%);
   }
 
   .hero__content { position: relative; z-index: 2; padding: 0 var(--gutter); width: 100%; max-width: 1200px; display: grid; justify-items: center; gap: clamp(.6rem, 1.5vh, 1.1rem); }
   .hero__eyebrow { color: var(--c-accent-2); opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.1s forwards; }
-  .hero__name { font-size: var(--fs-mega); font-weight: var(--fw-semi); line-height: 0.9; letter-spacing: 0.04em; margin: clamp(0.25rem,1vw,.75rem) 0; overflow: hidden; visibility: hidden; text-shadow: 0 10px 70px rgba(0,0,0,.5); }
+  .hero__name { font-size: var(--fs-mega); font-weight: var(--fw-semi); line-height: 0.9; letter-spacing: 0.04em; margin: clamp(0.25rem,1vw,.75rem) 0; overflow: hidden; visibility: hidden; text-shadow: 0 10px 70px rgba(0,0,0,.55); }
   .hero__name :global(.char) { display: inline-block; will-change: transform; }
-  .hero__tag { font-size: var(--fs-lead); color: rgba(244,241,234,.86); max-width: 34ch; margin-inline: auto; opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.5s forwards; }
+  .hero__tag { font-size: var(--fs-lead); color: rgba(244,241,234,.88); max-width: 34ch; margin-inline: auto; opacity: 0; transform: translateY(12px); animation: hero-fade var(--dur-2) var(--ease-art) 0.5s forwards; text-shadow: 0 2px 24px rgba(0,0,0,.5); }
 
   /* Slider editorial de reconocimientos (fade entre items) */
   .hero__accolades { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(3.2rem, 8vh, 6rem); display: grid; justify-items: center; gap: var(--sp-2); padding-inline: var(--gutter); opacity: 0; animation: hero-fade var(--dur-2) var(--ease-art) 0.9s forwards; }
   .hero__accolades-label { color: var(--c-ink-mute); }
-  .hero__accolade { font-family: var(--font-display); font-style: italic; font-size: var(--fs-lead); color: rgba(244,241,234,.92); min-height: 1.4em; transition: opacity .5s var(--ease-art), transform .5s var(--ease-art); }
-
-  .hero__work {
-    position: absolute; z-index: 2; left: var(--gutter); top: clamp(5.5rem, 12vh, 8rem);
-    font-family: var(--font-accent, var(--font-display)); font-style: italic;
-    font-size: var(--fs-sm); letter-spacing: 0.04em; color: rgba(244,241,234,.55);
-    transition: opacity var(--dur-1) var(--ease-art);
-  }
+  .hero__accolade { font-family: var(--font-display); font-style: italic; font-size: var(--fs-lead); color: rgba(244,241,234,.94); min-height: 1.4em; transition: opacity .5s var(--ease-art), transform .5s var(--ease-art); }
 
   .hero__scroll { position: absolute; z-index: 2; right: var(--gutter); bottom: clamp(2.4rem,6vh,4rem); display: inline-flex; flex-direction: column; align-items: center; gap: var(--sp-3); font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-dim); }
   .hero__scroll-line { width: 1px; height: 56px; background: linear-gradient(var(--c-accent), transparent); transform-origin: top; animation: scroll-pulse 2.4s var(--ease-in-out) infinite; }
@@ -94,7 +98,6 @@ const accolades = [
   @keyframes hero-fade { to { opacity: 1; transform: translateY(0); } }
   @keyframes scroll-pulse { 0%,100% { transform: scaleY(0.4); opacity: .5; } 50% { transform: scaleY(1); opacity: 1; } }
 
-  @media (max-width: 700px) { .hero__work { display: none; } }
   @media (max-width: 600px) { .hero__scroll { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     .hero__name { visibility: visible; }
@@ -116,127 +119,6 @@ const accolades = [
     if (reduce) return;
     const split = new SplitText(name, { type: 'chars' });
     gsap.from(split.chars, { yPercent: 120, duration: 1.1, ease: 'power4.out', stagger: 0.07, delay: 0.25 });
-  }
-
-  async function initWebGL() {
-    const canvas = document.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
-    if (!canvas) return;
-    const slides: { src: string; title: string }[] = JSON.parse(canvas.dataset.slides || '[]');
-    if (!slides.length) return;
-    const label = document.querySelector<HTMLElement>('[data-hero-work]');
-
-    // Degradación elegante: en modo ahorro de datos no montamos WebGL; queda la
-    // imagen estática de fondo (.hero__media background-image). Mismo resultado
-    // visual de partida, sin descargar OGL ni texturas extra.
-    if ((navigator as any).connection?.saveData) return;
-
-    try {
-      const { Renderer, Triangle, Program, Mesh, Texture } = await import('ogl');
-      const renderer = new Renderer({ canvas, dpr: Math.min(window.devicePixelRatio, 2), alpha: false });
-      const gl = renderer.gl;
-
-      // Precarga de texturas
-      type Slot = { tex: any; res: [number, number]; ready: boolean };
-      const slots: Slot[] = slides.map((s) => {
-        const tex = new Texture(gl, { generateMipmaps: false });
-        const slot: Slot = { tex, res: [1, 1], ready: false };
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = s.src;
-        img.onload = () => { tex.image = img; slot.res = [img.naturalWidth, img.naturalHeight]; slot.ready = true; };
-        return slot;
-      });
-
-      const program = new Program(gl, {
-        vertex: `attribute vec2 uv; attribute vec2 position; varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position,0.0,1.0); }`,
-        fragment: `
-          precision highp float;
-          uniform sampler2D uTexA; uniform sampler2D uTexB;
-          uniform vec2 uResA; uniform vec2 uResB; uniform vec2 uRes;
-          uniform vec2 uMouse; uniform float uStrength; uniform float uTime; uniform float uProgress;
-          varying vec2 vUv;
-          vec2 cover(vec2 uv, vec2 res, vec2 img){
-            vec2 r = vec2(min((res.x/res.y)/(img.x/img.y),1.0), min((res.y/res.x)/(img.y/img.x),1.0));
-            return vec2(uv.x*r.x+(1.0-r.x)*0.5, uv.y*r.y+(1.0-r.y)*0.5);
-          }
-          void main(){
-            float d = distance(vUv, uMouse);
-            float infl = smoothstep(0.35,0.0,d)*uStrength;
-            vec2 mo = vec2(sin(d*42.0 - uTime*3.0)*0.006*infl);
-            vec2 uvA = cover(vUv, uRes, uResA) + mo;
-            vec2 uvB = cover(vUv, uRes, uResB) + mo;
-            float wave = sin(vUv.x*6.2831 + uTime*0.25)*0.5+0.5;
-            float p = uProgress;
-            uvA.y += p*0.05; uvB.y -= (1.0-p)*0.05;
-            float m = smoothstep(0.0,1.0, p*1.25 - wave*0.22);
-            vec3 colA = texture2D(uTexA, uvA).rgb;
-            vec3 colB = texture2D(uTexB, uvB).rgb;
-            vec3 col = mix(colA, colB, m) * 0.93;
-            gl_FragColor = vec4(col,1.0);
-          }
-        `,
-        uniforms: {
-          uTexA: { value: slots[0].tex }, uTexB: { value: slots[Math.min(1, slots.length - 1)].tex },
-          uResA: { value: slots[0].res }, uResB: { value: slots[0].res },
-          uRes: { value: [1, 1] }, uMouse: { value: [0.5, 0.5] },
-          uStrength: { value: 0 }, uTime: { value: 0 }, uProgress: { value: 0 },
-        },
-      });
-      const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
-
-      const resize = () => { renderer.setSize(window.innerWidth, canvas.clientHeight || window.innerHeight); program.uniforms.uRes.value = [gl.canvas.width, gl.canvas.height]; };
-      resize();
-      window.addEventListener('resize', resize);
-
-      // Cursor → strength
-      const tgt = { x: 0.5, y: 0.5 }, cur = { x: 0.5, y: 0.5 }; let strength = 0;
-      window.addEventListener('pointermove', (e) => {
-        const nx = e.clientX / window.innerWidth, ny = 1 - e.clientY / window.innerHeight;
-        strength = Math.min(1, strength + Math.hypot(nx - tgt.x, ny - tgt.y) * 6); tgt.x = nx; tgt.y = ny;
-      }, { passive: true });
-
-      let painted = false, t0 = performance.now();
-      const loop = (t: number) => {
-        const dt = (t - t0) / 1000; t0 = t;
-        cur.x += (tgt.x - cur.x) * 0.08; cur.y += (tgt.y - cur.y) * 0.08; strength *= 0.94;
-        program.uniforms.uMouse.value = [cur.x, cur.y];
-        program.uniforms.uStrength.value = reduce ? 0 : strength;
-        program.uniforms.uTime.value += dt;
-        renderer.render({ scene: mesh });
-        if (!painted && slots[0].ready) { painted = true; canvas.style.opacity = '1'; }
-        raf = requestAnimationFrame(loop);
-      };
-      let raf = requestAnimationFrame(loop);
-
-      // Carrusel (cada 3 s) salvo reduced-motion
-      let curIdx = 0, transitioning = false;
-      function go() {
-        if (transitioning || reduce) return;
-        const next = (curIdx + 1) % slots.length;
-        if (!slots[next].ready) return; // esperar a que cargue
-        transitioning = true;
-        program.uniforms.uTexB.value = slots[next].tex;
-        program.uniforms.uResB.value = slots[next].res;
-        if (label) { label.style.opacity = '0'; }
-        const prog = { v: 0 };
-        gsap.to(prog, {
-          v: 1, duration: 1.4, ease: 'power2.inOut',
-          onUpdate: () => { program.uniforms.uProgress.value = prog.v; },
-          onComplete: () => {
-            program.uniforms.uTexA.value = slots[next].tex;
-            program.uniforms.uResA.value = slots[next].res;
-            program.uniforms.uProgress.value = 0;
-            curIdx = next; transitioning = false;
-            if (label) { label.textContent = slides[next].title; label.style.opacity = '0.6'; }
-          },
-        });
-      }
-      const interval = reduce ? 0 : window.setInterval(go, 3000);
-
-      document.addEventListener('astro:before-swap', () => { cancelAnimationFrame(raf); clearInterval(interval); }, { once: true });
-    } catch (err) {
-      console.warn('Hero WebGL no disponible, usando imagen estática.', err);
-    }
   }
 
   // Slider editorial de reconocimientos: fade entre items cada ~3.5 s.
@@ -262,12 +144,8 @@ const accolades = [
 
   document.addEventListener('astro:page-load', () => {
     // El nombre se revela cuando el loader/intro termina (evita animar bajo el loader).
-    // En navegaciones internas y reduced-motion, __yosoIntroDone ya está marcado por
-    // el loader (su script corre antes) → revela de inmediato.
     if ((window as any).__yosoIntroDone) initName();
     else document.addEventListener('yoso:loaded', initName, { once: true });
-    // El WebGL puede montarse ya (vive detrás del loader); estará listo al revelarse.
-    initWebGL();
     initAccolades();
   });
 </script>
