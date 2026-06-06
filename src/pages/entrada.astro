@@ -71,7 +71,10 @@ const accolades = [
         <p class="gate__eyebrow">Arte digital · Escultura · Fotografía</p>
         <h1 class="gate__name" data-gate-name>YOSO</h1>
         <p class="gate__tag">Obra original que nace del <em>sueño</em> y explora la <em>identidad humana</em>.</p>
-        <button type="button" class="gate__enter" data-gate-enter autofocus><span>Entrar</span></button>
+        <button type="button" class="gate__enter" data-gate-enter autofocus>
+          <span class="gate__enter-label">Entrar</span>
+          <span class="gate__enter-arrow" aria-hidden="true">→</span>
+        </button>
       </div>
 
       <div class="gate__accolades" data-accolades data-items={JSON.stringify(accolades)} aria-label="Reconocimientos">
@@ -108,8 +111,19 @@ const accolades = [
       .gate__name :global(.char) { display: inline-block; will-change: transform; }
       .gate__tag { font-family: var(--font-display); font-weight: 300; font-size: var(--fs-lead); letter-spacing: 0.015em; line-height: 1.45; color: rgba(244,241,234,.9); max-width: 36ch; margin-inline: auto; text-shadow: 0 2px 24px rgba(0,0,0,.5); opacity: 0; transform: translateY(12px); animation: gate-in 1s var(--ease-art) .5s forwards; }
       .gate__tag em { font-style: italic; }
-      .gate__enter { margin-top: clamp(.5rem, 1.5vh, 1rem); background: rgba(12,12,13,.42); backdrop-filter: blur(6px); border: 1px solid rgba(244,241,234,.55); color: var(--c-ink); padding: 1rem 2.8rem; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: var(--fw-med); letter-spacing: var(--ls-wider); text-transform: uppercase; cursor: pointer; opacity: 0; transform: translateY(12px); animation: gate-in 1s var(--ease-art) .85s forwards; transition: background var(--dur-1) var(--ease-art), color var(--dur-1) var(--ease-art), border-color var(--dur-1) var(--ease-art); }
-      .gate__enter:hover, .gate__enter:focus-visible { background: var(--c-accent); color: var(--c-bg); border-color: var(--c-accent); outline: none; }
+      /* Botón ENTRAR — variante B: flecha que desliza + subrayado oro al hover (editorial revista) */
+      .gate__enter { position: relative; margin-top: clamp(.6rem, 2vh, 1.2rem);
+        background: none; border: 0; color: var(--c-ink); padding: .5rem 0; cursor: pointer;
+        display: inline-flex; align-items: center; gap: .7em;
+        font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--fw-med);
+        letter-spacing: 0.18em; text-transform: uppercase;
+        opacity: 0; transform: translateY(12px); animation: gate-in 1s var(--ease-art) .85s forwards; }
+      .gate__enter-arrow { transition: transform .4s var(--ease-art); }
+      .gate__enter::after { content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+        background: var(--c-accent); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease-art); }
+      .gate__enter:hover .gate__enter-arrow, .gate__enter:focus-visible .gate__enter-arrow { transform: translateX(6px); }
+      .gate__enter:hover::after, .gate__enter:focus-visible::after { transform: scaleX(1); }
+      .gate__enter:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
 
       .gate__accolades { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(2rem, 5vh, 3.5rem); display: grid; justify-items: center; gap: var(--sp-2); padding-inline: var(--gutter); opacity: 0; animation: gate-in 1s var(--ease-art) 1s forwards; }
       .gate__accolades-label { color: var(--c-ink-mute); }
@@ -121,6 +135,7 @@ const accolades = [
         .gate__eyebrow, .gate__name, .gate__tag, .gate__enter, .gate__accolades { animation: none; opacity: 1; transform: none; }
         .gate__name { visibility: visible; }
         .gate__slides :global(img) { transition: none; }
+        .gate__enter-arrow, .gate__enter::after { transition: none; }
       }
     </style>
 
