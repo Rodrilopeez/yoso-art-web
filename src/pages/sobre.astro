@@ -1,9 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { getObra } from '../lib/obras';
+import autorretrato from '../../assets/img/sobre/autorretrato.webp';
+import { identity, statement, premios, ferias, individuales, colectivas, prensa } from '../data/sobre';
 
-const retrato = getObra('veritas-and-the-wolf-pack');
+// TODO(cliente): autorretrato principal en mayor resolución si se dispone de máster.
+// Premios ganadores → array award del Schema.org (Person/VisualArtist).
+const awards = premios.flatMap((g) =>
+  g.items.filter((i) => i.winner).map((i) => `${i.name}${i.place ? ', ' + i.place : ''} (${g.year})`),
+);
 
 const jsonld = {
   '@context': 'https://schema.org',
@@ -11,73 +16,277 @@ const jsonld = {
   mainEntity: {
     '@type': ['Person', 'VisualArtist'],
     '@id': 'https://yoso.art/#artist',
-    name: 'YOSO',
-    alternateName: 'Ambrosio José López González',
+    name: 'Yoso',
+    alternateName: 'Ambrosio López González',
     url: 'https://yoso.art/',
-    jobTitle: 'Artista',
+    jobTitle: 'Artista multidisciplinar',
     nationality: 'Española',
-    birthPlace: { '@type': 'Place', name: 'Vitoria, España' },
-    alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela Técnica Superior de Arquitectura, Universidad Politécnica de Madrid' },
-    knowsAbout: ['Arte digital', 'Escultura', 'Fotografía', 'Arte contemporáneo', 'NFT', 'Web3'],
     address: { '@type': 'PostalAddress', addressLocality: 'Madrid', addressCountry: 'ES' },
+    knowsAbout: ['Arte digital', 'Escultura', 'Fotografía', 'Arte contemporáneo', 'NFT', 'Web3'],
     email: 'yosolg@gmail.com',
-    sameAs: ['https://www.instagram.com/yoso_arts/', 'https://x.com/yoso_arts', 'https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98'],
+    award: awards,
+    image: 'https://yoso.art/og/sobre.jpg',
+    sameAs: [
+      'https://www.instagram.com/yoso_arts/',
+      'https://x.com/yoso_arts',
+      'https://platform.wise.art/artist/0x0845376a4c47530d082a315cFD3F2e66d9A6BA98',
+    ],
   },
 };
+
+const winnerExtra = (result: string) => result.replace(/^Ganador\s*·?\s*/i, '').trim();
 ---
 
 <Base
-  title="Sobre YOSO — el artista | Arquitecto, arte digital y escultura"
-  description="Quién es YOSO (Ambrosio José López González): arquitecto por la UPM convertido en artista multidisciplinar en Madrid. Obra onírica sobre la identidad humana."
+  title="Sobre Yoso — Ambrosio López González · Artista multidisciplinar"
+  description="Yoso (Ambrosio López González), artista multidisciplinar en Madrid: creación digital, fotografía y escultura. Premios y trayectoria internacional — Venecia, Times Square, Ginebra, Corea del Sur."
+  image="/og/sobre.jpg"
+  imageAlt="Yoso — Ambrosio López González"
+  imageWidth={1200}
+  imageHeight={630}
+  ogType="profile"
 >
-  <section class="sobre section">
-    <div class="container sobre__grid">
-      <div class="sobre__text">
-        <p class="eyebrow">Sobre el artista</p>
-        <h1>Una arquitectura <em>del ser</em></h1>
-        <hr class="accent-rule" style="margin:1.5rem 0 2rem;" />
-        <p><strong>YOSO</strong> es el nombre artístico de <strong>Ambrosio José López González</strong>, nacido en Vitoria (País Vasco) en 1959. Arquitecto titulado por la Escuela Técnica Superior de Arquitectura de la Universidad Politécnica de Madrid, su trayectoria en la arquitectura y el diseño desembocó, con los años, en una dedicación plena al arte multidisciplinar.</p>
-        <p>Su obra es un <strong>instrumento de análisis del ser humano</strong>: un intento de aproximarse desde nuevas perspectivas al concepto de identidad, a la singularidad del individuo y a su relación con los demás y con el entorno. Esa mirada de arquitecto —atenta a la estructura, la proporción y el espacio— sigue presente en cada pieza, ahora al servicio de la emoción.</p>
-        <blockquote class="sobre__quote">El arte no se explica, se siente.</blockquote>
-        <p>Muchos de sus trabajos parten de <strong>sueños o visiones fugaces</strong>, lo que les confiere un carácter enigmático y surrealista. El artista privilegia la <strong>alta resolución</strong> y el gran formato, pensando sus imágenes para instalaciones a gran escala. Su práctica abarca el arte digital, la escultura y la fotografía, y se extiende al arte tokenizado en el ecosistema Web3 a través de WISe.ART.</p>
-        <div class="sobre__ctas">
-          <a href="/obras" class="btn btn--accent">Ver la obra</a>
-          <a href="/exposiciones" class="btn btn--ghost">Trayectoria</a>
-        </div>
-      </div>
-
-      <aside class="sobre__aside">
-        {retrato && (
-          <figure class="sobre__img">
-            <Image src={retrato.image} alt="Obra de YOSO" widths={[400, 700]} sizes="(max-width: 900px) 100vw, 34vw" />
-          </figure>
-        )}
-        <dl class="sobre__facts">
-          <div><dt>Nombre</dt><dd>Ambrosio José López González</dd></div>
-          <div><dt>Origen</dt><dd>Vitoria, País Vasco · 1959</dd></div>
-          <div><dt>Base</dt><dd>Madrid, España</dd></div>
-          <div><dt>Formación</dt><dd>Arquitecto — UPM, Madrid</dd></div>
-          <div><dt>Medios</dt><dd>Arte digital · Escultura · Fotografía</dd></div>
-        </dl>
-      </aside>
+  <!-- 1 · HERO split-screen -->
+  <section class="ab-hero">
+    <figure class="ab-hero__media" data-reveal>
+      <Image src={autorretrato} alt="Autorretrato de Yoso (Ambrosio López González)" widths={[480, 760, 1100]} sizes="(max-width: 900px) 80vw, 46vw" loading="eager" fetchpriority="high" />
+    </figure>
+    <div class="ab-hero__text">
+      <p class="eyebrow" data-reveal>Artista multidisciplinar · {identity.city}</p>
+      <h1 class="ab-hero__name" data-hero-name>{identity.artistName}</h1>
+      <p class="ab-hero__real" data-reveal>{identity.realName}</p>
+      <p class="ab-hero__lead lead" data-reveal>{statement[0]}</p>
     </div>
+  </section>
+
+  <!-- 2 · STATEMENT -->
+  <section class="ab-sec ab-statement container--text">
+    <h2 class="ab-sec__title" data-reveal>Statement</h2>
+    {statement.map((p) => <p class="ab-statement__p" data-reveal>{p}</p>)}
+  </section>
+
+  <!-- 3 · PREMIOS Y RECONOCIMIENTOS -->
+  <section class="ab-sec container">
+    <h2 class="ab-sec__title" data-reveal>Premios y reconocimientos</h2>
+    {premios.map((g) => (
+      <div class="tl__group" data-reveal>
+        <h3 class="tl__year">{g.year}</h3>
+        <ul class="tl__list">
+          {g.items.map((it) => (
+            <li class={`tl__item${it.winner ? ' tl__item--winner' : ''}`}>
+              <div class="tl__line">
+                <span class="tl__name">{it.name}</span>
+                {it.winner && <span class="tl__badge">Ganador</span>}
+              </div>
+              <div class="tl__meta">
+                {it.place && <span class="tl__place">{it.place}</span>}
+                {(it.winner ? winnerExtra(it.result) : it.result) && (
+                  <span class="tl__result">{it.winner ? winnerExtra(it.result) : it.result}</span>
+                )}
+              </div>
+              {it.note && <p class="tl__note">{it.note}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <!-- 4 · FERIAS Y MUESTRAS -->
+  <section class="ab-sec container">
+    <h2 class="ab-sec__title" data-reveal>Ferias y muestras</h2>
+    {ferias.map((g) => (
+      <div class="tl__group" data-reveal>
+        <h3 class="tl__year">{g.year}</h3>
+        <ul class="tl__list">
+          {g.items.map((it) => (
+            <li class="tl__item">
+              <div class="tl__line"><span class="tl__name">{it.name}</span></div>
+              <div class="tl__meta">
+                {it.place && <span class="tl__place">{it.place}</span>}
+                {it.note && <span class="tl__result">{it.note}</span>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <!-- 5 · EXPOSICIONES INDIVIDUALES -->
+  <section class="ab-sec container">
+    <h2 class="ab-sec__title" data-reveal>Exposiciones individuales</h2>
+    {individuales.map((g) => (
+      <div class="tl__group" data-reveal>
+        <h3 class="tl__year">{g.year}</h3>
+        <ul class="tl__list tl__list--solo">
+          {g.items.map((it) => (
+            <li class="tl__item">
+              <div class="tl__line"><span class="tl__name tl__name--lg">{it.name}</span></div>
+              {it.place && <div class="tl__meta"><span class="tl__place">{it.place}</span></div>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <!-- 6 · EXPOSICIONES COLECTIVAS -->
+  <section class="ab-sec container">
+    <h2 class="ab-sec__title" data-reveal>Selección de exposiciones colectivas</h2>
+    {colectivas.map((g) => (
+      <div class="tl__group" data-reveal>
+        <h3 class="tl__year">{g.year}</h3>
+        <ul class="tl__list">
+          {g.items.map((it) => (
+            <li class="tl__item">
+              <div class="tl__line"><span class="tl__name">{it.name}</span></div>
+              {it.place && <div class="tl__meta"><span class="tl__place">{it.place}</span></div>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <!-- 7 · PUBLICACIONES Y PRENSA -->
+  <section class="ab-sec container">
+    <h2 class="ab-sec__title" data-reveal>Publicaciones y prensa</h2>
+    {prensa.map((g) => (
+      <div class="tl__group" data-reveal>
+        <h3 class="tl__year">{g.year}</h3>
+        <ul class="tl__list">
+          {g.items.map((it: any) => (
+            <li class="tl__item">
+              <div class="tl__line">
+                {it.url ? (
+                  <a class="tl__name tl__link" href={it.url} target="_blank" rel="noopener noreferrer">
+                    {it.name} <span class="tl__link-arrow" aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <span class="tl__name">{it.name}</span>
+                )}
+              </div>
+              <div class="tl__meta">
+                {it.place && <span class="tl__place">{it.place}</span>}
+                {it.date && <span class="tl__result">{it.date}</span>}
+                {it.note && <span class="tl__result">{it.note}</span>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <!-- 8 · CTA FINAL -->
+  <section class="ab-cta" data-reveal>
+    <p class="ab-cta__text">Para consultas sobre obras disponibles, encargos personalizados o representación, contacta directamente.</p>
+    <a class="ab-cta__link" href="/contacto">
+      <span>Contactar</span><span class="ab-cta__arrow" aria-hidden="true">→</span>
+    </a>
   </section>
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
 </Base>
 
 <style>
-  .sobre__grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
-  .sobre__text h1 em { font-style: italic; color: var(--c-ink-dim); }
-  .sobre__text p { color: var(--c-ink-dim); margin-bottom: var(--sp-4); }
-  .sobre__quote { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h3); color: var(--c-ink); border-left: 2px solid var(--c-accent); padding-left: var(--sp-5); margin: var(--sp-6) 0; max-width: none; }
-  .sobre__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-top: var(--sp-6); }
-  .sobre__aside { position: sticky; top: 6rem; display: grid; gap: var(--sp-6); }
-  .sobre__img { margin: 0; aspect-ratio: 3/4; overflow: hidden; background: var(--c-bg-2); }
-  .sobre__img :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .sobre__facts { border-top: 1px solid var(--c-line); }
-  .sobre__facts > div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--sp-4); padding: var(--sp-3) 0; border-bottom: 1px solid var(--c-line); }
-  .sobre__facts dt { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--c-ink-mute); }
-  .sobre__facts dd { font-size: var(--fs-sm); }
-  @media (max-width: 900px) { .sobre__grid { grid-template-columns: 1fr; } .sobre__aside { position: static; } }
+  :root { --gold: #c79a52; }
+
+  /* 1 · HERO */
+  .ab-hero { display: grid; grid-template-columns: 46% 1fr; min-height: 80svh; align-items: center; gap: clamp(2rem, 5vw, 5rem); padding: clamp(6rem, 12vh, 9rem) var(--gutter) clamp(3rem, 8vh, 6rem); }
+  .ab-hero__media { margin: 0; justify-self: center; width: min(100%, 38rem); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--c-bg-2); }
+  .ab-hero__media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ab-hero__name { font-family: var(--font-display); font-weight: var(--fw-semi); font-size: clamp(3.5rem, 9vw, 7rem); line-height: .95; letter-spacing: .02em; margin: clamp(.5rem,1.5vw,1rem) 0 .25rem; overflow: hidden; }
+  .ab-hero__name :global(.char) { display: inline-block; will-change: transform; }
+  .ab-hero__real { font-family: var(--font-sans); font-size: var(--fs-lead); color: var(--c-ink-dim); letter-spacing: .02em; }
+  .ab-hero__lead { margin-top: clamp(1.25rem, 3vh, 2rem); max-width: 42ch; }
+
+  /* Secciones */
+  .ab-sec { padding-block: clamp(3rem, 8vh, 6rem); }
+  .ab-sec__title { font-family: var(--font-display); font-size: var(--fs-h2); margin-bottom: var(--sp-7); }
+
+  /* 2 · Statement */
+  .ab-statement { margin-inline: auto; }
+  .ab-statement__p { font-family: var(--font-display); font-weight: 300; font-size: clamp(1.3rem, 1rem + 1vw, 1.85rem); line-height: 1.5; letter-spacing: .01em; color: rgba(244,241,234,.92); margin-bottom: clamp(1.5rem, 4vh, 2.6rem); max-width: 42ch; }
+
+  /* 3–7 · Timeline editorial por año */
+  .tl__group { display: grid; grid-template-columns: 9rem 1fr; gap: clamp(1.5rem, 4vw, 4rem); padding: clamp(1.5rem, 3.5vh, 2.6rem) 0; border-top: 1px solid var(--c-line); }
+  .tl__group:last-child { border-bottom: 1px solid var(--c-line); }
+  .tl__year { font-family: var(--font-display); font-weight: var(--fw-reg); font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; color: var(--c-ink-mute); }
+  .tl__list { display: grid; gap: clamp(1.1rem, 2.5vh, 1.8rem); }
+  .tl__item { display: grid; gap: .35rem; }
+  .tl__line { display: flex; align-items: baseline; flex-wrap: wrap; gap: .6rem .9rem; }
+  .tl__name { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.15; color: var(--c-ink); }
+  .tl__name--lg { font-size: clamp(1.6rem, 2.8vw, 2.2rem); }
+  .tl__meta { display: flex; flex-wrap: wrap; gap: .35rem .9rem; align-items: baseline; }
+  .tl__place { font-family: var(--font-display); font-style: italic; font-size: var(--fs-body); color: var(--c-ink-dim); }
+  .tl__result { font-family: var(--font-sans); font-size: var(--fs-sm); letter-spacing: .04em; color: var(--c-ink-dim); }
+  .tl__note { font-size: var(--fs-sm); color: var(--c-ink-dim); max-width: 60ch; margin-top: .15rem; }
+
+  /* GANADOR — badge oro */
+  .tl__badge { align-self: center; font-family: var(--font-sans); font-size: .62rem; font-weight: var(--fw-semi); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); padding: .25em .7em; border-radius: 999px; white-space: nowrap; }
+  .tl__item--winner .tl__name { color: var(--c-ink); }
+
+  /* Enlace de prensa */
+  .tl__link { color: var(--c-ink); transition: color var(--dur-1) var(--ease-art); }
+  .tl__link:hover, .tl__link:focus-visible { color: var(--gold); }
+  .tl__link-arrow { font-size: .7em; color: var(--gold); }
+
+  /* 8 · CTA */
+  .ab-cta { min-height: 20svh; display: grid; place-items: center; justify-items: center; gap: var(--sp-5); text-align: center; padding: clamp(3rem, 10vh, 7rem) var(--gutter); }
+  .ab-cta__text { font-family: var(--font-display); font-weight: 300; font-style: italic; font-size: var(--fs-lead); color: var(--c-ink-dim); max-width: 44ch; }
+  .ab-cta__link { position: relative; display: inline-flex; align-items: center; gap: .7em; padding: .5rem 0; font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--fw-med); letter-spacing: .18em; text-transform: uppercase; color: var(--c-ink); }
+  .ab-cta__arrow { transition: transform var(--dur-1) var(--ease-art); }
+  .ab-cta__link::after { content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-1) var(--ease-art); }
+  .ab-cta__link:hover .ab-cta__arrow, .ab-cta__link:focus-visible .ab-cta__arrow { transform: translateX(6px); }
+  .ab-cta__link:hover::after, .ab-cta__link:focus-visible::after { transform: scaleX(1); }
+  .ab-cta__link:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+  /* Reveal on scroll */
+  [data-reveal] { opacity: 0; transform: translateY(20px); }
+  [data-reveal].is-in { opacity: 1; transform: none; transition: opacity var(--dur-2) var(--ease-art), transform var(--dur-2) var(--ease-art); }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .ab-hero { grid-template-columns: 1fr; min-height: 0; text-align: center; justify-items: center; padding-top: clamp(5rem, 14vh, 7rem); }
+    .ab-hero__media { width: min(72%, 22rem); }
+    .ab-hero__lead { margin-inline: auto; }
+    .tl__group { grid-template-columns: 1fr; gap: var(--sp-4); }
+    .tl__year { font-size: var(--fs-h3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1; transform: none; transition: none; }
+    .ab-cta__arrow, .ab-cta__link::after { transition: none; }
+  }
 </style>
+
+<script>
+  import gsap from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  gsap.registerPlugin(SplitText);
+
+  function initSobre() {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Reveal on scroll con stagger suave.
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    if (reduce) {
+      els.forEach((el) => el.classList.add('is-in'));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach((el) => io.observe(el));
+
+      // Cascada del nombre (hero) con SplitText.
+      const name = document.querySelector<HTMLElement>('[data-hero-name]');
+      if (name) {
+        const split = new SplitText(name, { type: 'chars' });
+        gsap.from(split.chars, { yPercent: 120, duration: 1, ease: 'power4.out', stagger: 0.06, delay: 0.15 });
+      }
+    }
+  }
+  document.addEventListener('astro:page-load', initSobre);
+</script>
