@@ -60,22 +60,27 @@ const items = obras.map((o) => ({
 
 <script>
   // Filtros por disciplina: operan sobre las celdas de RefikGrid (.rgrid__cell[data-cat]).
+  // Aceptan prefiltro por URL (?d=digital|escultura|foto) desde las cards de /inicio.
   function initObrasFilters() {
     const grid = document.querySelector('[data-rgrid]');
     if (!grid) return;
     const cells = Array.from(grid.querySelectorAll<HTMLElement>('.rgrid__cell'));
     const filters = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter'));
-    filters.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const val = btn.dataset.filter;
-        filters.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-        cells.forEach((c) => {
-          const show = val === 'all' || c.dataset.cat === val;
-          c.hidden = !show;
-          if (show && !c.classList.contains('is-in')) c.classList.add('is-in');
-        });
+
+    const apply = (val: string | undefined) => {
+      filters.forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.filter || 'all') === (val || 'all'))));
+      cells.forEach((c) => {
+        const show = !val || val === 'all' || c.dataset.cat === val;
+        c.hidden = !show;
+        if (show && !c.classList.contains('is-in')) c.classList.add('is-in');
       });
-    });
+    };
+
+    filters.forEach((btn) => btn.addEventListener('click', () => apply(btn.dataset.filter)));
+
+    // Prefiltro desde la URL (?d=...). Solo valores válidos; si no, "all".
+    const d = new URLSearchParams(location.search).get('d');
+    if (d && filters.some((b) => b.dataset.filter === d)) apply(d);
   }
   document.addEventListener('astro:page-load', initObrasFilters);
 </script>

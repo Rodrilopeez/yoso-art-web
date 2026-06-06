@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Marquee from '../components/Marquee.astro';
 
 const premios = [
   ['2026', 'Sestante Art Prize', 'Cascais-Lisboa, Portugal', 'Ganador'],
@@ -42,6 +43,9 @@ const prensa = [
   title="Exposiciones y trayectoria — YOSO | Venecia, Times Square, Ginebra"
   description="Trayectoria internacional de YOSO: premios (Arte Laguna, WISe.ART, Jaume Graells), exposiciones (Art Madrid, CICA Museum Corea, NASDAQ Times Square), galerías y prensa."
 >
+  {/* Ticker de reconocimientos (reubicado desde la home tras la reestructuración). */}
+  <Marquee />
+
   <section class="section container exp">
     <header class="exp__head">
       <p class="eyebrow">Trayectoria</p>

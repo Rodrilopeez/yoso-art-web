@@ -1,55 +1,145 @@
 ---
-// Home principal del sitio (antes en /). El gate /entrada redirige aquí tras Enter.
-// NOTA: el rediseño del hero (composición editorial), la nav simétrica y el
-// marquee editorial se aplican en FASE 3. Aquí queda el contenido movido tal cual.
+/**
+ * Home = puerta de selección por disciplina (patrón cyrcle.com/art). Tres cards
+ * a ~100vh (Arte digital · Escultura · Fotografía); cada una enlaza a /obras
+ * prefiltrado por su disciplina. Nav simétrica habitual + CTA secundario discreto.
+ * Lenguaje cinematográfico: negro absoluto, Fraunces, glow por disciplina,
+ * motion editorial cubic-bezier(0.22,1,0.36,1).
+ */
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import Featured from '../components/Featured.astro';
-import Marquee from '../components/Marquee.astro';
+import { getObra } from '../lib/obras';
+
+// Obra de fondo + color de marca por disciplina (validado con el cliente).
+const cards = [
+  { cat: 'digital', label: 'Arte digital', obra: getObra('your-home-your-land'), accent: '#5aa8d8' },
+  { cat: 'escultura', label: 'Escultura', obra: getObra('ecos'), accent: '#cd3a32' },
+  { cat: 'foto', label: 'Fotografía', obra: getObra('fishing-in-gray'), accent: '#b9bcc0' },
+].filter((c) => c.obra);
 ---
 
-<Base title="YOSO — Arte digital, escultura y fotografía | Madrid">
-  <Hero />
+<Base
+  title="YOSO — Arte digital, escultura y fotografía | Madrid"
+  description="Obra original del artista YOSO (Ambrosio José López González): arte digital, escultura y fotografía de carácter onírico. Galería contemporánea en Madrid."
+>
+  <section class="disc" data-disc aria-label="Disciplinas">
+    <ul class="disc__grid">
+      {cards.map((c) => (
+        <li class="disc__cell" style={`--accent:${c.accent}`}>
+          <a class="disc__card" href={`/obras?d=${c.cat}`} data-disc-card aria-label={`Ver obra de ${c.label.toLowerCase()}`}>
+            <span class="disc__media">
+              <Image src={c.obra!.image} alt="" widths={[600, 900, 1400]} sizes="(max-width: 860px) 100vw, 34vw" loading="eager" />
+            </span>
+            <span class="disc__scrim" aria-hidden="true"></span>
+            <span class="disc__label">
+              <span class="disc__eyebrow eyebrow">Disciplina</span>
+              <span class="disc__title" data-disc-title>{c.label}</span>
+              <span class="disc__go">Ver obra →</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
 
-  <!-- Intro al artista -->
-  <section id="intro" class="section container intro">
-    <p class="eyebrow">El artista</p>
-    <h2 class="intro__h">Una arquitectura del&nbsp;ser</h2>
-    <hr class="accent-rule" style="margin-top:1.5rem;" />
-    <p class="lead intro__lead">
-      YOSO —&nbsp;Ambrosio José López González&nbsp;— traslada su mirada de arquitecto al arte
-      digital, la escultura y la fotografía. Obra de carácter onírico que indaga en la
-      identidad, la singularidad del individuo y su relación con el entorno.
+    <p class="disc__all">
+      <a href="/obras">Ver todo el catálogo →</a>
     </p>
-    <p class="intro__link"><a href="/sobre">Conocer al artista →</a></p>
-  </section>
-
-  <!-- Obra destacada (scroll horizontal pinned) -->
-  <Featured />
-
-  <!-- Ticker de exposiciones -->
-  <Marquee />
-
-  <!-- CTA principal -->
-  <section class="cta section">
-    <div class="container cta__inner">
-      <h2 class="cta__h">¿Te interesa una&nbsp;obra?</h2>
-      <p class="lead">Consulta disponibilidad, precios y encargos. Respondo personalmente.</p>
-      <div class="cta__btns">
-        <a href="/obras" class="btn btn--accent">Ver todas las obras</a>
-        <a href="/contacto" class="btn btn--ghost">Contacto</a>
-      </div>
-    </div>
   </section>
 </Base>
 
 <style>
-  .intro__lead { margin-top: 2rem; max-width: 52ch; }
-  .intro__link { margin-top: var(--sp-5); }
-  .intro__link a { color: var(--c-accent-2); font-size: var(--fs-sm); letter-spacing: 0.04em; }
-  .intro__link a:hover { color: var(--c-ink); }
+  .disc { height: 100svh; min-height: 560px; display: grid; grid-template-rows: 1fr auto; background: var(--c-bg); }
 
-  .cta__inner { text-align: center; display: grid; justify-items: center; gap: var(--sp-4); }
-  .cta__h { font-size: var(--fs-h1); max-width: 14ch; }
-  .cta__btns { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: center; margin-top: var(--sp-4); }
+  .disc__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; min-height: 0; }
+  .disc__cell { position: relative; overflow: hidden; }
+
+  .disc__card { position: absolute; inset: 0; display: block; isolation: isolate; }
+  .disc__media { position: absolute; inset: 0; }
+  .disc__media :global(img) {
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    filter: saturate(.9) brightness(.7);
+    transition: transform var(--dur-3) var(--ease-art), filter var(--dur-2) var(--ease-art);
+  }
+  .disc__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top, rgba(12,12,13,.9) 0%, rgba(12,12,13,.35) 45%, rgba(12,12,13,.55) 100%);
+    transition: opacity var(--dur-2) var(--ease-art);
+  }
+
+  .disc__label { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(2.5rem, 8vh, 5rem); display: grid; justify-items: center; gap: var(--sp-2); text-align: center; padding: 0 var(--gutter); }
+  .disc__eyebrow { color: var(--accent); }
+  .disc__title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.05; color: var(--c-ink); text-shadow: 0 6px 40px rgba(0,0,0,.6); }
+  .disc__go { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: #c3bdb0; opacity: 0; transform: translateY(6px); transition: opacity var(--dur-1) var(--ease-art), transform var(--dur-1) var(--ease-art); }
+
+  /* Activo (hover desktop / tap móvil): card crece + glow + obra revive + «Ver obra» */
+  .disc__cell.is-active .disc__card { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent), 0 0 60px color-mix(in srgb, var(--accent) 45%, transparent); z-index: 3; }
+  .disc__cell.is-active .disc__media :global(img) { transform: scale(1.03); filter: saturate(1.05) brightness(1); }
+  .disc__cell.is-active .disc__go { opacity: 1; transform: none; }
+  /* Las otras dos se atenúan para reforzar la atención */
+  .disc[data-focusing] .disc__cell:not(.is-active) .disc__media :global(img) { filter: saturate(.5) brightness(.4); }
+  .disc[data-focusing] .disc__cell:not(.is-active) .disc__scrim { opacity: .6; }
+
+  .disc__all { text-align: center; padding: clamp(.9rem, 2.5vh, 1.4rem); }
+  .disc__all a { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: #c3bdb0; }
+  .disc__all a:hover, .disc__all a:focus-visible { color: var(--c-ink); }
+
+  /* Móvil: cards apiladas, scroll vertical; tap revela (no hover) */
+  @media (max-width: 860px) {
+    .disc { height: auto; min-height: 0; }
+    .disc__grid { grid-template-columns: 1fr; }
+    .disc__cell { height: 58svh; min-height: 320px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .disc__media :global(img), .disc__scrim, .disc__go { transition: none; }
+  }
 </style>
+
+<script>
+  import gsap from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  gsap.registerPlugin(SplitText);
+
+  function initDisc() {
+    const disc = document.querySelector<HTMLElement>('[data-disc]');
+    if (!disc) return;
+    const cells = Array.from(disc.querySelectorAll<HTMLElement>('.disc__cell'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
+
+    // Pre-split de los títulos para revelarlos por carácter al activar (words,chars
+    // mantiene las palabras enteras). En reduced-motion no se parte.
+    const splits = new Map<HTMLElement, SplitText>();
+    if (!reduce) {
+      cells.forEach((cell) => {
+        const t = cell.querySelector<HTMLElement>('[data-disc-title]');
+        if (t) splits.set(cell, new SplitText(t, { type: 'words,chars' }));
+      });
+    }
+    const revealTitle = (cell: HTMLElement) => {
+      const s = splits.get(cell);
+      if (s) gsap.fromTo(s.chars, { yPercent: 110 }, { yPercent: 0, stagger: 0.02, duration: 0.5, ease: 'power4.out', overwrite: true });
+    };
+
+    const setActive = (cell: HTMLElement | null) => {
+      cells.forEach((c) => c.classList.toggle('is-active', c === cell));
+      disc.toggleAttribute('data-focusing', !!cell);
+      if (cell) revealTitle(cell);
+    };
+
+    if (!coarse) {
+      cells.forEach((cell) => {
+        cell.addEventListener('pointerenter', () => setActive(cell));
+        cell.addEventListener('pointerleave', () => setActive(null));
+      });
+    } else {
+      // Táctil: 1er tap revela (glow + «Ver obra»); 2º tap (ya activa) navega.
+      cells.forEach((cell) => {
+        const link = cell.querySelector<HTMLAnchorElement>('.disc__card');
+        link?.addEventListener('click', (e) => {
+          if (!cell.classList.contains('is-active')) { e.preventDefault(); setActive(cell); }
+        });
+      });
+    }
+  }
+  document.addEventListener('astro:page-load', initDisc);
+</script>
