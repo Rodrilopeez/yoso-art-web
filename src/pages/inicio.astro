@@ -32,7 +32,6 @@ const cards = [
             </span>
             <span class="disc__scrim" aria-hidden="true"></span>
             <span class="disc__label">
-              <span class="disc__eyebrow eyebrow">Disciplina</span>
               <span class="disc__title" data-disc-title>{c.label}</span>
               <span class="disc__go">Ver obra →</span>
             </span>
@@ -65,8 +64,7 @@ const cards = [
     transition: opacity var(--dur-2) var(--ease-art);
   }
 
-  .disc__label { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(2.5rem, 8vh, 5rem); display: grid; justify-items: center; gap: var(--sp-2); text-align: center; padding: 0 var(--gutter); }
-  .disc__eyebrow { color: var(--accent); }
+  .disc__label { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(2.5rem, 8vh, 5rem); display: grid; justify-items: center; gap: var(--sp-3); text-align: center; padding: 0 var(--gutter); }
   .disc__title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1.05; color: var(--c-ink); text-shadow: 0 6px 40px rgba(0,0,0,.6); }
   .disc__go { font-size: var(--fs-eyebrow); letter-spacing: var(--ls-wide); text-transform: uppercase; color: #c3bdb0; opacity: 0; transform: translateY(6px); transition: opacity var(--dur-1) var(--ease-art), transform var(--dur-1) var(--ease-art); }
 
